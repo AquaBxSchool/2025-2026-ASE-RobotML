@@ -76,60 +76,30 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" upperBound="-1"
         eType="#//Expression" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Add" eSuperTypes="#//Operation">
+  <eClassifiers xsi:type="ecore:EClass" name="Binary" eSuperTypes="#//Operation">
     <eStructuralFeatures xsi:type="ecore:EReference" name="operands" lowerBound="2"
         upperBound="2" eType="#//Expression" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Operator" eType="#//Operators"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Substract" eSuperTypes="#//Operation">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="operands" lowerBound="2"
-        upperBound="2" eType="#//Expression" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Multiply" eSuperTypes="#//Operation">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="operands" lowerBound="2"
-        upperBound="2" eType="#//Expression" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Deploy" eSuperTypes="#//Operation">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="operands" lowerBound="2"
-        upperBound="2" eType="#//Expression" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="UnaryMinus" eSuperTypes="#//Operation">
+  <eClassifiers xsi:type="ecore:EClass" name="Unary" eSuperTypes="#//Operation">
     <eStructuralFeatures xsi:type="ecore:EReference" name="operands" lowerBound="1"
         eType="#//Expression" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Operator" eType="#//Operators"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="UnaryNot" eSuperTypes="#//Operation">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="operands" lowerBound="1"
-        eType="#//Expression" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="And" eSuperTypes="#//Operation">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="operands" lowerBound="2"
-        upperBound="2" eType="#//Expression" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Or" eSuperTypes="#//Operation">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="operands" lowerBound="2"
-        upperBound="2" eType="#//Expression" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Equal" eSuperTypes="#//Operation">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="operands" lowerBound="2"
-        upperBound="2" eType="#//Expression" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EqualOrLess" eSuperTypes="#//Operation">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="operands" lowerBound="2"
-        upperBound="2" eType="#//Expression" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EqualOrGreater" eSuperTypes="#//Operation">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="operands" lowerBound="2"
-        upperBound="2" eType="#//Expression" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Greater" eSuperTypes="#//Operation">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="operands" lowerBound="2"
-        upperBound="2" eType="#//Expression" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Less" eSuperTypes="#//Operation">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="operands" lowerBound="2"
-        upperBound="2" eType="#//Expression" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NotEqual" eSuperTypes="#//Operation">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="operands" lowerBound="2"
-        upperBound="2" eType="#//Expression" containment="true"/>
+  <eClassifiers xsi:type="ecore:EEnum" name="Operators">
+    <eLiterals name="AND" literal="&amp;&amp;"/>
+    <eLiterals name="OR" value="1" literal="||"/>
+    <eLiterals name="NOT" value="2" literal="!"/>
+    <eLiterals name="NOTEQUAL" value="3" literal="!="/>
+    <eLiterals name="EQUAL" value="4" literal="=="/>
+    <eLiterals name="LESSOREQUAL" value="5" literal="&lt;="/>
+    <eLiterals name="GREATEROREQUAL" value="6" literal=">="/>
+    <eLiterals name="LESS" value="7" literal="&lt;"/>
+    <eLiterals name="GREATER" value="8" literal=">"/>
+    <eLiterals name="PLUS" value="9" literal="+"/>
+    <eLiterals name="MINUS" value="10" literal="-"/>
+    <eLiterals name="TIMES" value="11" literal="*"/>
+    <eLiterals name="DIVIDE" value="12" literal="/"/>
+    <eLiterals name="MODULO" value="13" literal="%"/>
   </eClassifiers>
 </ecore:EPackage>
