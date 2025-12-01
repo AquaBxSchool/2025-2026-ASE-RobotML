@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated RobotML -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="robotML.presentation.RobotMLModelWizardID"
+            name="%_UI_RobotMLModelWizard_label"
+            class="robotML.presentation.RobotMLModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/RobotMLModelFile.gif">
+         <description>%_UI_RobotMLModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated RobotML -->
+      <editor
+            id="robotML.presentation.RobotMLEditorID"
+            name="%_UI_RobotMLEditor_label"
+            icon="icons/full/obj16/RobotMLModelFile.gif"
+            extensions="robotml"
+            class="robotML.presentation.RobotMLEditor"
+            contributorClass="robotML.presentation.RobotMLActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>

@@ -2,11 +2,10 @@
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:diagram="http://www.eclipse.org/sirius/diagram/1.1.0" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.3/notation" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xsi:schemaLocation="http://www.eclipse.org/sirius/description/1.1.0 http://www.eclipse.org/sirius/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/style/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description/style">
   <viewpoint:DAnalysis uid="_mmXHIM6xEfC3qLVYl07CFQ" selectedViews="_n0XLUM6xEfC3qLVYl07CFQ" version="15.4.1.202403191723">
     <semanticResources>robotML.ecore</semanticResources>
-    <semanticResources>robotML.genmodel</semanticResources>
     <semanticResources>http://www.eclipse.org/emf/2002/Ecore</semanticResources>
     <ownedViews xmi:type="viewpoint:DView" uid="_n0XLUM6xEfC3qLVYl07CFQ">
       <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']"/>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_n2R24M6xEfC3qLVYl07CFQ" name="robotML" repPath="#_n13AIM6xEfC3qLVYl07CFQ" changeId="1764598783241">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_n2R24M6xEfC3qLVYl07CFQ" name="robotML" repPath="#_n13AIM6xEfC3qLVYl07CFQ" changeId="1764598819533">
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
         <target xmi:type="ecore:EPackage" href="robotML.ecore#/"/>
       </ownedRepresentationDescriptors>
@@ -306,7 +305,7 @@
             <styles xmi:type="notation:FilteringStyle" xmi:id="_LZE4ps7AEfC3qLVYl07CFQ"/>
           </children>
           <styles xmi:type="notation:ShapeStyle" xmi:id="_LZE4oc7AEfC3qLVYl07CFQ" fontName=".AppleSystemUIFont" fontHeight="8"/>
-          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_LZE4os7AEfC3qLVYl07CFQ" x="268" y="192" width="120" height="266"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_LZE4os7AEfC3qLVYl07CFQ" x="180" y="216" width="120" height="266"/>
         </children>
         <styles xmi:type="notation:DiagramStyle" xmi:id="_n2hugs6xEfC3qLVYl07CFQ"/>
         <edges xmi:type="notation:Edge" xmi:id="_WX9CBs61EfC3qLVYl07CFQ" type="4001" element="_WX1GMM61EfC3qLVYl07CFQ" source="_SI8gYM60EfC3qLVYl07CFQ" target="_TS7nQM60EfC3qLVYl07CFQ">

@@ -1,0 +1,118 @@
+@Ecore(nsURI="http://www.example.org/robotML")
+@GenModel(creationIcons="false", editDirectory="/RobotML.edit/src-gen", editorDirectory="/RobotML.editor/src-gen",
+	codeFormatting="true", importerID="org.eclipse.emf.importer.ecore", containmentProxies="false",
+	editorPluginID="RobotML.editor", testsPluginID="RobotML.tests")
+package robotML
+
+class FunctionDeclaration extends Statement {
+	contains Parameter[] parameters
+	contains Type[1] returnType
+	contains Block[1] block
+}
+
+class Parameter {
+	unordered readonly id java.lang.String name
+	contains Type[1] ^type
+}
+
+class RobotML {
+	contains Statement[+] statement
+}
+
+class String extends Type {
+}
+
+class Boolean extends Type {
+}
+
+class Integer extends Type {
+}
+
+class Float extends Type {
+}
+
+class Void extends Type {
+}
+
+abstract class Type {
+}
+
+abstract class Statement {
+}
+
+class Block extends Statement {
+	contains Statement[] statement
+}
+
+class Assignation extends Statement {
+	contains Variable[1] variable
+	contains Expression[1] expression
+}
+
+class Variable extends Expression {
+	contains Type[1] ^type
+}
+
+abstract class Expression {
+}
+
+class FunctionCall extends Statement , Expression {
+	refers FunctionDeclaration[1] functiondeclaration
+	refers Expression[] expression
+}
+
+class Cast {
+	contains Expression[1] expression
+	contains Unit[1] unit
+}
+
+abstract class Unit {
+}
+
+abstract class Operation extends Expression {
+	contains Expression[1..2] expression
+}
+
+abstract class Loop extends Statement {
+	contains Block[1] block
+}
+
+class While extends Loop {
+	contains Expression[1] expression
+}
+
+class Foreach extends Loop {
+	contains Variable[1] variable
+	refers Expression[1] expression
+}
+
+class List extends Type {
+	contains Expression[] expression
+}
+
+class Binary extends Operation {
+	contains Expression[2] operands
+	Operators Operator
+}
+
+class Unary extends Operation {
+	contains Expression[1] operands
+	Operators Operator
+}
+
+enum Operators {
+	AND as "&&"
+	OR as "||" = 1
+	NOT as "!" = 2
+	NOTEQUAL as "!=" = 3
+	EQUAL as "==" = 4
+	LESSOREQUAL as "<=" = 5
+	GREATEROREQUAL as ">=" = 6
+	LESS as "<" = 7
+	GREATER as ">" = 8
+	PLUS as "+" = 9
+	MINUS as "-" = 10
+	TIMES as "*" = 11
+	DIVIDE as "/" = 12
+	MODULO as "%" = 13
+}
