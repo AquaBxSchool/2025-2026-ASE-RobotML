@@ -7,5 +7,4 @@
     operationReflection="true" importOrganizing="true">
   <foreignModel>robotML.ecore</foreignModel>
   <testsDirectory xsi:nil="true"/>
-  <genPackages prefix="RobotML" disposableProviderFactory="true" ecorePackage="robotML.ecore#/"/>
 </genmodel:GenModel>
