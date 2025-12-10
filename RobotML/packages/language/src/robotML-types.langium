@@ -1,9 +1,10 @@
 
-type BinaryOp = BinaryOp_AND | BinaryOp_OR | BinaryOp_NOT | BinaryOp_EQUAL | BinaryOp_LESSOREQUAL | BinaryOp_GREATEROREQUAL | BinaryOp_LESS | BinaryOp_GREATER | BinaryOp_PLUS | BinaryOp_MINUS | BinaryOp_TIMES | BinaryOp_DIVIDE | BinaryOp_MODULO;
+type BinaryOp = BinaryOp_AND | BinaryOp_OR | BinaryOp_NOT | BinaryOp_EQUAL | BinaryOp_NOTEQUAL | BinaryOp_LESSOREQUAL | BinaryOp_GREATEROREQUAL | BinaryOp_LESS | BinaryOp_GREATER | BinaryOp_PLUS | BinaryOp_MINUS | BinaryOp_TIMES | BinaryOp_DIVIDE | BinaryOp_MODULO;
 type BinaryOp_AND = '&&';
 type BinaryOp_OR = '||';
 type BinaryOp_NOT = '!';
 type BinaryOp_EQUAL = '==';
+type BinaryOp_NOTEQUAL = '!=';
 type BinaryOp_LESSOREQUAL = '<=';
 type BinaryOp_GREATEROREQUAL = '>=';
 type BinaryOp_LESS = '<';
@@ -14,9 +15,9 @@ type BinaryOp_TIMES = '*';
 type BinaryOp_DIVIDE = '/';
 type BinaryOp_MODULO = '%';
 
-type UnaryOp = UnaryOp_NOTEQUAL | UnaryOp_NEGATE;
-type UnaryOp_NOTEQUAL = 'NOTEQUAL';
-type UnaryOp_NEGATE = 'NEGATE';
+type UnaryOp = UnaryOp_NOT | UnaryOp_MINUS;
+type UnaryOp_NOT = '!';
+type UnaryOp_MINUS = '-';
 
 type Sensor = Sensor_Distance | Sensor_Color;
 type Sensor_Distance = 'Distance';
@@ -42,7 +43,7 @@ interface Expression {
 	expresion: VariableDeclaration
 }
 
-interface String extends Type {
+interface String0 extends Type {
 }
 
 interface Boolean extends Type {
