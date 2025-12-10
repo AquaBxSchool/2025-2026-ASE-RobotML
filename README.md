@@ -4,7 +4,7 @@ These lab sessions are to be realized in groups of two.
 
 ## Overall objectives of the lab
 
-During these lab sessions, you will create your own version of RoboML, a language to define the behavior of a small robot. Building the DSL will include modeling the domain (*i.e.*, the concepts and their relationships), and implements the associated tooling: *e.g.*, the text editor and its services, an interpreter (through a web-based simulator) and a compiler (to Arduino code that will run on the robot itself).
+During these lab sessions, you will create your own version of RoboML, a language to define the behavior of a small robot. Building the DSL will include modeling the domain (_i.e._, the concepts and their relationships), and implements the associated tooling: _e.g._, the text editor and its services, an interpreter (through a web-based simulator) and a compiler (to Arduino code that will run on the robot itself).
 
 Below, you can find an example of a program that we expect to write in your language.
 
@@ -13,7 +13,7 @@ let void entry () {
     setSpeed(150 in mm) // distance per second (here 150mm/s)
     var number count = 0
     loop count < 5
-    {	
+    {
         count = count + 1
         square()
     }
@@ -31,6 +31,21 @@ let void square(){
 }
 ```
 
+setClock(tick)
+getClock(tick)
+
+setSpeed(speed)
+getSpeed(speed)
+
+Forward(distance)
+Backward(distance)
+Leftward(distance)
+Rightward(distance)
+
+Rotate(+-angle)
+
+getSensorValue(DISTANCE)
+
 The above program, when executed, should set the speed of the robot and then perform 5 times (loop) a square pattern movement (square function).
 
 The robot used for this lab has four wheels with individual motors, and an ultrasound sensor which can be used to measure distance to an object in front. We expect your language to mostly follow the imperative programming paradigm, with basic arithmetic and commands for the robot.
@@ -39,12 +54,13 @@ The robot used for this lab has four wheels with individual motors, and an ultra
 
 These labs are split into three parts corresponding to the three main aspects of DSLs implementation: abstract syntax, concrete syntax, and semantics.
 
-The lab sessions for this course will consist in the realization of these aspects. 
+The lab sessions for this course will consist in the realization of these aspects.
 
 To encourage you to finish completely at least one of the two possible semantics, yet exploring both compilation and interpretation, you will have to choose a major and a minor semantics.
 The major semantics will be used to evaluate your project.
 The minor one is not mandatory but can give you bonus points.
 The evaluation grid is the following:
+
 - Abstract syntax: 5
 - Concrete Syntax: 5
 - Semantics: 10
@@ -53,13 +69,14 @@ By the end of the module, you must submit a Git repository containing all your s
 
 ## Part 1 - Domain modeling: definition of the language's metamodel with Ecore
 
-The first step in defining a language is to model the concepts and their relationships in the domain targeted by your language. 
+The first step in defining a language is to model the concepts and their relationships in the domain targeted by your language.
 This results in the creation of the language's metamodel, defining its abstract syntax.
 For this part, you can pick any tool you want: the Ecore framework, an online UML editor, or even simply a pen and a piece of paper!
 
 If you chose Ecore, there are some instructions below to help with the technical aspect.
 
 There is a short list of mandatory concepts that we want:
+
 - Basic arithmetic and boolean expressions
 - Control structure (loop, conditions)
 - Functions and variables
@@ -67,12 +84,13 @@ There is a short list of mandatory concepts that we want:
 - Rotation
 - Speed
 - Sensors (time, distance to obstacle in front of the robot)
-- Units (*e.g.*, cm, mm)
+- Units (_e.g._, cm, mm)
 
 **N.B.:** For units, you can either implement it as "cast function" or as a concrete type in the language.
+
 > For units, you can either implement it as "cast function" or as a concrete type in the language.  
-As a cast -> `var number length = 10 in cm`.  
-As a type -> `var cm length = 10`.
+> As a cast -> `var number length = 10 in cm`.  
+> As a type -> `var cm length = 10`.
 
 Your metamodel needs to support generic programming constructs, so that the robot can be programmed with real logic.
 
@@ -114,13 +132,13 @@ You may validate your metamodel by right-clicking on your ecore model and then c
 
 When this is done, you can generate the Java-based implementation of your domain model by opening the associated `genmodel` file, right-clicking on the root element, and _Generate all_. This is not mandatory to continue the lab.
 
-You may assess the expressivity of your metamodel (*i.e.*, check if it captures your domain well, in your case meaning it supports the modeling of the proposed example) by opening the Ecore metamodel, right-click on the concept of the root element of your expected model, and choose _Create dynamic instance_. Then you can create a model in a tree-based editor, and ensure your metamodel supports the expected model structure.
+You may assess the expressivity of your metamodel (_i.e._, check if it captures your domain well, in your case meaning it supports the modeling of the proposed example) by opening the Ecore metamodel, right-click on the concept of the root element of your expected model, and choose _Create dynamic instance_. Then you can create a model in a tree-based editor, and ensure your metamodel supports the expected model structure.
 
 ## Part 2 - Textual modeling: definition of the Langium grammar and editor for your language
 
 After determining the domain, it is time to move on to the actual text editor for your language. In this lab, we will build this editor using the TypeScript-based [Langium](https://langium.org/) workbench to build a Visual Studio Code extension supporting the edition of your language.
 
-If not done already, you will need to install a [node environment](https://nodejs.org/en/download) as well as [Visual Studio Code](https://code.visualstudio.com/docs/setup/setup-overview), and then run the command `npm i -g yo@5.1.0 generator-langium@3.3.0` to install the Langium project generator. Then, run `yo langium` to create the project. This will offer to create a few different things; you **have to** say yes to all of them, pick a language name, extension name, and a file extension (*e.g.* .rob).
+If not done already, you will need to install a [node environment](https://nodejs.org/en/download) as well as [Visual Studio Code](https://code.visualstudio.com/docs/setup/setup-overview), and then run the command `npm i -g yo@5.1.0 generator-langium@3.3.0` to install the Langium project generator. Then, run `yo langium` to create the project. This will offer to create a few different things; you **have to** say yes to all of them, pick a language name, extension name, and a file extension (_e.g._ .rob).
 You can also install the Langium extension from the VSCode marketplace, to have syntax highlighting and validation in your grammar.
 
 > [!IMPORTANT]
@@ -202,8 +220,8 @@ When the grammar grows, it may be difficult to verify if your grammar is valid.
 Even by testing your language, you cannot ensure your AST is built as you want.
 To help language designers with this task, Langium provides two different tools.
 
-The first one is directly accessible from the Langium VSCode extension, by typing `>railroad` in the quick access (CTRL + SHIFT + P) and clicking on "Langium: Show Railroad Syntax Diagram". 
-This will open a new panel and display you your grammar in a graphical way. 
+The first one is directly accessible from the Langium VSCode extension, by typing `>railroad` in the quick access (CTRL + SHIFT + P) and clicking on "Langium: Show Railroad Syntax Diagram".
+This will open a new panel and display you your grammar in a graphical way.
 It allows you to verify your grammar at a higher level.
 
 ![railroad](./images/railroad.png)
@@ -215,11 +233,10 @@ However be aware, the playground has sometimes some refresh issues so the progra
 
 ![playground](./images/playground.png)
 
-
 ## Part 3 - Executable modeling
 
-In the previous steps, you have first identified the core concepts of your language and implemented a textual syntax to define instances of those concepts. 
-By now, your programs should be parsable, which means Langium will be able to give you an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST) representing your programs. 
+In the previous steps, you have first identified the core concepts of your language and implemented a textual syntax to define instances of those concepts.
+By now, your programs should be parsable, which means Langium will be able to give you an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST) representing your programs.
 The next step is to try and execute those model instances: this can be done either through interpretation or compilation. You will need to implement these in a `compiler.ts` and `interpreter.ts` file (take a look at the `generator.ts` in the cli folder), which you should put in a new `src/semantics/` folder.
 
 To execute the program, you will use the [visitor design pattern](https://en.wikipedia.org/wiki/Visitor_pattern) to implement a compiler targeting the Arduino language (allowing the execution on a real robot) and an interpreter directly executing the program.
@@ -233,12 +250,12 @@ You can then add a new script command in your `package.json` file to generate th
 The library will use the JSON grammar compiled by Langium from your `.langium` files to automatically generate the visitor interfaces.
 More information about how to plug the visitor into your Langium project can be found on the [Github repository](https://github.com/theogiraudet/langium-visitor).
 
-### Interpretation: 
+### Interpretation:
 
 In this lab, your interpreter will run on a web-based simulator for the robot written in JavaScript.
 You will find in the interpreter folder of this repository, the code of the simulator provided for this part of the lab.
 The Typescript files in the `src/web/simulator` folder represent the elements of the simulation used in your interpreter.
-Especially, you will find the *Robot* class that will be manipulated by your interpreter.
+Especially, you will find the _Robot_ class that will be manipulated by your interpreter.
 In addition, you will find the scene classes representing the environment in which the robot evolves.  
 The scene **REQUIRES** you to add timestamp objects recording the steps of the simulation to replay it on the web page.  
 The TypeScript files in the `src/web/lib` folder are used to display the simulation on the web page and should only be used on the client side.
@@ -258,13 +275,13 @@ Instead of it, you can add this code in the `src/setupClassic.ts` file:
 
 ```ts
 function getDocumentUri(wrapper: MonacoEditorLanguageClientWrapper): string {
-    return wrapper.getModel()!.uri.toString();
+  return wrapper.getModel()!.uri.toString();
 }
 
 // At the end of `executeClassic`
 const client = wrapper.getLanguageClient();
 if (!client) {
-    throw new Error('Unable to obtain language client!');
+  throw new Error("Unable to obtain language client!");
 }
 
 setup(client, getDocumentUri(wrapper)); // setup function of the setup.ts file
@@ -303,7 +320,6 @@ When your generator generates valid Arduino programs, ask your teacher the robot
 
 In the same idea as an interpreter, a compiler can also be implemented using a visitor pattern - but instead of directly simulating the behavior, you will generate the Arduino code representing this behavior.
 
-
 As previously, you can put your visitor in the semantics folder. You can then use your compiler by adding a new command to the Command Line Interface provided by Langium, which will be the entry point from which you call the rest of your functions. Registering new commands can be done in `src/cli/main.ts`; once that is done, you should be able to call `./bin/cli.js compile <source>` (or `node ./bin/cli.js compile <source>`) in your terminal and have it generate Arduino code corresponding to the source program given as argument.
 
 To understand how to call the semantics from the command line, we propose you to first create a 'parseAndValidate' action.
@@ -313,6 +329,7 @@ After that, you will be able to call your visitor in a 'generate' action.
 You will find in the `Compiler` folder an example of code to control the robot.
 The global structure of this program will not require many changes.
 If you want details on the possible actions, go look at the definition of the `demoAction` function used in the example, it uses most of the possible movements.
+
 > You can find it in the MotorWheel lib, in the `Omni4WD.cpp` file
 
 > [!WARNING]
@@ -325,10 +342,11 @@ If you want details on the possible actions, go look at the definition of the `d
 
 **Have you installed the Eclipse plugin?**  
 **Have you added the plugin to your Xtext project?**  
-**Have you modified the `.mwe2` file?**  
+**Have you modified the `.mwe2` file?**
 
 If yes to all the questions, so you have to uninstall the MWE2 SDK and reinstall it.
 For that:
+
 - Go to Help → About Eclipse IDE
 - Click on "Installation Details"
 - Search for "MWE2 Language SDK" and uninstall it
@@ -337,7 +355,7 @@ For that:
 - On "Work with", choose `2024-12 - https://download.eclipse.org/releases/2024-12`
 - Search for MWE SDK and install it
 - Confirm the different steps until Eclipse is restarted
-Then, it should work.
+  Then, it should work.
 
 ### Some grammar rules are not generated in my Xtext grammar
 
