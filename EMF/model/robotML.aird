@@ -5,7 +5,7 @@
     <semanticResources>http://www.eclipse.org/emf/2002/Ecore</semanticResources>
     <ownedViews xmi:type="viewpoint:DView" uid="_n0XLUM6xEfC3qLVYl07CFQ">
       <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']"/>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_n2R24M6xEfC3qLVYl07CFQ" name="robotML" repPath="#_n13AIM6xEfC3qLVYl07CFQ" changeId="1765380160242">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_n2R24M6xEfC3qLVYl07CFQ" name="robotML" repPath="#_n13AIM6xEfC3qLVYl07CFQ" changeId="1765382301654">
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
         <target xmi:type="ecore:EPackage" href="robotML.ecore#/"/>
       </ownedRepresentationDescriptors>
@@ -255,6 +255,10 @@
             <children xmi:type="notation:Node" xmi:id="_v5sV4M7AEfC3qLVYl07CFQ" type="3010" element="_v5m2UM7AEfC3qLVYl07CFQ">
               <styles xmi:type="notation:FontStyle" xmi:id="_v5s88M7AEfC3qLVYl07CFQ" fontName=".AppleSystemUIFont" fontHeight="8"/>
               <layoutConstraint xmi:type="notation:Location" xmi:id="_v5s88c7AEfC3qLVYl07CFQ"/>
+            </children>
+            <children xmi:type="notation:Node" xmi:id="_8YrHQNXgEfCyKawZFoKbUg" type="3010" element="_8YdE0NXgEfCyKawZFoKbUg">
+              <styles xmi:type="notation:FontStyle" xmi:id="_8YrHQdXgEfCyKawZFoKbUg" fontName="Noto Sans CJK JP" fontHeight="8"/>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_8YrHQtXgEfCyKawZFoKbUg"/>
             </children>
             <styles xmi:type="notation:SortingStyle" xmi:id="_LZE4pc7AEfC3qLVYl07CFQ"/>
             <styles xmi:type="notation:FilteringStyle" xmi:id="_LZE4ps7AEfC3qLVYl07CFQ"/>
@@ -1752,7 +1756,7 @@
         <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@style"/>
       </ownedStyle>
       <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']"/>
-      <ownedElements xmi:type="diagram:DNodeListElement" uid="_JCk7UM7AEfC3qLVYl07CFQ" name="Operator : UnaryOp = NOTEQUAL" tooltipText="">
+      <ownedElements xmi:type="diagram:DNodeListElement" uid="_JCk7UM7AEfC3qLVYl07CFQ" name="Operator : UnaryOp = MINUS" tooltipText="">
         <target xmi:type="ecore:EAttribute" href="robotML.ecore#//Unary/Operator"/>
         <semanticElements xmi:type="ecore:EAttribute" href="robotML.ecore#//Unary/Operator"/>
         <ownedStyle xmi:type="diagram:BundledImage" uid="_N4bP8s7AEfC3qLVYl07CFQ" labelAlignment="LEFT">
@@ -1893,6 +1897,14 @@
         <target xmi:type="ecore:EEnumLiteral" href="robotML.ecore#//BinaryOp/MODULO"/>
         <semanticElements xmi:type="ecore:EEnumLiteral" href="robotML.ecore#//BinaryOp/MODULO"/>
         <ownedStyle xmi:type="diagram:BundledImage" uid="_v5ndYM7AEfC3qLVYl07CFQ" labelAlignment="LEFT">
+          <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EEnum']/@subNodeMappings[name='EC%20EEnumLiteral']/@style"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EEnum']/@subNodeMappings[name='EC%20EEnumLiteral']"/>
+      </ownedElements>
+      <ownedElements xmi:type="diagram:DNodeListElement" uid="_8YdE0NXgEfCyKawZFoKbUg" name="NOTEQUAL" tooltipText="">
+        <target xmi:type="ecore:EEnumLiteral" href="robotML.ecore#//BinaryOp/NOTEQUAL"/>
+        <semanticElements xmi:type="ecore:EEnumLiteral" href="robotML.ecore#//BinaryOp/NOTEQUAL"/>
+        <ownedStyle xmi:type="diagram:BundledImage" uid="_8Ydr4NXgEfCyKawZFoKbUg" labelAlignment="LEFT">
           <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EEnum']/@subNodeMappings[name='EC%20EEnumLiteral']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EEnum']/@subNodeMappings[name='EC%20EEnumLiteral']"/>
@@ -2353,17 +2365,17 @@
         <description xmi:type="style:FlatContainerStyleDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EEnum']/@style"/>
       </ownedStyle>
       <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EEnum']"/>
-      <ownedElements xmi:type="diagram:DNodeListElement" uid="_0h1rsNXREfCvwpGcLaxXiQ" name="NOTEQUAL" tooltipText="">
-        <target xmi:type="ecore:EEnumLiteral" href="robotML.ecore#//UnaryOp/NOTEQUAL"/>
-        <semanticElements xmi:type="ecore:EEnumLiteral" href="robotML.ecore#//UnaryOp/NOTEQUAL"/>
+      <ownedElements xmi:type="diagram:DNodeListElement" uid="_0h1rsNXREfCvwpGcLaxXiQ" name="MINUS" tooltipText="">
+        <target xmi:type="ecore:EEnumLiteral" href="robotML.ecore#//UnaryOp/MINUS"/>
+        <semanticElements xmi:type="ecore:EEnumLiteral" href="robotML.ecore#//UnaryOp/MINUS"/>
         <ownedStyle xmi:type="diagram:BundledImage" uid="_0h2SwNXREfCvwpGcLaxXiQ" labelAlignment="LEFT">
           <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EEnum']/@subNodeMappings[name='EC%20EEnumLiteral']/@style"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EEnum']/@subNodeMappings[name='EC%20EEnumLiteral']"/>
       </ownedElements>
-      <ownedElements xmi:type="diagram:DNodeListElement" uid="_1T_hYNXREfCvwpGcLaxXiQ" name="NEGATE" tooltipText="">
-        <target xmi:type="ecore:EEnumLiteral" href="robotML.ecore#//UnaryOp/NEGATE"/>
-        <semanticElements xmi:type="ecore:EEnumLiteral" href="robotML.ecore#//UnaryOp/NEGATE"/>
+      <ownedElements xmi:type="diagram:DNodeListElement" uid="_1T_hYNXREfCvwpGcLaxXiQ" name="NOT" tooltipText="">
+        <target xmi:type="ecore:EEnumLiteral" href="robotML.ecore#//UnaryOp/NOT"/>
+        <semanticElements xmi:type="ecore:EEnumLiteral" href="robotML.ecore#//UnaryOp/NOT"/>
         <ownedStyle xmi:type="diagram:BundledImage" uid="_1T_hYdXREfCvwpGcLaxXiQ" labelAlignment="LEFT">
           <description xmi:type="style:BundledImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EEnum']/@subNodeMappings[name='EC%20EEnumLiteral']/@style"/>
         </ownedStyle>

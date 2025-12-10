@@ -83,6 +83,7 @@
     <eLiterals name="TIMES" value="11" literal="*"/>
     <eLiterals name="DIVIDE" value="12" literal="/"/>
     <eLiterals name="MODULO" value="13" literal="%"/>
+    <eLiterals name="NOTEQUAL" value="13" literal="NOTEQUAL"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VariableRef" eSuperTypes="#//Expression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ref" lowerBound="1" eType="#//VariableDeclaration"/>
@@ -128,7 +129,7 @@
     <eLiterals name="Color" value="1"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="UnaryOp">
-    <eLiterals name="NOTEQUAL"/>
-    <eLiterals name="NEGATE" value="1"/>
+    <eLiterals name="MINUS" literal="MINUS"/>
+    <eLiterals name="NOT" value="1" literal="NOT"/>
   </eClassifiers>
 </ecore:EPackage>
