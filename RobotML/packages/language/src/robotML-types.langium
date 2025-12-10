@@ -1,4 +1,3 @@
-
 type BinaryOp = BinaryOp_AND | BinaryOp_OR | BinaryOp_NOT | BinaryOp_EQUAL | BinaryOp_NOTEQUAL | BinaryOp_LESSOREQUAL | BinaryOp_GREATEROREQUAL | BinaryOp_LESS | BinaryOp_GREATER | BinaryOp_PLUS | BinaryOp_MINUS | BinaryOp_TIMES | BinaryOp_DIVIDE | BinaryOp_MODULO;
 type BinaryOp_AND = '&&';
 type BinaryOp_OR = '||';
@@ -33,14 +32,13 @@ interface Statement {
 
 interface VariableDeclaration extends Statement {
 	^type?: Type
-	name?: string
+	name: string
 }
 
 interface Type {
 }
 
 interface Expression {
-	expresion: VariableDeclaration
 }
 
 interface String0 extends Type {
@@ -65,6 +63,7 @@ interface FunctionCall extends Statement, Expression {
 
 interface FunctionDeclaration extends Statement {
 	returnType: Type
+	name: string
 	block: Block
 	parameters: VariableDeclaration[]
 }

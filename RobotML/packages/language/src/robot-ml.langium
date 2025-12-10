@@ -2,147 +2,169 @@ grammar RobotMl
 import 'Terminals'
 import 'robotML-types'
 
-entry RobotML : ( functions += FunctionDeclaration )*;
+entry RobotML:
+    ( functions+=FunctionDeclaration )*;
 
 Assignation returns Assignation:
-    'Assignation' '{' 'variableDecl' variableDecl=VariableDeclaration  'expression' expression=Expression  '}'  
+    'let' variableDecl=VariableDeclaration '=' expression=Expression
 ;
 
+ExpressionType:
+    (FunctionCall | Binary | Unary | VariableRef | GetSpeed | GetClock | GetSensor);
+
 Expression returns Expression:
-    FunctionCall | Binary | Unary | VariableRef | GetSpeed | GetClock | GetSensor 
+    ('(' Expression ')') | ExpressionType
 ;
 
 Type returns Type:
-    String0 | Boolean | Integer | Float | Void 
+    String0 | Boolean | Integer | Float | Void
 ;
 
 Statement returns Statement:
-    FunctionDeclaration | Block | Assignation | VariableDeclaration | FunctionCall | Condition | setSpeed | SetClock | Rotate | Forward | Backward | Leftward | Rightward 
-;
-
-VariableDeclaration returns VariableDeclaration:
-    {VariableDeclaration} 'VariableDeclaration' name=EString  '{' ('type' ^type=Type  )? '}'  
-;
-
-EString returns string:
-    STRING | ID 
-;
-
-String0 returns String0:
-    {String0} 'String'  
-;
-
-Boolean returns Boolean:
-    {Boolean} 'Boolean'  
-;
-
-Integer returns Integer:
-    {Integer} 'Integer'  
-;
-
-Float returns Float:
-    {Float} 'Float'  
-;
-
-Void returns Void:
-    {Void} 'Void'  
-;
-
-FunctionCall returns FunctionCall:
-    'FunctionCall' '{' 'functiondeclaration' functiondeclaration=[FunctionDeclaration:EString ] ('parameters' '(' parameters+=[Expression:EString ] ("," parameters+=[Expression:EString ] )* ')' )? 'expresion' expresion=VariableDeclaration  '}'  
-;
-
-Binary returns Binary:
-    'Binary' '{' ('Operator' Operator=BinaryOp  )? 'expresion' expresion=VariableDeclaration  'expression' '{' expression+=Expression  ("," expression+=Expression  )* '}' 'operands' '{' operands+=Expression  ("," operands+=Expression  )* '}' '}'  
-;
-
-Unary returns Unary:
-    'Unary' '{' ('Operator' Operator=UnaryOp  )? 'expresion' expresion=VariableDeclaration  'expression' '{' expression+=Expression  ("," expression+=Expression  )* '}' 'operand' operand=Expression  '}'  
-;
-
-VariableRef returns VariableRef:
-    'VariableRef' '{' 'ref' ref=[VariableDeclaration:EString ] 'expresion' expresion=VariableDeclaration  '}'  
-;
-
-GetSpeed returns GetSpeed:
-    'GetSpeed' '{' 'expresion' expresion=VariableDeclaration  '}'  
-;
-
-GetClock returns GetClock:
-    'GetClock' '{' 'expresion' expresion=VariableDeclaration  '}'  
-;
-
-GetSensor returns GetSensor:
-    'GetSensor' '{' ('sensor' sensor=Sensor  )? 'expresion' expresion=VariableDeclaration  '}'  
-;
-
-FunctionDeclaration returns FunctionDeclaration:
-    'FunctionDeclaration' '{' 'returnType' returnType=Type  'block' block=Block  ('parameters' '{' parameters+=VariableDeclaration  ("," parameters+=VariableDeclaration  )* '}' )? '}'  
+    FunctionDeclaration | Block | Assignation | FunctionCall | Condition | SetSpeed | SetClock | Rotate | Forward | Backward | Leftward | Rightward
 ;
 
 Block returns Block:
-    {Block} 'Block' '{' ('statements' '{' statements+=Statement  ("," statements+=Statement  )* '}' )? '}'  
+    {Block} '{' ( statements+=Statement  )* '}'
 ;
 
 Condition returns Condition:
-    'Condition' '{' 'block' '{' block+=Block  ("," block+=Block  )* '}' 'conditions' '{' conditions+=Expression  ("," conditions+=Expression  )* '}' '}'  
+    'if' '(' conditions+=Expression ')' block+=Block ('elif' '(' conditions+=Expression ')' block+=Block )*  ('else'  block+=Block )?
 ;
 
-setSpeed returns setSpeed:
-    'setSpeed' '{' 'expression' expression=Expression  '}'  
+FunctionDeclaration returns FunctionDeclaration:
+    returnType=Type name=ID '(' ( parameters+=VariableDeclaration  ("," parameters+=VariableDeclaration  )* )? ')'  block=Block
+;
+
+FunctionCall returns FunctionCall:
+    functiondeclaration=[FunctionDeclaration:ID] '(' ( parameters+=[Expression:EString] ("," parameters+=[Expression:EString] )*  )? ')'
+;
+
+VariableDeclaration returns VariableDeclaration:
+    name=ID (':' ^type=Type  )?
+;
+
+VariableRef returns VariableRef:
+    ref=[VariableDeclaration:ID]
+;
+
+EString returns string:
+    STRING | ID
+;
+
+String0 returns String0:
+    {String0} 'String'
+;
+
+Boolean returns Boolean:
+    {Boolean} 'Boolean'
+;
+
+Integer returns Integer:
+    {Integer} 'Integer'
+;
+
+Float returns Float:
+    {Float} 'Float'
+;
+
+Void returns Void:
+    {Void} 'Void'
+;
+
+Binary returns Binary:
+    Operator=BinaryOp operands+=Expression  operands+=Expression
+;
+
+Unary returns Unary:
+    Operator=UnaryOp operand=Expression
+;
+
+GetSpeed returns GetSpeed:
+    {GetSpeed} 'GetSpeed()'
+;
+
+GetClock returns GetClock:
+    {GetClock} 'GetClock()'
+;
+
+GetSensor returns GetSensor:
+    'GetSensor' '(' ('sensor' sensor=Sensor  )? ')'
+;
+
+SetSpeed returns setSpeed:
+    'setSpeed(' expression=Expression ')'
 ;
 
 SetClock returns SetClock:
-    'SetClock' '{' 'expression' expression=Expression  '}'  
+    'SetClock(' expression=Expression ')'
 ;
 
 Rotate returns Rotate:
-    'Rotate' '{' 'expression' expression=Expression  '}'  
+    'Rotate(' expression=Expression  ')'
 ;
 
 Forward returns Forward:
-    'Forward' '{' 'expression' expression=Expression  '}'  
+    'Forward(' expression=Expression  ')'
 ;
 
 Backward returns Backward:
-    'Backward' '{' 'expression' expression=Expression  '}'  
+    'Backward(' expression=Expression  ')'
 ;
 
 Leftward returns Leftward:
-    'Leftward' '{' 'expression' expression=Expression  '}'  
+    'Leftward(' expression=Expression  ')'
 ;
 
 Rightward returns Rightward:
-    'Rightward' '{' 'expression' expression=Expression  '}'  
+    'Rightward(' expression=Expression  ')'
 ;
 
 BinaryOp returns BinaryOp:
     BinaryOp_AND | BinaryOp_OR | BinaryOp_NOT | BinaryOp_NOTEQUAL | BinaryOp_EQUAL | BinaryOp_LESSOREQUAL | BinaryOp_GREATEROREQUAL | BinaryOp_LESS | BinaryOp_GREATER | BinaryOp_PLUS | BinaryOp_MINUS | BinaryOp_TIMES | BinaryOp_DIVIDE | BinaryOp_MODULO
 ;
-BinaryOp_AND returns BinaryOp_AND: '&&' ;
-BinaryOp_OR returns BinaryOp_OR: '||' ;
-BinaryOp_NOT returns BinaryOp_NOT: '!' ;
-BinaryOp_EQUAL returns BinaryOp_EQUAL: '==' ;
-BinaryOp_NOTEQUAL returns BinaryOp_NOTEQUAL: '!=' ;
-BinaryOp_LESSOREQUAL returns BinaryOp_LESSOREQUAL: '<=' ;
-BinaryOp_GREATEROREQUAL returns BinaryOp_GREATEROREQUAL: '>=' ;
-BinaryOp_LESS returns BinaryOp_LESS: '<' ;
-BinaryOp_GREATER returns BinaryOp_GREATER: '>' ;
-BinaryOp_PLUS returns BinaryOp_PLUS: '+' ;
-BinaryOp_MINUS returns BinaryOp_MINUS: '-' ;
-BinaryOp_TIMES returns BinaryOp_TIMES: '*' ;
-BinaryOp_DIVIDE returns BinaryOp_DIVIDE: '/' ;
-BinaryOp_MODULO returns BinaryOp_MODULO: '%' ;
+BinaryOp_AND returns BinaryOp_AND:
+    '&&';
+BinaryOp_OR returns BinaryOp_OR:
+    '||';
+BinaryOp_NOT returns BinaryOp_NOT:
+    '!';
+BinaryOp_EQUAL returns BinaryOp_EQUAL:
+    '==';
+BinaryOp_NOTEQUAL returns BinaryOp_NOTEQUAL:
+    '!=';
+BinaryOp_LESSOREQUAL returns BinaryOp_LESSOREQUAL:
+    '<=';
+BinaryOp_GREATEROREQUAL returns BinaryOp_GREATEROREQUAL:
+    '>=';
+BinaryOp_LESS returns BinaryOp_LESS:
+    '<';
+BinaryOp_GREATER returns BinaryOp_GREATER:
+    '>';
+BinaryOp_PLUS returns BinaryOp_PLUS:
+    '+';
+BinaryOp_MINUS returns BinaryOp_MINUS:
+    '-';
+BinaryOp_TIMES returns BinaryOp_TIMES:
+    '*';
+BinaryOp_DIVIDE returns BinaryOp_DIVIDE:
+    '/';
+BinaryOp_MODULO returns BinaryOp_MODULO:
+    '%';
 
 UnaryOp returns UnaryOp:
     UnaryOp_NOT | UnaryOp_MINUS
 ;
-UnaryOp_NOT returns UnaryOp_NOT: '!' ;
-UnaryOp_MINUS returns UnaryOp_MINUS: '-' ;
+UnaryOp_NOT returns UnaryOp_NOT:
+    '!';
+UnaryOp_MINUS returns UnaryOp_MINUS:
+    '-';
 
 Sensor returns Sensor:
     Sensor_Distance | Sensor_Color
 ;
-Sensor_Distance returns Sensor_Distance: 'Distance' ;
-Sensor_Color returns Sensor_Color: 'Color' ;
+Sensor_Distance returns Sensor_Distance:
+    'Distance';
+Sensor_Color returns Sensor_Color:
+    'Color';
 
