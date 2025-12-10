@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: org.xtext.robotml
+Bundle-ManifestVersion: 2
+Bundle-Name: org.xtext.robotml
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: org.xtext.robotml; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: RobotML,
+ org.eclipse.xtext,
+ org.eclipse.xtext.xbase,
+ org.eclipse.equinox.common;bundle-version="3.19.0",
+ io.typefox.xtext2langium;bundle-version="0.4.0",
+ org.eclipse.xtext.xbase.lib;bundle-version="2.41.0",
+ org.antlr.runtime;bundle-version="[3.2.0,3.2.1)"
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Export-Package: org.xtext.robotml,
+ org.xtext.robotml.serializer,
+ org.xtext.robotml.validation,
+ org.xtext.robotml.parser.antlr,
+ org.xtext.robotml.parser.antlr.internal,
+ org.xtext.robotml.formatting2,
+ org.xtext.robotml.services,
+ org.xtext.robotml.scoping,
+ org.xtext.robotml.generator
+Import-Package: org.apache.log4j
