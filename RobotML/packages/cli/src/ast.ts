@@ -5,13 +5,13 @@ import type {
     RobotML as RobotMLT,
     Block as BlockT,
     Statement as StatementT,
-    Assignation as AssignationT,
     Backward as BackwardT,
     Condition as ConditionT,
+    AssignationDec as AssignationDecT,
     Forward as ForwardT,
     FunctionCall as FunctionCallT,
     Leftward as LeftwardT,
-    Movement as MouvementT,
+    Movement as MovementT,
     Rightward as RightwardT,
     Rotate as RotateT,
     SetClock as SetClockT,
@@ -76,10 +76,10 @@ class Block implements Visitor, Statement {
     }
 }
 
-class Assignation implements Visitor, Statement {
+class AssignationDec implements Visitor, Statement {
     decl: VariableDeclaration
     expression : Expression
-    constructor(el: AssignationT) {
+    constructor(el: AssignationDecT) {
         this.expression = ExpressionVisit(el.expression)
         this.decl = new VariableDeclaration(el.variableDecl)
     }
@@ -117,8 +117,8 @@ class Leftward implements Visitor, Statement {
         throw `Not Implemented ${el.$type}`
     }
 }
-class Mouvement implements Visitor, Statement {
-    constructor(el: MouvementT) {
+class Movement implements Visitor, Statement {
+    constructor(el: MovementT) {
         throw `Not Implemented ${el.$type}`
     }
 }
@@ -223,7 +223,7 @@ function ExpressionVisit(el: ExpressionT): Expression {
 function StatementVisit(el: StatementT): Statement {
     switch (el.$type) {
         case "Assignation": {
-            return new Assignation(el as AssignationT)
+            return new AssignationDec(el as AssignationDecT)
         }
         case "Backward": {
             return new Backward(el as BackwardT)
@@ -246,8 +246,8 @@ function StatementVisit(el: StatementT): Statement {
         case "Leftward": {
             return new Leftward(el as LeftwardT)
         }
-        case "Mouvement": {
-            return new Mouvement(el as MouvementT)
+        case "Movement": {
+            return new Movement(el as MovementT)
         }
         case "Rightward": {
             return new Rightward(el as RightwardT)

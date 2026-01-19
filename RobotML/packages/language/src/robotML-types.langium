@@ -22,8 +22,13 @@ type Sensor = Sensor_Distance | Sensor_Color;
 type Sensor_Distance = 'Distance';
 type Sensor_Color = 'Color';
 
-interface Assignation extends Statement {
+interface AssignationDec extends Statement {
 	variableDecl: VariableDeclaration
+	expression: Expression
+}
+
+interface Assignation extends Statement {
+	variableRef: VariableRef
 	expression: Expression
 }
 
