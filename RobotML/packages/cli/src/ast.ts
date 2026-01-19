@@ -11,11 +11,11 @@ import type {
     Forward as ForwardT,
     FunctionCall as FunctionCallT,
     Leftward as LeftwardT,
-    Mouvement as MouvementT,
+    Movement as MouvementT,
     Rightward as RightwardT,
     Rotate as RotateT,
     SetClock as SetClockT,
-    setSpeed as SetSpeedT,
+    SetSpeed as SetSpeedT,
     Expression as ExpressionT,
 
     Binary as BinaryT,
@@ -214,6 +214,7 @@ function ExpressionVisit(el: ExpressionT): Expression {
             return new VariableRef(el as VariableRefT)
         }
         default: {
+            console.log(el)
             throw `Not defined ${el.$type}`
         }
     }
@@ -273,28 +274,38 @@ const services = createRobotMlServices(EmptyFileSystem);
 const parse = parseHelper(services.RobotMl);
 
 const document = await parse(`
+Void ddd(fezfe: Void) {
+
+}
+
 Void main(entree : Float) {
 
     let a : Integer = GetSpeed()
     let b : Integer = GetSpeed()
 
+    let g = ddd()
+
+    let h = 1 + a
+
     let c = main()
 
     if ( main() ) {
-        let e : Void = GetSpeed()
+        let e : Void = 10
     } 
-    elif ( (== (== a b) c) ) {
+    elif ( a == b ) {
         let e : Void = GetSpeed()
     }
     elif ( (((((((((b))))))))) ) {
         let e : Void = GetSpeed()
     }
-    elif ( == main() main() ) {
+    elif ( main() == main() ) {
         let e : Void = GetSpeed()
     }
     else {
 
     }
+
+
 }
 `, { validation: true }); //enable validation, otherwise the validator will not be called!
 
