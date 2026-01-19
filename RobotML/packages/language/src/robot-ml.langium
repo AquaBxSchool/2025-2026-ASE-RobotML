@@ -5,16 +5,81 @@ import 'robotML-types'
 entry RobotML:
     ( functions+=FunctionDeclaration )*;
 
+
 Assignation returns Assignation:
     'let' variableDecl=VariableDeclaration '=' expression=Expression
 ;
 
 ExpressionType:
-    (FunctionCall | Binary | Unary | VariableRef | GetSpeed | GetClock | GetSensor);
+    (FunctionCall | VariableRef | GetSpeed | GetClock | GetSensor);
 
 Expression returns Expression:
-    ('(' Expression ')') | ExpressionType
+    PrimaryExpression | Binary | '(' Expression ')'
 ;
+
+// // Level 1: Logical OR
+// LogicalOrExpression returns Binary:
+//     operand+=LogicalAndExpression | operand+=LogicalOrExpression Operator=BinaryOp_OR operand+=LogicalAndExpression
+// ;
+
+// // Level 2: Logical AND
+// LogicalAndExpression returns Binary:
+//     operand+=EqualityExpression | operand+=LogicalAndExpression Operator=BinaryOp_AND operand+=EqualityExpression
+// ;
+
+// // Level 3: Equality
+// EqualityExpression returns Binary:
+//     operand+=RelationalExpression | 
+//     operand+=EqualityExpression Operator=BinaryOp_EQUAL operand+=RelationalExpression |
+//     operand+=EqualityExpression Operator=BinaryOp_NOTEQUAL operand+=RelationalExpression 
+// ;
+
+// // Level 4: Relational
+// RelationalExpression returns Binary:
+//     operand+=AdditiveExpression | 
+//     operand+=RelationalExpression Operator=BinaryOp_LESS operand+=AdditiveExpression |
+//     operand+=RelationalExpression Operator=BinaryOp_LESSOREQUAL operand+=AdditiveExpression |
+//     operand+=RelationalExpression Operator=BinaryOp_GREATER operand+=AdditiveExpression |
+//     operand+=RelationalExpression Operator=BinaryOp_GREATEROREQUAL operand+=AdditiveExpression 
+// ;
+
+// // Level 5: Additive
+// AdditiveExpression returns Binary:
+//     operand+=MultiplicativeExpression | 
+//     operand+=AdditiveExpression Operator=BinaryOp_PLUS operand+=MultiplicativeExpression |
+//     operand+=AdditiveExpression Operator=BinaryOp_MINUS operand+=MultiplicativeExpression
+// ;
+
+// // Level 6: Multiplicative
+// MultiplicativeExpression returns Binary:
+//     operand+=UnaryExpression | 
+//     operand+=MultiplicativeExpression Operator=BinaryOp_DIVIDE operand+=UnaryExpression |
+//     operand+=MultiplicativeExpression Operator=BinaryOp_TIMES operand+=UnaryExpression
+// ;
+
+// // Level 7: Cast (Left-associative usually)
+// // CastExpression returns Expression:
+// //     UnaryExpression | 
+// //     CastExpression 'as' Type
+// // ;
+
+// // Level 8: Unary (Right-associative is OK in Langium!)
+// UnaryExpression returns Unary:
+//     operand=PostfixExpression |
+//     Operator=UnaryOp_MINUS operand=UnaryExpression |
+//     Operator=UnaryOp_NOT operand=UnaryExpression;
+
+// // Level 9: Postfix (Function calls, Array access)
+// PostfixExpression returns Expression:
+//     PrimaryExpression |
+//     // PostfixExpression '(' argument_expression_list ')'
+// ;
+
+// // Level 10: Primary (The bottom of the chain)
+PrimaryExpression returns Expression:
+    VariableRef | INT | FunctionCall | GetSpeed | GetClock | GetSensor
+;
+
 
 Type returns Type:
     String0 | Boolean | Integer | Float | Void
@@ -73,7 +138,7 @@ Void returns Void:
 ;
 
 Binary returns Binary:
-    Operator=BinaryOp operands+=Expression  operands+=Expression
+    operands+=PrimaryExpression Operator=BinaryOp operands+=Expression
 ;
 
 Unary returns Unary:
@@ -92,7 +157,7 @@ GetSensor returns GetSensor:
     'GetSensor' '(' ('sensor' sensor=Sensor  )? ')'
 ;
 
-SetSpeed returns setSpeed:
+SetSpeed returns SetSpeed:
     'setSpeed(' expression=Expression ')'
 ;
 

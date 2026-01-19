@@ -27,6 +27,9 @@ interface Assignation extends Statement {
 	expression: Expression
 }
 
+interface Constant {
+}
+
 interface Statement {
 }
 
@@ -105,7 +108,7 @@ interface Condition extends Statement {
 	conditions: Expression[]
 }
 
-interface setSpeed extends Statement {
+interface SetSpeed extends Statement {
 	expression: Expression
 }
 
@@ -117,19 +120,19 @@ interface Rotate extends Statement {
 	expression: Expression
 }
 
-interface Forward extends Mouvement {
+interface Forward extends Movement {
 }
 
-interface Mouvement extends Statement {
+interface Movement extends Statement {
 	expression: Expression
 }
 
-interface Backward extends Mouvement {
+interface Backward extends Movement {
 }
 
-interface Leftward extends Mouvement {
+interface Leftward extends Movement {
 }
 
-interface Rightward extends Mouvement {
+interface Rightward extends Movement {
 }
 
