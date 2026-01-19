@@ -18,6 +18,7 @@
     "scripts": {
         "clean": "shx rm -fr *.tsbuildinfo out",
         "build": "echo 'No build step'",
+        "test": "bun src/ast.ts",
         "build:clean": "npm run clean && npm run build"
     },
     "dependencies": {
