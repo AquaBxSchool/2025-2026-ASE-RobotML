@@ -1,76 +1,166 @@
 grammar RobotMl
-import 'Terminals'
-import 'robotML-types'
 
 entry RobotML:
     ( functions+=FunctionDeclaration )*;
 
 
-AssignationDec returns AssignationDec:
-    'let' variableDecl=VariableDeclaration '=' expression=Expression
-;
-
-// Assignation returns Assignation:
-//     variableRef=VariableRef '=' expression=Expression
-// ;
 
 
 
-Type returns Type:
-    String0 | Boolean | Integer | Float | Void
-;
+
+
+
+
+
+
+type BinaryOp = '&&'  | '||'  | '!'  | '=='  | '!='  | '<='  | '>='  | '<'  | '>'  | '+'  | '-'  | '*'  | '/'  | '%';
+type UnaryOp = '!' | '-';
+
+
+// Statements
+
+interface Statement {
+}
 
 Statement returns Statement:
-    FunctionDeclaration | Block | AssignationDec | FunctionCall | Condition | SetSpeed | SetClock | Rotate | Forward | Backward | Leftward | Rightward
+    FunctionDeclaration | Block | VariableDec | Assignation | FunctionCall | Condition | SetSpeed | SetClock | Rotate | Forward | Backward | Leftward | Rightward
 ;
 
-Block returns Block:
-    {Block} '{' ( statements+=Statement  )* '}'
+interface FnReturn {
+	expression: Expression
+}
+
+FnReturn returns FnReturn:
+    'return' expression=Expression
 ;
+
+interface Block extends Statement {
+	statements: Statement[]
+}
+
+Block returns Block:
+    {Block} '{' ( statements+=Statement  )*  (FnReturn)? '}' 
+;
+
+// Control Flow
+
+interface Condition extends Statement {
+	block: Block[]
+	conditions: Expression[]
+}
 
 Condition returns Condition:
     'if' '(' conditions+=Expression ')' block+=Block ('elif' '(' conditions+=Expression ')' block+=Block )*  ('else'  block+=Block )?
 ;
 
-FunctionDeclaration returns FunctionDeclaration:
-    returnType=Type name=ID '(' ( parameters+=VariableDeclaration  ("," parameters+=VariableDeclaration  )* )? ')'  block=Block
+// Builtins Statements
+
+interface SetSpeed extends Statement {
+	expression: Expression
+}
+
+SetSpeed returns SetSpeed:
+    'setSpeed(' expression=Expression ')'
 ;
 
-FunctionCall returns FunctionCall:
-    functiondeclaration=[FunctionDeclaration:ID] '(' ( parameters+=[Expression:EString] ("," parameters+=[Expression:EString] )*  )? ')'
+interface SetClock extends Statement {
+	expression: Expression
+}
+
+SetClock returns SetClock:
+    'SetClock(' expression=Expression ')'
 ;
 
-VariableDeclaration returns VariableDeclaration:
+interface Rotate extends Statement {
+	expression: Expression
+}
+
+Rotate returns Rotate:
+    'Rotate(' expression=Expression  ')'
+;
+// Movement Statement
+
+interface Movement extends Statement {
+	expression: Expression
+}
+
+interface Forward extends Movement {}
+Forward returns Forward:
+    'Forward(' expression=Expression  ')'
+;
+
+interface Backward extends Movement {}
+Backward returns Backward:
+    'Backward(' expression=Expression  ')'
+;
+
+interface Leftward extends Movement {}
+Leftward returns Leftward:
+    'Leftward(' expression=Expression  ')'
+;
+
+interface Rightward extends Movement {}
+Rightward returns Rightward:
+    'Rightward(' expression=Expression  ')'
+;
+
+
+// Declaration Statemens
+
+type Type = 'String' | 'Boolean' | 'Integer' | 'Float' | 'Void';
+Type returns Type: 'String' | 'Boolean' | 'Integer' | 'Float' | 'Void';
+
+interface VariableDec extends Statement {
+	name: string
+	^type?: Type
+	expression?: Expression
+}
+
+VariableDec returns VariableDec:
+    'let' name=ID (':' ^type=Type  )? ('=' expression=Expression)?
+;
+
+interface ArgumentDec {
+	name: string
+	^type?: Type
+}
+
+ArgumentDec returns ArgumentDec:
     name=ID (':' ^type=Type  )?
+; 
+
+
+interface FunctionDeclaration extends Statement {
+	returnType: Type
+	name: string
+	block: Block
+	parameters: ArgumentDec[]
+}
+
+FunctionDeclaration returns FunctionDeclaration:
+    returnType=Type name=ID '(' ( parameters+=ArgumentDec  ("," parameters+=ArgumentDec  )* )? ')'  block=Block
 ;
 
-VariableRef returns VariableRef:
-    ref=[VariableDeclaration:ID]
+// Asignation
+
+interface Assignation extends Statement {
+	variableRef: VariableRef
+	expression: Expression
+}
+
+Assignation returns Assignation:
+    variableRef=VariableRef '=' expression=Expression
 ;
 
-EString returns string:
-    STRING | ID
-;
+// Expression
 
-String0 returns String0:
-    {String0} 'String'
-;
+interface Expression {
+}
 
-Boolean returns Boolean:
-    {Boolean} 'Boolean'
-;
+Expression returns Expression:
+BinaryExpr;
 
-Integer returns Integer:
-    {Integer} 'Integer'
-;
-
-Float returns Float:
-    {Float} 'Float'
-;
-
-Void returns Void:
-    {Void} 'Void'
-;
+Expr: '(' expr=Expression ')' | '-' value=Expr | value=PrimaryExpression;
 
 infix BinaryExpr on Expr:
     right assoc '^'
@@ -81,100 +171,81 @@ infix BinaryExpr on Expr:
     > "||"
     ;
 
-Expression returns Expression:
-BinaryExpr;
+type PrimaryExpression = VariableRef | FunctionCall | Builtins | string;
 
-PrimaryExpression returns Expression:
-    VariableRef | INT | FunctionCall | GetSpeed | GetClock | GetSensor
+PrimaryExpression returns PrimaryExpression:
+    VariableRef  | FunctionCall | Builtins | INT | STRING | FLOAT
 ;
 
-Expr: '(' expr=Expression ')' | '-' value=Expr | value=PrimaryExpression;
+type Declaration = VariableDec | ArgumentDec;
+
+interface VariableRef extends Expression {
+	ref: @Declaration
+}
+
+VariableRef returns VariableRef:
+    ref=[Declaration:ID]
+;
+
+interface FunctionCall extends Statement, Expression {
+	functiondeclaration: @FunctionDeclaration
+	parameters: @Expression[]
+}
+
+FunctionCall returns FunctionCall:
+    functiondeclaration=[FunctionDeclaration:ID] '(' ( parameters+=[Expression:EString] ("," parameters+=[Expression:EString] )*  )? ')'
+;
+
+// Builtins
+
+type Builtins = GetSpeed | GetClock | GetSensor
+
+Builtins returns Builtins:
+    GetClock | GetSpeed | GetSensor
+;
+
+interface GetSpeed extends Expression {
+}
 
 GetSpeed returns GetSpeed:
     {GetSpeed} 'GetSpeed()'
 ;
 
+interface GetClock extends Expression {
+}
+
 GetClock returns GetClock:
     {GetClock} 'GetClock()'
 ;
+
+interface GetSensor extends Expression {
+	sensor?: Sensor
+}
 
 GetSensor returns GetSensor:
     'GetSensor' '(' ('sensor' sensor=Sensor  )? ')'
 ;
 
-SetSpeed returns SetSpeed:
-    'setSpeed(' expression=Expression ')'
-;
-
-SetClock returns SetClock:
-    'SetClock(' expression=Expression ')'
-;
-
-Rotate returns Rotate:
-    'Rotate(' expression=Expression  ')'
-;
-
-Forward returns Forward:
-    'Forward(' expression=Expression  ')'
-;
-
-Backward returns Backward:
-    'Backward(' expression=Expression  ')'
-;
-
-Leftward returns Leftward:
-    'Leftward(' expression=Expression  ')'
-;
-
-Rightward returns Rightward:
-    'Rightward(' expression=Expression  ')'
-;
-
-BinaryOp returns BinaryOp:
-    BinaryOp_AND | BinaryOp_OR | BinaryOp_NOT | BinaryOp_NOTEQUAL | BinaryOp_EQUAL | BinaryOp_LESSOREQUAL | BinaryOp_GREATEROREQUAL | BinaryOp_LESS | BinaryOp_GREATER | BinaryOp_PLUS | BinaryOp_MINUS | BinaryOp_TIMES | BinaryOp_DIVIDE | BinaryOp_MODULO
-;
-BinaryOp_AND returns BinaryOp_AND:
-    '&&';
-BinaryOp_OR returns BinaryOp_OR:
-    '||';
-BinaryOp_NOT returns BinaryOp_NOT:
-    '!';
-BinaryOp_EQUAL returns BinaryOp_EQUAL:
-    '==';
-BinaryOp_NOTEQUAL returns BinaryOp_NOTEQUAL:
-    '!=';
-BinaryOp_LESSOREQUAL returns BinaryOp_LESSOREQUAL:
-    '<=';
-BinaryOp_GREATEROREQUAL returns BinaryOp_GREATEROREQUAL:
-    '>=';
-BinaryOp_LESS returns BinaryOp_LESS:
-    '<';
-BinaryOp_GREATER returns BinaryOp_GREATER:
-    '>';
-BinaryOp_PLUS returns BinaryOp_PLUS:
-    '+';
-BinaryOp_MINUS returns BinaryOp_MINUS:
-    '-';
-BinaryOp_TIMES returns BinaryOp_TIMES:
-    '*';
-BinaryOp_DIVIDE returns BinaryOp_DIVIDE:
-    '/';
-BinaryOp_MODULO returns BinaryOp_MODULO:
-    '%';
-
-UnaryOp returns UnaryOp:
-    UnaryOp_NOT | UnaryOp_MINUS
-;
-UnaryOp_NOT returns UnaryOp_NOT:
-    '!';
-UnaryOp_MINUS returns UnaryOp_MINUS:
-    '-';
+type Sensor = 'Distance' | 'Color';
 
 Sensor returns Sensor:
-    Sensor_Distance | Sensor_Color
+    'Distance' | 'Color'
 ;
-Sensor_Distance returns Sensor_Distance:
-    'Distance';
-Sensor_Color returns Sensor_Color:
-    'Color';
 
+
+
+
+
+
+
+EString returns string:
+    STRING | ID
+;
+terminal FLOAT returns number: /[0-9]+\.[0-9]+([eE][+-]?[0-9]+)?/;
+terminal ID returns string:'^'? ('a' ..'z' | 'A' ..'Z' | '_' )('a' ..'z' | 'A' ..'Z' | '_' | '0' ..'9' )* ;
+terminal INT returns number:'0' ..'9' +;
+terminal STRING returns string:'"' ('\\' . |  !('\\' | '"' ))*'"'  | "'" ('\\' . |  !('\\' | "'" ))*"'"  ;
+hidden terminal ML_COMMENT returns string:'/*'  -> '*/'  ;
+hidden terminal SL_COMMENT returns string:'//'  !('\n' | '\r' )('\r'? '\n' )?  ;
+hidden terminal WS returns string:(' ' | '\t' | '\r' | '\n' )+;
+terminal ANY_OTHER returns string:.;

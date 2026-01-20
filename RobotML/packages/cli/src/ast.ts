@@ -1,13 +1,11 @@
 import { createRobotMlServices } from "robot-ml-language";
 import type {
-    VariableDeclaration as VariableDeclarationT,
     FunctionDeclaration as FunctionDeclarationT,
     RobotML as RobotMLT,
     Block as BlockT,
     Statement as StatementT,
     Backward as BackwardT,
     Condition as ConditionT,
-    AssignationDec as AssignationDecT,
     Forward as ForwardT,
     FunctionCall as FunctionCallT,
     Leftward as LeftwardT,
@@ -17,15 +15,11 @@ import type {
     SetClock as SetClockT,
     SetSpeed as SetSpeedT,
     Expression as ExpressionT,
-    Binary as BinaryT,
-    Operation as OperationT,
+    ArgumentDec as ArgumentDecT,
     GetClock as GetClockT,
     GetSensor as GetSensorT,
     GetSpeed as GetSpeedT,
-    Unary as UnaryT,
     VariableRef as VariableRefT,
-    BinaryOp,
-
 } from "robot-ml-language";
 import { EmptyFileSystem, Reference } from "langium";
 import { parseHelper } from "langium/test";
@@ -46,24 +40,18 @@ class FunctionDeclaration implements Visitor, Statement {
     name: string
     block
     returnType: string
-    parameters: VariableDeclaration[]
+    parameters: ArgumentDec[]
 
     constructor(el: FunctionDeclarationT) {
         this.name = el.name
         this.block = new Block(el.block)
-        this.returnType = el.returnType.$type
-        this.parameters = el.parameters.map(el => new VariableDeclaration(el))
+        this.returnType = el.returnType
+        this.parameters = el.parameters.map(el => new ArgumentDec(el))
     }
 }
 
-class VariableDeclaration implements Visitor, Statement {
-
-    name: string
-    type?: string
-
-    constructor(el: VariableDeclarationT) {
-        this.name = el.name
-        this.type = el.type?.$type
+class ArgumentDec implements Visitor, Statement {
+    constructor(el: ArgumentDecT) {
     }
 }
 
@@ -75,14 +63,6 @@ class Block implements Visitor, Statement {
     }
 }
 
-class AssignationDec implements Visitor, Statement {
-    decl: VariableDeclaration
-    expression : Expression
-    constructor(el: AssignationDecT) {
-        this.expression = ExpressionVisit(el.expression)
-        this.decl = new VariableDeclaration(el.variableDecl)
-    }
-}
 class Backward implements Visitor, Statement {
     constructor(el: BackwardT) {
         throw `Not Implemented ${el.$type}`
@@ -142,16 +122,6 @@ class SetSpeed implements Visitor, Statement {
     }
 }
 
-class Binary implements Visitor, Expression {
-    operator ?: BinaryOp
-    expression : Expression[]
-    operands : Expression[]
-    constructor(el: BinaryT) {
-        this.expression = el.expression.map(ExpressionVisit)
-        this.operands = el.operands.map(ExpressionVisit)
-        this.operator = el.Operator
-    }
-}
 class GetClock implements Visitor, Expression {
     constructor(el: GetClockT) {
         throw `Not Implemented ${el.$type}`
@@ -164,16 +134,6 @@ class GetSensor implements Visitor, Expression {
 }
 class GetSpeed implements Visitor, Expression {
     constructor(el: GetSpeedT) {}
-}
-class Operation implements Visitor, Expression {
-    constructor(el: OperationT) {
-        throw `Not Implemented ${el.$type}`
-    }
-}
-class Unary implements Visitor, Expression {
-    constructor(el: UnaryT) {
-        throw `Not Implemented ${el.$type}`
-    }
 }
 class VariableRef implements Visitor, Expression {
     ref : String
@@ -188,9 +148,6 @@ function ReferenceParse(el:Reference) {
 
 function ExpressionVisit(el: ExpressionT): Expression {
     switch (el.$type) {
-        case "Binary": {
-            return new Binary(el as BinaryT)
-        }
         case "FunctionCall": {
             return new FunctionCall(el as FunctionCallT)
         }
@@ -203,12 +160,6 @@ function ExpressionVisit(el: ExpressionT): Expression {
         case "GetSpeed": {
             return new GetSpeed(el as GetSpeedT)
         }
-        case "Operation": {
-            return new Operation(el as OperationT)
-        }
-        case "Unary": {
-            return new Unary(el as UnaryT)
-        }
         case "VariableRef": {
             return new VariableRef(el as VariableRefT)
         }
@@ -220,9 +171,6 @@ function ExpressionVisit(el: ExpressionT): Expression {
 
 function StatementVisit(el: StatementT): Statement {
     switch (el.$type) {
-        case "AssignationDec": {
-            return new AssignationDec(el as AssignationDecT)
-        }
         case "Backward": {
             return new Backward(el as BackwardT)
         }
@@ -255,9 +203,6 @@ function StatementVisit(el: StatementT): Statement {
         }
         case "SetClock": {
             return new SetClock(el as SetClockT)
-        }
-        case "VariableDeclaration": {
-            return new VariableDeclaration(el as VariableDeclarationT)
         }
         case "SetSpeed": {
             return new SetSpeed(el as SetSpeedT)

@@ -2,7 +2,7 @@ import { type Module, inject } from 'langium';
 import { createDefaultModule, createDefaultSharedModule, type DefaultSharedModuleContext, type LangiumServices, type LangiumSharedServices, type PartialLangiumServices } from 'langium/lsp';
 import { RobotMlGeneratedModule, RobotMlGeneratedSharedModule } from './generated/module.js';
 import { RobotMlValidator, registerValidationChecks } from './robot-ml-validator.js';
-import { MyLanguageScopeProvider } from './robot-ml-scope.js';
+// import { MyLanguageScopeProvider } from './robot-ml-scope.js';
 
 /**
  * Declaration of custom services - add your own service classes here.
@@ -29,7 +29,7 @@ export const RobotMlModule: Module<RobotMlServices, PartialLangiumServices & Rob
         RobotMlValidator: () => new RobotMlValidator()
     },
     references: {
-        ScopeProvider: (services) => new MyLanguageScopeProvider(services)
+        // ScopeProvider: (services) => new MyLanguageScopeProvider(services)
     }
 };
 
