@@ -3,19 +3,8 @@ grammar RobotMl
 entry RobotML:
     ( functions+=FunctionDeclaration )*;
 
-
-
-
-
-
-
-
-
-
-
 type BinaryOp = '&&'  | '||'  | '!'  | '=='  | '!='  | '<='  | '>='  | '<'  | '>'  | '+'  | '-'  | '*'  | '/'  | '%';
 type UnaryOp = '!' | '-';
-
 
 // Statements
 
@@ -23,7 +12,7 @@ interface Statement {
 }
 
 Statement returns Statement:
-    FunctionDeclaration | Block | VariableDec | Assignation | FunctionCall | Condition | SetSpeed | SetClock | Rotate | Forward | Backward | Leftward | Rightward
+    FunctionDeclaration | Block | VariableDec | Loop | Assignation | FunctionCall | Condition | SetSpeed | SetClock | Rotate | Forward | Backward | Leftward | Rightward
 ;
 
 interface FnReturn {
@@ -51,6 +40,15 @@ interface Condition extends Statement {
 
 Condition returns Condition:
     'if' '(' conditions+=Expression ')' block+=Block ('elif' '(' conditions+=Expression ')' block+=Block )*  ('else'  block+=Block )?
+;
+
+interface Loop extends Statement {
+	conditions: Expression
+	block: Block[]
+}
+
+Loop returns Loop:
+    'while' '(' conditions=Expression ')' block+=Block
 ;
 
 // Builtins Statements
@@ -129,7 +127,6 @@ ArgumentDec returns ArgumentDec:
     name=ID (':' ^type=Type  )?
 ; 
 
-
 interface FunctionDeclaration extends Statement {
 	returnType: Type
 	name: string
@@ -174,7 +171,7 @@ infix BinaryExpr on Expr:
 type PrimaryExpression = VariableRef | FunctionCall | Builtins | string;
 
 PrimaryExpression returns PrimaryExpression:
-    VariableRef  | FunctionCall | Builtins | INT | STRING | FLOAT
+    VariableRef  | FunctionCall | Builtins | INT | STRING | FLOAT 
 ;
 
 type Declaration = VariableDec | ArgumentDec;
@@ -189,11 +186,11 @@ VariableRef returns VariableRef:
 
 interface FunctionCall extends Statement, Expression {
 	functiondeclaration: @FunctionDeclaration
-	parameters: @Expression[]
+	parameters: Expression[]
 }
 
 FunctionCall returns FunctionCall:
-    functiondeclaration=[FunctionDeclaration:ID] '(' ( parameters+=[Expression:EString] ("," parameters+=[Expression:EString] )*  )? ')'
+    functiondeclaration=[FunctionDeclaration:ID] '(' ( parameters+=Expression ("," parameters+=Expression )*  )? ')'
 ;
 
 // Builtins
@@ -223,7 +220,7 @@ interface GetSensor extends Expression {
 }
 
 GetSensor returns GetSensor:
-    'GetSensor' '(' ('sensor' sensor=Sensor  )? ')'
+    'GetSensor' '(' sensor=Sensor ')'
 ;
 
 type Sensor = 'Distance' | 'Color';
@@ -231,12 +228,6 @@ type Sensor = 'Distance' | 'Color';
 Sensor returns Sensor:
     'Distance' | 'Color'
 ;
-
-
-
-
-
-
 
 EString returns string:
     STRING | ID

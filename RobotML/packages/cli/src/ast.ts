@@ -84,11 +84,11 @@ class Forward implements Visitor, Statement {
     }
 }
 class FunctionCall implements Visitor, Statement, Expression {
-    parameters : string[]
+    parameters : Expression[]
     decl : string
     constructor(el: FunctionCallT) {
         this.decl = ReferenceParse(el.functiondeclaration)
-        this.parameters = el.parameters.map(ReferenceParse)
+        this.parameters = el.parameters
     }
 }
 class Leftward implements Visitor, Statement {
