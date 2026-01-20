@@ -17,7 +17,6 @@ import type {
     SetClock as SetClockT,
     SetSpeed as SetSpeedT,
     Expression as ExpressionT,
-
     Binary as BinaryT,
     Operation as OperationT,
     GetClock as GetClockT,
@@ -214,7 +213,6 @@ function ExpressionVisit(el: ExpressionT): Expression {
             return new VariableRef(el as VariableRefT)
         }
         default: {
-            console.log(el)
             throw `Not defined ${el.$type}`
         }
     }
@@ -222,7 +220,7 @@ function ExpressionVisit(el: ExpressionT): Expression {
 
 function StatementVisit(el: StatementT): Statement {
     switch (el.$type) {
-        case "Assignation": {
+        case "AssignationDec": {
             return new AssignationDec(el as AssignationDecT)
         }
         case "Backward": {

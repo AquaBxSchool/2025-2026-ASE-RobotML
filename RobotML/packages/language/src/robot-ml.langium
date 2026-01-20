@@ -14,13 +14,7 @@ AssignationDec returns AssignationDec:
 //     variableRef=VariableRef '=' expression=Expression
 // ;
 
-Expression returns Expression:
-    PrimaryExpression | Binary | '(' Expression ')'
-;
 
-PrimaryExpression returns Expression:
-    VariableRef | INT | FunctionCall | GetSpeed | GetClock | GetSensor
-;
 
 Type returns Type:
     String0 | Boolean | Integer | Float | Void
@@ -78,13 +72,23 @@ Void returns Void:
     {Void} 'Void'
 ;
 
-Binary returns Binary:
-    operands+=PrimaryExpression Operator=BinaryOp operands+=Expression
+infix BinaryExpr on Expr:
+    right assoc '^'
+    > '*' | '/' 
+    > '+' | '-' 
+    > "==" | ">="  | "<=" | ">"  | "<"
+    > "&&"
+    > "||"
+    ;
+
+Expression returns Expression:
+BinaryExpr;
+
+PrimaryExpression returns Expression:
+    VariableRef | INT | FunctionCall | GetSpeed | GetClock | GetSensor
 ;
 
-Unary returns Unary:
-    Operator=UnaryOp operand=Expression
-;
+Expr: '(' expr=Expression ')' | '-' value=Expr | value=PrimaryExpression;
 
 GetSpeed returns GetSpeed:
     {GetSpeed} 'GetSpeed()'
