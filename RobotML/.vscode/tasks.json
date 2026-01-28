@@ -5,7 +5,7 @@
 	"tasks": [
 		{
 			"label": "Build robot-ml",
-			"command": "npm run langium:generate && npm run build",
+			"command": "yarn build",
 			"type": "shell",
 			"group": {
 				"kind": "build",

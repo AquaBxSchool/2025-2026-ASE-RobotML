@@ -27,7 +27,7 @@ async function startLanguageClient(
 	context: vscode.ExtensionContext,
 ): Promise<LanguageClient> {
 	const serverModule = context.asAbsolutePath(
-		path.join("out", "language", "main.cjs"),
+		path.join("out", "language.cjs"),
 	);
 	// The debug options for the server
 	// --inspect=6009: runs the server in Node's Inspector mode so VS Code can attach to the server for debugging.
