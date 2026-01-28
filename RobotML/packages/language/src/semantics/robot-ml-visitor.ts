@@ -3,39 +3,44 @@
  * DO NOT EDIT MANUALLY!
  ******************************************************************************/
 
-import * as ASTInterfaces from '../generated/ast.js';
-import { LangiumCoreServices, Reference, ValidationAcceptor, ValidationChecks } from 'langium';
+import * as ASTInterfaces from "../generated/ast.js";
+import {
+	LangiumCoreServices,
+	Reference,
+	ValidationAcceptor,
+	ValidationChecks,
+} from "langium";
 
 /**
  * This interface is used to define the visitor methods for the RobotMl language.
  */
 export interface RobotMlVisitor {
-    visitArgumentDec(node : ArgumentDec) : any;
-    visitExpression(node : Expression) : any;
-    visitFunctionCall(node : FunctionCall) : any;
-    visitGetClock(node : GetClock) : any;
-    visitGetSensor(node : GetSensor) : any;
-    visitGetSpeed(node : GetSpeed) : any;
-    visitLiteral(node : Literal) : any;
-    visitUnary(node : Unary) : any;
-    visitVariableRef(node : VariableRef) : any;
-    visitRobotML(node : RobotML) : any;
-    visitStatement(node : Statement) : any;
-    visitAssignation(node : Assignation) : any;
-    visitBlock(node : Block) : any;
-    visitCondition(node : Condition) : any;
-    visitFnReturn(node : FnReturn) : any;
-    visitFunctionDeclaration(node : FunctionDeclaration) : any;
-    visitLoop(node : Loop) : any;
-    visitMovement(node : Movement) : any;
-    visitBackward(node : Backward) : any;
-    visitForward(node : Forward) : any;
-    visitLeftward(node : Leftward) : any;
-    visitRightward(node : Rightward) : any;
-    visitRotate(node : Rotate) : any;
-    visitSetClock(node : SetClock) : any;
-    visitSetSpeed(node : SetSpeed) : any;
-    visitVariableDec(node : VariableDec) : any;
+	visitArgumentDec(node: ArgumentDec): any;
+	visitExpression(node: Expression): any;
+	visitFunctionCall(node: FunctionCall): any;
+	visitGetClock(node: GetClock): any;
+	visitGetSensor(node: GetSensor): any;
+	visitGetSpeed(node: GetSpeed): any;
+	visitLiteral(node: Literal): any;
+	visitUnary(node: Unary): any;
+	visitVariableRef(node: VariableRef): any;
+	visitRobotML(node: RobotML): any;
+	visitStatement(node: Statement): any;
+	visitAssignation(node: Assignation): any;
+	visitBlock(node: Block): any;
+	visitCondition(node: Condition): any;
+	visitFnReturn(node: FnReturn): any;
+	visitFunctionDeclaration(node: FunctionDeclaration): any;
+	visitLoop(node: Loop): any;
+	visitMovement(node: Movement): any;
+	visitBackward(node: Backward): any;
+	visitForward(node: Forward): any;
+	visitLeftward(node: Leftward): any;
+	visitRightward(node: Rightward): any;
+	visitRotate(node: Rotate): any;
+	visitSetClock(node: SetClock): any;
+	visitSetSpeed(node: SetSpeed): any;
+	visitVariableDec(node: VariableDec): any;
 }
 
 /**
@@ -44,42 +49,40 @@ export interface RobotMlVisitor {
  * This `validationAccept` property is reassigned each time the `visitRoot` method is called, so when Langium called the different validation checks.
  */
 export abstract class RobotMlValidationVisitor {
+	protected validationAccept: ValidationAcceptor = () => {};
 
-    protected validationAccept: ValidationAcceptor = () => {};
+	visitRoot(node: RobotML, accept: ValidationAcceptor) {
+		this.validationAccept = accept;
+		node.accept(this);
+	}
 
-    visitRoot(node: RobotML, accept: ValidationAcceptor) {
-        this.validationAccept = accept;
-        node.accept(this);
-    }
-    
-    abstract visitArgumentDec(node : ArgumentDec) : any;
-    abstract visitExpression(node : Expression) : any;
-    abstract visitFunctionCall(node : FunctionCall) : any;
-    abstract visitGetClock(node : GetClock) : any;
-    abstract visitGetSensor(node : GetSensor) : any;
-    abstract visitGetSpeed(node : GetSpeed) : any;
-    abstract visitLiteral(node : Literal) : any;
-    abstract visitUnary(node : Unary) : any;
-    abstract visitVariableRef(node : VariableRef) : any;
-    abstract visitRobotML(node : RobotML) : any;
-    abstract visitStatement(node : Statement) : any;
-    abstract visitAssignation(node : Assignation) : any;
-    abstract visitBlock(node : Block) : any;
-    abstract visitCondition(node : Condition) : any;
-    abstract visitFnReturn(node : FnReturn) : any;
-    abstract visitFunctionDeclaration(node : FunctionDeclaration) : any;
-    abstract visitLoop(node : Loop) : any;
-    abstract visitMovement(node : Movement) : any;
-    abstract visitBackward(node : Backward) : any;
-    abstract visitForward(node : Forward) : any;
-    abstract visitLeftward(node : Leftward) : any;
-    abstract visitRightward(node : Rightward) : any;
-    abstract visitRotate(node : Rotate) : any;
-    abstract visitSetClock(node : SetClock) : any;
-    abstract visitSetSpeed(node : SetSpeed) : any;
-    abstract visitVariableDec(node : VariableDec) : any;
+	abstract visitArgumentDec(node: ArgumentDec): any;
+	abstract visitExpression(node: Expression): any;
+	abstract visitFunctionCall(node: FunctionCall): any;
+	abstract visitGetClock(node: GetClock): any;
+	abstract visitGetSensor(node: GetSensor): any;
+	abstract visitGetSpeed(node: GetSpeed): any;
+	abstract visitLiteral(node: Literal): any;
+	abstract visitUnary(node: Unary): any;
+	abstract visitVariableRef(node: VariableRef): any;
+	abstract visitRobotML(node: RobotML): any;
+	abstract visitStatement(node: Statement): any;
+	abstract visitAssignation(node: Assignation): any;
+	abstract visitBlock(node: Block): any;
+	abstract visitCondition(node: Condition): any;
+	abstract visitFnReturn(node: FnReturn): any;
+	abstract visitFunctionDeclaration(node: FunctionDeclaration): any;
+	abstract visitLoop(node: Loop): any;
+	abstract visitMovement(node: Movement): any;
+	abstract visitBackward(node: Backward): any;
+	abstract visitForward(node: Forward): any;
+	abstract visitLeftward(node: Leftward): any;
+	abstract visitRightward(node: Rightward): any;
+	abstract visitRotate(node: Rotate): any;
+	abstract visitSetClock(node: SetClock): any;
+	abstract visitSetSpeed(node: SetSpeed): any;
+	abstract visitVariableDec(node: VariableDec): any;
 }
-
 
 /**
  * This function is used to register a validation visitor for the RobotMl language.
@@ -87,16 +90,18 @@ export abstract class RobotMlValidationVisitor {
  * @param visitor - The visitor to register.
  * @param services - The Langium services.
  */
-export function registerVisitorAsValidator<T extends RobotMlValidationVisitor>(visitor: T, services: LangiumCoreServices) {
-    const registry = services.validation.ValidationRegistry;
-    const checks: ValidationChecks<ASTInterfaces.RobotMlAstType> = {
-        RobotML: (node, accept) => {
-            visitor.visitRoot(node as RobotML, accept);
-        }
-    };
-    registry.register(checks, visitor);
+export function registerVisitorAsValidator<T extends RobotMlValidationVisitor>(
+	visitor: T,
+	services: LangiumCoreServices,
+) {
+	const registry = services.validation.ValidationRegistry;
+	const checks: ValidationChecks<ASTInterfaces.RobotMlAstType> = {
+		RobotML: (node, accept) => {
+			visitor.visitRoot(node as RobotML, accept);
+		},
+	};
+	registry.register(checks, visitor);
 }
-
 
 /* Each concrete interfaces in the `ast.js` file have an equivalent generated type with the same properties but also with an `accept` method.
  * While the generated accept-weaver allows us to dynamically add the `accept` function to Langium's types, these types allow it to exist statically, so we can take advantage of TypeScript's typing.
@@ -105,266 +110,279 @@ export function registerVisitorAsValidator<T extends RobotMlValidationVisitor>(v
  */
 
 type Acceptor = {
-    accept: (visitor: RobotMlVisitor) => any;
-}
+	accept: (visitor: RobotMlVisitor) => any;
+};
 
 function isAcceptor(node: unknown): node is Acceptor {
-    return typeof (node as any).accept === 'function';
+	return typeof (node as any).accept === "function";
 }
 
-
-export type ArgumentDec = Acceptor & Omit<ASTInterfaces.ArgumentDec, '$container' | 'type'> & {
-    $container: FunctionDeclaration;
-    type: Type;
-}
+export type ArgumentDec = Acceptor &
+	Omit<ASTInterfaces.ArgumentDec, "$container" | "type"> & {
+		$container: FunctionDeclaration;
+		type: Type;
+	};
 
 export function isArgumentDec(node: unknown): node is ArgumentDec {
-    return ASTInterfaces.isArgumentDec(node) && isAcceptor(node);
+	return ASTInterfaces.isArgumentDec(node) && isAcceptor(node);
 }
 
-
-export type Expression = Acceptor & ASTInterfaces.Expression
+export type Expression = Acceptor & ASTInterfaces.Expression;
 
 export function isExpression(node: unknown): node is Expression {
-    return ASTInterfaces.isExpression(node) && isAcceptor(node);
+	return ASTInterfaces.isExpression(node) && isAcceptor(node);
 }
 
-
-export type FunctionCall = Acceptor & Omit<ASTInterfaces.FunctionCall, 'functiondeclaration' | 'parameters'> & {
-    functiondeclaration: Reference<FunctionDeclaration>;
-    parameters: Array<Expression>;
-}
+export type FunctionCall = Acceptor &
+	Omit<ASTInterfaces.FunctionCall, "functiondeclaration" | "parameters"> & {
+		functiondeclaration: Reference<FunctionDeclaration>;
+		parameters: Array<Expression>;
+	};
 
 export function isFunctionCall(node: unknown): node is FunctionCall {
-    return ASTInterfaces.isFunctionCall(node) && isAcceptor(node);
+	return ASTInterfaces.isFunctionCall(node) && isAcceptor(node);
 }
 
-
-export type GetClock = Acceptor & ASTInterfaces.GetClock
+export type GetClock = Acceptor & ASTInterfaces.GetClock;
 
 export function isGetClock(node: unknown): node is GetClock {
-    return ASTInterfaces.isGetClock(node) && isAcceptor(node);
+	return ASTInterfaces.isGetClock(node) && isAcceptor(node);
 }
 
-
-export type GetSensor = Acceptor & Omit<ASTInterfaces.GetSensor, 'sensor'> & {
-    sensor: Sensor;
-}
+export type GetSensor = Acceptor &
+	Omit<ASTInterfaces.GetSensor, "sensor"> & {
+		sensor: Sensor;
+	};
 
 export function isGetSensor(node: unknown): node is GetSensor {
-    return ASTInterfaces.isGetSensor(node) && isAcceptor(node);
+	return ASTInterfaces.isGetSensor(node) && isAcceptor(node);
 }
 
-
-export type GetSpeed = Acceptor & ASTInterfaces.GetSpeed
+export type GetSpeed = Acceptor & ASTInterfaces.GetSpeed;
 
 export function isGetSpeed(node: unknown): node is GetSpeed {
-    return ASTInterfaces.isGetSpeed(node) && isAcceptor(node);
+	return ASTInterfaces.isGetSpeed(node) && isAcceptor(node);
 }
 
-
-export type Literal = Acceptor & ASTInterfaces.Literal
+export type Literal = Acceptor & ASTInterfaces.Literal;
 
 export function isLiteral(node: unknown): node is Literal {
-    return ASTInterfaces.isLiteral(node) && isAcceptor(node);
+	return ASTInterfaces.isLiteral(node) && isAcceptor(node);
 }
 
-
-export type Unary = Acceptor & Omit<ASTInterfaces.Unary, 'expr'> & {
-    expr: Expression;
-}
+export type Unary = Acceptor &
+	Omit<ASTInterfaces.Unary, "expr"> & {
+		expr: Expression;
+	};
 
 export function isUnary(node: unknown): node is Unary {
-    return ASTInterfaces.isUnary(node) && isAcceptor(node);
+	return ASTInterfaces.isUnary(node) && isAcceptor(node);
 }
 
-
-export type VariableRef = Acceptor & Omit<ASTInterfaces.VariableRef, '$container' | 'ref'> & {
-    $container: Assignation;
-    ref: Reference<Declaration>;
-}
+export type VariableRef = Acceptor &
+	Omit<ASTInterfaces.VariableRef, "$container" | "ref"> & {
+		$container: Assignation;
+		ref: Reference<Declaration>;
+	};
 
 export function isVariableRef(node: unknown): node is VariableRef {
-    return ASTInterfaces.isVariableRef(node) && isAcceptor(node);
+	return ASTInterfaces.isVariableRef(node) && isAcceptor(node);
 }
 
-
-export type RobotML = Acceptor & Omit<ASTInterfaces.RobotML, 'functions'> & {
-    functions: Array<FunctionDeclaration>;
-}
+export type RobotML = Acceptor &
+	Omit<ASTInterfaces.RobotML, "functions"> & {
+		functions: Array<FunctionDeclaration>;
+	};
 
 export function isRobotML(node: unknown): node is RobotML {
-    return ASTInterfaces.isRobotML(node) && isAcceptor(node);
+	return ASTInterfaces.isRobotML(node) && isAcceptor(node);
 }
 
-
-export type Statement = Acceptor & ASTInterfaces.Statement
+export type Statement = Acceptor & ASTInterfaces.Statement;
 
 export function isStatement(node: unknown): node is Statement {
-    return ASTInterfaces.isStatement(node) && isAcceptor(node);
+	return ASTInterfaces.isStatement(node) && isAcceptor(node);
 }
 
-
-export type Assignation = Acceptor & Omit<ASTInterfaces.Assignation, 'variableRef' | 'expression'> & {
-    variableRef: VariableRef;
-    expression: Expression;
-}
+export type Assignation = Acceptor &
+	Omit<ASTInterfaces.Assignation, "variableRef" | "expression"> & {
+		variableRef: VariableRef;
+		expression: Expression;
+	};
 
 export function isAssignation(node: unknown): node is Assignation {
-    return ASTInterfaces.isAssignation(node) && isAcceptor(node);
+	return ASTInterfaces.isAssignation(node) && isAcceptor(node);
 }
 
-
-export type Block = Acceptor & Omit<ASTInterfaces.Block, '$container' | 'statements'> & {
-    $container: Condition | FunctionDeclaration | Loop;
-    statements: Array<Statement>;
-}
+export type Block = Acceptor &
+	Omit<ASTInterfaces.Block, "$container" | "statements"> & {
+		$container: Condition | FunctionDeclaration | Loop;
+		statements: Array<Statement>;
+	};
 
 export function isBlock(node: unknown): node is Block {
-    return ASTInterfaces.isBlock(node) && isAcceptor(node);
+	return ASTInterfaces.isBlock(node) && isAcceptor(node);
 }
 
-
-export type Condition = Acceptor & Omit<ASTInterfaces.Condition, 'block' | 'conditions'> & {
-    block: Array<Block>;
-    conditions: Array<Expression>;
-}
+export type Condition = Acceptor &
+	Omit<ASTInterfaces.Condition, "block" | "conditions"> & {
+		block: Array<Block>;
+		conditions: Array<Expression>;
+	};
 
 export function isCondition(node: unknown): node is Condition {
-    return ASTInterfaces.isCondition(node) && isAcceptor(node);
+	return ASTInterfaces.isCondition(node) && isAcceptor(node);
 }
 
-
-export type FnReturn = Acceptor & Omit<ASTInterfaces.FnReturn, 'expression'> & {
-    expression: Expression;
-}
+export type FnReturn = Acceptor &
+	Omit<ASTInterfaces.FnReturn, "expression"> & {
+		expression: Expression;
+	};
 
 export function isFnReturn(node: unknown): node is FnReturn {
-    return ASTInterfaces.isFnReturn(node) && isAcceptor(node);
+	return ASTInterfaces.isFnReturn(node) && isAcceptor(node);
 }
 
+export type FunctionDeclaration = Acceptor &
+	Omit<
+		ASTInterfaces.FunctionDeclaration,
+		"$container" | "returnType" | "block" | "parameters"
+	> & {
+		$container: RobotML;
+		returnType: Type;
+		block: Block;
+		parameters: Array<ArgumentDec>;
+	};
 
-export type FunctionDeclaration = Acceptor & Omit<ASTInterfaces.FunctionDeclaration, '$container' | 'returnType' | 'block' | 'parameters'> & {
-    $container: RobotML;
-    returnType: Type;
-    block: Block;
-    parameters: Array<ArgumentDec>;
+export function isFunctionDeclaration(
+	node: unknown,
+): node is FunctionDeclaration {
+	return ASTInterfaces.isFunctionDeclaration(node) && isAcceptor(node);
 }
 
-export function isFunctionDeclaration(node: unknown): node is FunctionDeclaration {
-    return ASTInterfaces.isFunctionDeclaration(node) && isAcceptor(node);
-}
-
-
-export type Loop = Acceptor & Omit<ASTInterfaces.Loop, 'condition' | 'block'> & {
-    condition: Expression;
-    block: Block;
-}
+export type Loop = Acceptor &
+	Omit<ASTInterfaces.Loop, "condition" | "block"> & {
+		condition: Expression;
+		block: Block;
+	};
 
 export function isLoop(node: unknown): node is Loop {
-    return ASTInterfaces.isLoop(node) && isAcceptor(node);
+	return ASTInterfaces.isLoop(node) && isAcceptor(node);
 }
 
-
-export type Movement = Acceptor & Omit<ASTInterfaces.Movement, 'expression'> & {
-    expression: Expression;
-}
+export type Movement = Acceptor &
+	Omit<ASTInterfaces.Movement, "expression"> & {
+		expression: Expression;
+	};
 
 export function isMovement(node: unknown): node is Movement {
-    return ASTInterfaces.isMovement(node) && isAcceptor(node);
+	return ASTInterfaces.isMovement(node) && isAcceptor(node);
 }
 
-
-export type Backward = Acceptor & Omit<ASTInterfaces.Backward, 'expression'> & {
-    expression: Expression;
-}
+export type Backward = Acceptor &
+	Omit<ASTInterfaces.Backward, "expression"> & {
+		expression: Expression;
+	};
 
 export function isBackward(node: unknown): node is Backward {
-    return ASTInterfaces.isBackward(node) && isAcceptor(node);
+	return ASTInterfaces.isBackward(node) && isAcceptor(node);
 }
 
-
-export type Forward = Acceptor & Omit<ASTInterfaces.Forward, 'expression'> & {
-    expression: Expression;
-}
+export type Forward = Acceptor &
+	Omit<ASTInterfaces.Forward, "expression"> & {
+		expression: Expression;
+	};
 
 export function isForward(node: unknown): node is Forward {
-    return ASTInterfaces.isForward(node) && isAcceptor(node);
+	return ASTInterfaces.isForward(node) && isAcceptor(node);
 }
 
-
-export type Leftward = Acceptor & Omit<ASTInterfaces.Leftward, 'expression'> & {
-    expression: Expression;
-}
+export type Leftward = Acceptor &
+	Omit<ASTInterfaces.Leftward, "expression"> & {
+		expression: Expression;
+	};
 
 export function isLeftward(node: unknown): node is Leftward {
-    return ASTInterfaces.isLeftward(node) && isAcceptor(node);
+	return ASTInterfaces.isLeftward(node) && isAcceptor(node);
 }
 
-
-export type Rightward = Acceptor & Omit<ASTInterfaces.Rightward, 'expression'> & {
-    expression: Expression;
-}
+export type Rightward = Acceptor &
+	Omit<ASTInterfaces.Rightward, "expression"> & {
+		expression: Expression;
+	};
 
 export function isRightward(node: unknown): node is Rightward {
-    return ASTInterfaces.isRightward(node) && isAcceptor(node);
+	return ASTInterfaces.isRightward(node) && isAcceptor(node);
 }
 
-
-export type Rotate = Acceptor & Omit<ASTInterfaces.Rotate, 'expression'> & {
-    expression: Expression;
-}
+export type Rotate = Acceptor &
+	Omit<ASTInterfaces.Rotate, "expression"> & {
+		expression: Expression;
+	};
 
 export function isRotate(node: unknown): node is Rotate {
-    return ASTInterfaces.isRotate(node) && isAcceptor(node);
+	return ASTInterfaces.isRotate(node) && isAcceptor(node);
 }
 
-
-export type SetClock = Acceptor & Omit<ASTInterfaces.SetClock, 'expression'> & {
-    expression: Expression;
-}
+export type SetClock = Acceptor &
+	Omit<ASTInterfaces.SetClock, "expression"> & {
+		expression: Expression;
+	};
 
 export function isSetClock(node: unknown): node is SetClock {
-    return ASTInterfaces.isSetClock(node) && isAcceptor(node);
+	return ASTInterfaces.isSetClock(node) && isAcceptor(node);
 }
 
-
-export type SetSpeed = Acceptor & Omit<ASTInterfaces.SetSpeed, 'expression'> & {
-    expression: Expression;
-}
+export type SetSpeed = Acceptor &
+	Omit<ASTInterfaces.SetSpeed, "expression"> & {
+		expression: Expression;
+	};
 
 export function isSetSpeed(node: unknown): node is SetSpeed {
-    return ASTInterfaces.isSetSpeed(node) && isAcceptor(node);
+	return ASTInterfaces.isSetSpeed(node) && isAcceptor(node);
 }
 
-
-export type VariableDec = Acceptor & Omit<ASTInterfaces.VariableDec, 'type' | 'expression'> & {
-    type: Type;
-    expression: Expression;
-}
+export type VariableDec = Acceptor &
+	Omit<ASTInterfaces.VariableDec, "type" | "expression"> & {
+		type: Type;
+		expression: Expression;
+	};
 
 export function isVariableDec(node: unknown): node is VariableDec {
-    return ASTInterfaces.isVariableDec(node) && isAcceptor(node);
+	return ASTInterfaces.isVariableDec(node) && isAcceptor(node);
 }
-
 
 /*
  * Each union type in the `ast.js` file have an equivalent generated type but using the visitor classes instead of the Langium interfaces/types.
  * This type is used to propose the `accept` method of their generated types.
  */
 
-export type BinaryOp = '&&' | '||' | '!' | '==' | '!=' | '<=' | '>=' | '<' | '>' | '+' | '-' | '*' | '/' | '%';
+export type BinaryOp =
+	| "&&"
+	| "||"
+	| "!"
+	| "=="
+	| "!="
+	| "<="
+	| ">="
+	| "<"
+	| ">"
+	| "+"
+	| "-"
+	| "*"
+	| "/"
+	| "%";
 
 export type Builtins = GetSpeed | GetClock | GetSensor;
 
 export function isBuiltins(node: unknown): node is Builtins {
-    return ASTInterfaces.isBuiltins(node) && isAcceptor(node);
+	return ASTInterfaces.isBuiltins(node) && isAcceptor(node);
 }
 
 export type Declaration = VariableDec | ArgumentDec;
 
 export function isDeclaration(node: unknown): node is Declaration {
-    return ASTInterfaces.isDeclaration(node) && isAcceptor(node);
+	return ASTInterfaces.isDeclaration(node) && isAcceptor(node);
 }
 
 export type Expression = unknown;
@@ -372,11 +390,11 @@ export type Expression = unknown;
 export type PrimaryExpression = VariableRef | FunctionCall | Builtins | Literal;
 
 export function isPrimaryExpression(node: unknown): node is PrimaryExpression {
-    return ASTInterfaces.isPrimaryExpression(node) && isAcceptor(node);
+	return ASTInterfaces.isPrimaryExpression(node) && isAcceptor(node);
 }
 
-export type Sensor = 'Distance' | 'Color';
+export type Sensor = "Distance" | "Color";
 
-export type Type = 'String' | 'Boolean' | 'Integer' | 'Float' | 'Void';
+export type Type = "String" | "Boolean" | "Integer" | "Float" | "Void";
 
-export type UnaryOp = '!' | '-';
+export type UnaryOp = "!" | "-";

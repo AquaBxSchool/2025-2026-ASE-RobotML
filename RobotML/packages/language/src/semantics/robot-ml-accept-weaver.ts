@@ -3,161 +3,223 @@
  * DO NOT EDIT MANUALLY!
  ******************************************************************************/
 
-import { AstNode, AstUtils, ContextCache, DocumentState, LangiumCoreServices } from 'langium';
-import type { RobotMlAstType } from '../generated/ast.js';
-import * as InterfaceAST from '../generated/ast.js';
-import * as ClassAST from './robot-ml-visitor.js';
-import { RobotMlVisitor } from './robot-ml-visitor.js';
-import { DiagnosticSeverity } from 'vscode-languageserver';
-
+import {
+	AstNode,
+	AstUtils,
+	ContextCache,
+	DocumentState,
+	LangiumCoreServices,
+} from "langium";
+import type { RobotMlAstType } from "../generated/ast.js";
+import * as InterfaceAST from "../generated/ast.js";
+import * as ClassAST from "./robot-ml-visitor.js";
+import { RobotMlVisitor } from "./robot-ml-visitor.js";
+import { DiagnosticSeverity } from "vscode-languageserver";
 
 type Weaver = {
-    [K in keyof RobotMlAstType]?: (node: RobotMlAstType[K]) => void;
-}
+	[K in keyof RobotMlAstType]?: (node: RobotMlAstType[K]) => void;
+};
 
 /**
  * This class is used to dynamically add an `accept` method to the Langium generated (concrete) types.
  * It is executed when each time a Langium document goes in "IndexedReferences" state, before the validation phase, but use a cache to avoid reweaving the same AST nodes multiple times.
  */
 export class RobotMlAcceptWeaver {
-    
-    private readonly checks: Weaver = {
-        ArgumentDec: this.weaveArgumentDec,
-        FunctionCall: this.weaveFunctionCall,
-        GetClock: this.weaveGetClock,
-        GetSensor: this.weaveGetSensor,
-        GetSpeed: this.weaveGetSpeed,
-        Literal: this.weaveLiteral,
-        Unary: this.weaveUnary,
-        VariableRef: this.weaveVariableRef,
-        RobotML: this.weaveRobotML,
-        Assignation: this.weaveAssignation,
-        Block: this.weaveBlock,
-        Condition: this.weaveCondition,
-        FnReturn: this.weaveFnReturn,
-        FunctionDeclaration: this.weaveFunctionDeclaration,
-        Loop: this.weaveLoop,
-        Backward: this.weaveBackward,
-        Forward: this.weaveForward,
-        Leftward: this.weaveLeftward,
-        Rightward: this.weaveRightward,
-        Rotate: this.weaveRotate,
-        SetClock: this.weaveSetClock,
-        SetSpeed: this.weaveSetSpeed,
-        VariableDec: this.weaveVariableDec
-    };
+	private readonly checks: Weaver = {
+		ArgumentDec: this.weaveArgumentDec,
+		FunctionCall: this.weaveFunctionCall,
+		GetClock: this.weaveGetClock,
+		GetSensor: this.weaveGetSensor,
+		GetSpeed: this.weaveGetSpeed,
+		Literal: this.weaveLiteral,
+		Unary: this.weaveUnary,
+		VariableRef: this.weaveVariableRef,
+		RobotML: this.weaveRobotML,
+		Assignation: this.weaveAssignation,
+		Block: this.weaveBlock,
+		Condition: this.weaveCondition,
+		FnReturn: this.weaveFnReturn,
+		FunctionDeclaration: this.weaveFunctionDeclaration,
+		Loop: this.weaveLoop,
+		Backward: this.weaveBackward,
+		Forward: this.weaveForward,
+		Leftward: this.weaveLeftward,
+		Rightward: this.weaveRightward,
+		Rotate: this.weaveRotate,
+		SetClock: this.weaveSetClock,
+		SetSpeed: this.weaveSetSpeed,
+		VariableDec: this.weaveVariableDec,
+	};
 
-    private readonly cache: ContextCache<AstNode, string, void>;
+	private readonly cache: ContextCache<AstNode, string, void>;
 
-    constructor(services: LangiumCoreServices) {
-        this.cache = new ContextCache<AstNode, string, void>();
-        services.shared.workspace.DocumentBuilder.onDocumentPhase(DocumentState.IndexedReferences, (document) => {
-            if(!document.diagnostics || document.diagnostics.filter(d => d.severity === DiagnosticSeverity.Error).length === 0) {
-                AstUtils.streamAst(document.parseResult.value).forEach((node: AstNode) => {
-                    if(!this.cache.has(node, 'weaved')) {
-                        const nodeType = node.$type as keyof Weaver;
-                        const weaveFunction = this.checks[nodeType]; 
-                        if (weaveFunction) {
-                            weaveFunction(node as any);
-                            this.cache.set(node, 'weaved', undefined);
-                        }
-                    }
-                });
-            }
-        });
-    }
+	constructor(services: LangiumCoreServices) {
+		this.cache = new ContextCache<AstNode, string, void>();
+		services.shared.workspace.DocumentBuilder.onDocumentPhase(
+			DocumentState.IndexedReferences,
+			(document) => {
+				if (
+					!document.diagnostics ||
+					document.diagnostics.filter(
+						(d) => d.severity === DiagnosticSeverity.Error,
+					).length === 0
+				) {
+					AstUtils.streamAst(document.parseResult.value).forEach(
+						(node: AstNode) => {
+							if (!this.cache.has(node, "weaved")) {
+								const nodeType = node.$type as keyof Weaver;
+								const weaveFunction = this.checks[nodeType];
+								if (weaveFunction) {
+									weaveFunction(node as any);
+									this.cache.set(node, "weaved", undefined);
+								}
+							}
+						},
+					);
+				}
+			},
+		);
+	}
 
-    
-    weaveArgumentDec(node : InterfaceAST.ArgumentDec) : void {
-        (<any> node).accept = (visitor: RobotMlVisitor) => { return visitor.visitArgumentDec(node as unknown as ClassAST.ArgumentDec); }
-    }
-    
-    weaveFunctionCall(node : InterfaceAST.FunctionCall) : void {
-        (<any> node).accept = (visitor: RobotMlVisitor) => { return visitor.visitFunctionCall(node as unknown as ClassAST.FunctionCall); }
-    }
-    
-    weaveGetClock(node : InterfaceAST.GetClock) : void {
-        (<any> node).accept = (visitor: RobotMlVisitor) => { return visitor.visitGetClock(node as unknown as ClassAST.GetClock); }
-    }
-    
-    weaveGetSensor(node : InterfaceAST.GetSensor) : void {
-        (<any> node).accept = (visitor: RobotMlVisitor) => { return visitor.visitGetSensor(node as unknown as ClassAST.GetSensor); }
-    }
-    
-    weaveGetSpeed(node : InterfaceAST.GetSpeed) : void {
-        (<any> node).accept = (visitor: RobotMlVisitor) => { return visitor.visitGetSpeed(node as unknown as ClassAST.GetSpeed); }
-    }
-    
-    weaveLiteral(node : InterfaceAST.Literal) : void {
-        (<any> node).accept = (visitor: RobotMlVisitor) => { return visitor.visitLiteral(node as unknown as ClassAST.Literal); }
-    }
-    
-    weaveUnary(node : InterfaceAST.Unary) : void {
-        (<any> node).accept = (visitor: RobotMlVisitor) => { return visitor.visitUnary(node as unknown as ClassAST.Unary); }
-    }
-    
-    weaveVariableRef(node : InterfaceAST.VariableRef) : void {
-        (<any> node).accept = (visitor: RobotMlVisitor) => { return visitor.visitVariableRef(node as unknown as ClassAST.VariableRef); }
-    }
-    
-    weaveRobotML(node : InterfaceAST.RobotML) : void {
-        (<any> node).accept = (visitor: RobotMlVisitor) => { return visitor.visitRobotML(node as unknown as ClassAST.RobotML); }
-    }
-    
-    weaveAssignation(node : InterfaceAST.Assignation) : void {
-        (<any> node).accept = (visitor: RobotMlVisitor) => { return visitor.visitAssignation(node as unknown as ClassAST.Assignation); }
-    }
-    
-    weaveBlock(node : InterfaceAST.Block) : void {
-        (<any> node).accept = (visitor: RobotMlVisitor) => { return visitor.visitBlock(node as unknown as ClassAST.Block); }
-    }
-    
-    weaveCondition(node : InterfaceAST.Condition) : void {
-        (<any> node).accept = (visitor: RobotMlVisitor) => { return visitor.visitCondition(node as unknown as ClassAST.Condition); }
-    }
-    
-    weaveFnReturn(node : InterfaceAST.FnReturn) : void {
-        (<any> node).accept = (visitor: RobotMlVisitor) => { return visitor.visitFnReturn(node as unknown as ClassAST.FnReturn); }
-    }
-    
-    weaveFunctionDeclaration(node : InterfaceAST.FunctionDeclaration) : void {
-        (<any> node).accept = (visitor: RobotMlVisitor) => { return visitor.visitFunctionDeclaration(node as unknown as ClassAST.FunctionDeclaration); }
-    }
-    
-    weaveLoop(node : InterfaceAST.Loop) : void {
-        (<any> node).accept = (visitor: RobotMlVisitor) => { return visitor.visitLoop(node as unknown as ClassAST.Loop); }
-    }
-    
-    weaveBackward(node : InterfaceAST.Backward) : void {
-        (<any> node).accept = (visitor: RobotMlVisitor) => { return visitor.visitBackward(node as unknown as ClassAST.Backward); }
-    }
-    
-    weaveForward(node : InterfaceAST.Forward) : void {
-        (<any> node).accept = (visitor: RobotMlVisitor) => { return visitor.visitForward(node as unknown as ClassAST.Forward); }
-    }
-    
-    weaveLeftward(node : InterfaceAST.Leftward) : void {
-        (<any> node).accept = (visitor: RobotMlVisitor) => { return visitor.visitLeftward(node as unknown as ClassAST.Leftward); }
-    }
-    
-    weaveRightward(node : InterfaceAST.Rightward) : void {
-        (<any> node).accept = (visitor: RobotMlVisitor) => { return visitor.visitRightward(node as unknown as ClassAST.Rightward); }
-    }
-    
-    weaveRotate(node : InterfaceAST.Rotate) : void {
-        (<any> node).accept = (visitor: RobotMlVisitor) => { return visitor.visitRotate(node as unknown as ClassAST.Rotate); }
-    }
-    
-    weaveSetClock(node : InterfaceAST.SetClock) : void {
-        (<any> node).accept = (visitor: RobotMlVisitor) => { return visitor.visitSetClock(node as unknown as ClassAST.SetClock); }
-    }
-    
-    weaveSetSpeed(node : InterfaceAST.SetSpeed) : void {
-        (<any> node).accept = (visitor: RobotMlVisitor) => { return visitor.visitSetSpeed(node as unknown as ClassAST.SetSpeed); }
-    }
-    
-    weaveVariableDec(node : InterfaceAST.VariableDec) : void {
-        (<any> node).accept = (visitor: RobotMlVisitor) => { return visitor.visitVariableDec(node as unknown as ClassAST.VariableDec); }
-    }
-    
+	weaveArgumentDec(node: InterfaceAST.ArgumentDec): void {
+		(<any>node).accept = (visitor: RobotMlVisitor) => {
+			return visitor.visitArgumentDec(node as unknown as ClassAST.ArgumentDec);
+		};
+	}
+
+	weaveFunctionCall(node: InterfaceAST.FunctionCall): void {
+		(<any>node).accept = (visitor: RobotMlVisitor) => {
+			return visitor.visitFunctionCall(
+				node as unknown as ClassAST.FunctionCall,
+			);
+		};
+	}
+
+	weaveGetClock(node: InterfaceAST.GetClock): void {
+		(<any>node).accept = (visitor: RobotMlVisitor) => {
+			return visitor.visitGetClock(node as unknown as ClassAST.GetClock);
+		};
+	}
+
+	weaveGetSensor(node: InterfaceAST.GetSensor): void {
+		(<any>node).accept = (visitor: RobotMlVisitor) => {
+			return visitor.visitGetSensor(node as unknown as ClassAST.GetSensor);
+		};
+	}
+
+	weaveGetSpeed(node: InterfaceAST.GetSpeed): void {
+		(<any>node).accept = (visitor: RobotMlVisitor) => {
+			return visitor.visitGetSpeed(node as unknown as ClassAST.GetSpeed);
+		};
+	}
+
+	weaveLiteral(node: InterfaceAST.Literal): void {
+		(<any>node).accept = (visitor: RobotMlVisitor) => {
+			return visitor.visitLiteral(node as unknown as ClassAST.Literal);
+		};
+	}
+
+	weaveUnary(node: InterfaceAST.Unary): void {
+		(<any>node).accept = (visitor: RobotMlVisitor) => {
+			return visitor.visitUnary(node as unknown as ClassAST.Unary);
+		};
+	}
+
+	weaveVariableRef(node: InterfaceAST.VariableRef): void {
+		(<any>node).accept = (visitor: RobotMlVisitor) => {
+			return visitor.visitVariableRef(node as unknown as ClassAST.VariableRef);
+		};
+	}
+
+	weaveRobotML(node: InterfaceAST.RobotML): void {
+		(<any>node).accept = (visitor: RobotMlVisitor) => {
+			return visitor.visitRobotML(node as unknown as ClassAST.RobotML);
+		};
+	}
+
+	weaveAssignation(node: InterfaceAST.Assignation): void {
+		(<any>node).accept = (visitor: RobotMlVisitor) => {
+			return visitor.visitAssignation(node as unknown as ClassAST.Assignation);
+		};
+	}
+
+	weaveBlock(node: InterfaceAST.Block): void {
+		(<any>node).accept = (visitor: RobotMlVisitor) => {
+			return visitor.visitBlock(node as unknown as ClassAST.Block);
+		};
+	}
+
+	weaveCondition(node: InterfaceAST.Condition): void {
+		(<any>node).accept = (visitor: RobotMlVisitor) => {
+			return visitor.visitCondition(node as unknown as ClassAST.Condition);
+		};
+	}
+
+	weaveFnReturn(node: InterfaceAST.FnReturn): void {
+		(<any>node).accept = (visitor: RobotMlVisitor) => {
+			return visitor.visitFnReturn(node as unknown as ClassAST.FnReturn);
+		};
+	}
+
+	weaveFunctionDeclaration(node: InterfaceAST.FunctionDeclaration): void {
+		(<any>node).accept = (visitor: RobotMlVisitor) => {
+			return visitor.visitFunctionDeclaration(
+				node as unknown as ClassAST.FunctionDeclaration,
+			);
+		};
+	}
+
+	weaveLoop(node: InterfaceAST.Loop): void {
+		(<any>node).accept = (visitor: RobotMlVisitor) => {
+			return visitor.visitLoop(node as unknown as ClassAST.Loop);
+		};
+	}
+
+	weaveBackward(node: InterfaceAST.Backward): void {
+		(<any>node).accept = (visitor: RobotMlVisitor) => {
+			return visitor.visitBackward(node as unknown as ClassAST.Backward);
+		};
+	}
+
+	weaveForward(node: InterfaceAST.Forward): void {
+		(<any>node).accept = (visitor: RobotMlVisitor) => {
+			return visitor.visitForward(node as unknown as ClassAST.Forward);
+		};
+	}
+
+	weaveLeftward(node: InterfaceAST.Leftward): void {
+		(<any>node).accept = (visitor: RobotMlVisitor) => {
+			return visitor.visitLeftward(node as unknown as ClassAST.Leftward);
+		};
+	}
+
+	weaveRightward(node: InterfaceAST.Rightward): void {
+		(<any>node).accept = (visitor: RobotMlVisitor) => {
+			return visitor.visitRightward(node as unknown as ClassAST.Rightward);
+		};
+	}
+
+	weaveRotate(node: InterfaceAST.Rotate): void {
+		(<any>node).accept = (visitor: RobotMlVisitor) => {
+			return visitor.visitRotate(node as unknown as ClassAST.Rotate);
+		};
+	}
+
+	weaveSetClock(node: InterfaceAST.SetClock): void {
+		(<any>node).accept = (visitor: RobotMlVisitor) => {
+			return visitor.visitSetClock(node as unknown as ClassAST.SetClock);
+		};
+	}
+
+	weaveSetSpeed(node: InterfaceAST.SetSpeed): void {
+		(<any>node).accept = (visitor: RobotMlVisitor) => {
+			return visitor.visitSetSpeed(node as unknown as ClassAST.SetSpeed);
+		};
+	}
+
+	weaveVariableDec(node: InterfaceAST.VariableDec): void {
+		(<any>node).accept = (visitor: RobotMlVisitor) => {
+			return visitor.visitVariableDec(node as unknown as ClassAST.VariableDec);
+		};
+	}
 }
