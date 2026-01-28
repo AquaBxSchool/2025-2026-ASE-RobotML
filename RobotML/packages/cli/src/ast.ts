@@ -223,32 +223,6 @@ Void ddd(fezfe: Void) {
 
 Void main(entree : Float) {
 
-    let a : Integer = GetSpeed()
-    let b : Integer = GetSpeed()
-
-    let g = ddd()
-
-    let h = 1 + a
-
-    let c = main()
-
-    if ( main() ) {
-        let e : Void = 10
-    } 
-    elif ( a == b ) {
-        let e : Void = GetSpeed()
-    }
-    elif ( (((((((((b))))))))) ) {
-        let e : Void = GetSpeed()
-    }
-    elif ( main() == main() ) {
-        let e : Void = GetSpeed()
-    }
-    else {
-
-    }
-
-
 }
 `, { validation: true }); //enable validation, otherwise the validator will not be called!
 

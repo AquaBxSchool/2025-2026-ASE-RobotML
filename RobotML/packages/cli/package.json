@@ -9,19 +9,19 @@
     },
     "files": [
         "bin",
-        "out",
         "src"
     ],
     "bin": {
         "robot-ml-cli": "./bin/cli.js"
     },
+    
     "scripts": {
         "clean": "shx rm -fr *.tsbuildinfo out",
-        "build": "echo 'No build step'",
-        "test": "bun src/ast.ts",
+        "build": "bun build ./src/ast.ts --compile --outfile=./bin/cli --external langium --external chalk --external commander",
+        "test": "bun ./src/ast.ts",
         "build:clean": "npm run clean && npm run build"
     },
-    "dependencies": {
+    "devDependencies": {
         "robot-ml-language": "*",
         "chalk": "~5.6.2",
         "commander": "~14.0.2"

@@ -35,12 +35,10 @@
         "build:clean": "npm run clean && npm run build",
         "watch": "npm run build:prepare && concurrently -n tsc,esbuild -c blue,yellow \"tsc -b tsconfig.json --watch\" \"node esbuild.mjs --watch\""
     },
-    "dependencies": {
+    "devDependencies": {
         "robot-ml-language": "*",
         "vscode-languageclient": "~9.0.1",
-        "vscode-languageserver": "~9.0.1"
-    },
-    "devDependencies": {
+        "vscode-languageserver": "~9.0.1",
         "@types/vscode": "^1.106.1",
         "concurrently": "^9.2.1",
         "esbuild": "^0.27.1"
