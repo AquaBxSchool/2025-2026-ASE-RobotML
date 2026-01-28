@@ -92,6 +92,7 @@ class Backward implements Visitor, Statement {
 		this.expr = ExpressionVisit(el.expression);
 	}
 }
+
 class Condition implements Visitor, Statement {
 	blocks: Block[];
 	expression: Expression[];
@@ -104,6 +105,7 @@ class Condition implements Visitor, Statement {
 		this.blocks = el.block.map((el) => new Block(el));
 	}
 }
+
 class Forward implements Visitor, Statement {
 	expr: Expression;
 	constructor(el: ForwardT) {
@@ -111,6 +113,7 @@ class Forward implements Visitor, Statement {
 		this.expr = ExpressionVisit(el.expression);
 	}
 }
+
 class FunctionCall implements Visitor, Statement, Expression {
 	parameters: Expression[];
 	decl: string;
@@ -120,6 +123,7 @@ class FunctionCall implements Visitor, Statement, Expression {
 		this.parameters = el.parameters.map(ExpressionVisit);
 	}
 }
+
 class Leftward implements Visitor, Statement {
 	expr: Expression;
 	constructor(el: LeftwardT) {
@@ -127,6 +131,7 @@ class Leftward implements Visitor, Statement {
 		this.expr = ExpressionVisit(el.expression);
 	}
 }
+
 class Movement implements Visitor, Statement {
 	expr: Expression;
 	constructor(el: MovementT) {
@@ -134,6 +139,7 @@ class Movement implements Visitor, Statement {
 		this.expr = ExpressionVisit(el.expression);
 	}
 }
+
 class Rightward implements Visitor, Statement {
 	expr: Expression;
 	constructor(el: RightwardT) {
@@ -141,6 +147,7 @@ class Rightward implements Visitor, Statement {
 		this.expr = ExpressionVisit(el.expression);
 	}
 }
+
 class Rotate implements Visitor, Statement {
 	expr: Expression;
 	constructor(el: RotateT) {
@@ -182,11 +189,13 @@ class GetClock implements Visitor, Expression {
 		assert.strictEqual(el.$type, "GetClock");
 	}
 }
+
 class GetSensor implements Visitor, Expression {
 	constructor(el: GetSensorT) {
 		assert.strictEqual(el.$type, "GetSensor");
 	}
 }
+
 class GetSpeed implements Visitor, Expression {
 	constructor(el: GetSpeedT) {}
 }
