@@ -32,7 +32,7 @@ export class SymbolTable {
 	 *
 	 * @throws EmptyStackException if the scopes stack is empty.
 	 */
-	put(symbol: String, symbol_info: SymbolInfo) {
+	put(symbol: string, symbol_info: SymbolInfo) {
 		this.scopes.at(-1)?.set(symbol, symbol_info);
 	}
 
@@ -45,9 +45,9 @@ export class SymbolTable {
 		return false;
 	}
 
-	toString(): String {
+	toString(): string {
 		let retString = "";
-		for (let scope of this.scopes.list) {
+		for (var scope of this.scopes.list) {
 			retString += `${Object.values(scope).join("\n")}\n`;
 		}
 		return retString;

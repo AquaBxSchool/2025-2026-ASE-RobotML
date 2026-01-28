@@ -1,4 +1,4 @@
-import {
+import type {
   ArgumentDec,
   Assignation,
   Backward,
@@ -26,7 +26,7 @@ import {
   Unary,
   VariableDec,
   VariableRef,
-} from "./semantics/robot-ml-visitor.js";
+} from "./semantics.ts";
 
 function print(text: string) {
   process.stdout.write(text);
@@ -63,7 +63,7 @@ export class RobotMLAstPrinterVisitor implements RobotMlVisitor {
   visitRobotML(node: RobotML) {
     print("RobotML Program\n");
 
-    node.functions.forEach((node) => this.visitFunctionDeclaration(node));
+    node.functions.forEach((node) => { this.visitFunctionDeclaration(node); });
   }
   visitStatement(node: Statement) {
     switch (node.$type) {

@@ -1,8 +1,7 @@
-import type { AstNode, LangiumCoreServices, LangiumDocument } from "langium";
-import chalk from "chalk";
 import * as path from "node:path";
-import * as fs from "node:fs";
-import { URI } from "langium";
+import chalk from "chalk";
+import type { AstNode, LangiumCoreServices, LangiumDocument } from "langium";
+import { parseHelper } from "langium/test";
 
 export async function extractDocument(
 	fileName: string,
@@ -18,18 +17,26 @@ export async function extractDocument(
 		process.exit(1);
 	}
 
-	if (!fs.existsSync(fileName)) {
+	// const document =
+	// 	await services.shared.workspace.LangiumDocuments.getOrCreateDocument(
+	// 		URI.file(path.resolve(fileName)),
+	// 	);
+	// await services.shared.workspace.DocumentBuilder.build([document], {
+	// 	validation: true,
+ //  });
+
+	const parse = parseHelper(services);
+
+  const file = Bun.file(fileName);
+
+  if (!file.exists()) {
 		console.error(chalk.red(`File ${fileName} does not exist.`));
 		process.exit(1);
 	}
 
-	const document =
-		await services.shared.workspace.LangiumDocuments.getOrCreateDocument(
-			URI.file(path.resolve(fileName)),
-		);
-	await services.shared.workspace.DocumentBuilder.build([document], {
-		validation: true,
-	});
+  const filetext = await file.text();
+
+  const document = await parse(filetext, { validation: true });
 
 	const validationErrors = (document.diagnostics ?? []).filter(
 		(e) => e.severity === 1,

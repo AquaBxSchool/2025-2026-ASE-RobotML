@@ -1,18 +1,17 @@
+import chalk from "chalk";
+import { Command } from "commander";
+import { NodeFileSystem } from "langium/node";
 import {
 	createRobotMlServices,
 } from "robot-ml-language";
 import {
-	RobotML
-} from "robot-ml-language/semantics";
-import {
 	RobotMlLanguageMetaData,
 } from "robot-ml-language/generated";
-
-import chalk from "chalk";
-import { Command } from "commander";
-import { extractAstNode } from "./util.js";
+import type {
+	RobotML
+} from "robot-ml-language/semantics";
 import { generateOutput } from "./generator.js";
-import { NodeFileSystem } from "langium/node";
+import { extractAstNode } from "./util.js";
 
 export const generateAction = async (
 	source: string,
@@ -27,7 +26,7 @@ export const generateAction = async (
 
 export const astAction = async (
 	source: string,
-	destination: string,
+	_destination: string,
 ): Promise<void> => {
 	const services = createRobotMlServices(NodeFileSystem).RobotMl;
 	const model = await extractAstNode<RobotML>(source, services);
