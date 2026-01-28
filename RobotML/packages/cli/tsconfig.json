@@ -7,6 +7,8 @@
         "outDir": "dist",
         "composite": true,
         "skipLibCheck": true,
+        "allowImportingTsExtensions": true,
+        "emitDeclarationOnly": true,
     },
     "include": [ "src/**/*.ts", "src/index.ts" ],
 }

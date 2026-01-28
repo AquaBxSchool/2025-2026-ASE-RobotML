@@ -18,6 +18,7 @@ import {
 import { RobotMlAcceptWeaver } from "./semantics/robot-ml-accept-weaver.js";
 import { registerVisitorAsValidator } from "./semantics/robot-ml-visitor.js";
 import { RobotMLTypeCheckVisitor } from "./robot-ml-typecheck.js";
+import { RobotMLAstPrinterVisitor } from "./robot-ml-ast-printer.js";
 // import { MyLanguageScopeProvider } from './robot-ml-scope.js';
 
 /**
@@ -30,6 +31,7 @@ export type RobotMlAddedServices = {
 	visitors: {
       RobotMlAcceptWeaver: RobotMlAcceptWeaver
       RobotMLTypeCheckVisitor: RobotMLTypeCheckVisitor
+      RobotMLAstPrinterVisitor: RobotMLAstPrinterVisitor
     }
 };
 
@@ -56,7 +58,8 @@ export const RobotMlModule: Module<
 	},
 	visitors: {
       RobotMlAcceptWeaver: (services) => new RobotMlAcceptWeaver(services),
-      RobotMLTypeCheckVisitor: () => new RobotMLTypeCheckVisitor()
+      RobotMLTypeCheckVisitor: () => new RobotMLTypeCheckVisitor(),
+      RobotMLAstPrinterVisitor: () => new RobotMLAstPrinterVisitor()
     }
 };
 

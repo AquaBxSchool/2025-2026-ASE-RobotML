@@ -375,6 +375,7 @@ if (values.file === undefined) {
 const file = Bun.file(values.file);
 console.log(file);
 const filetext = await file.text();
+
 const document = await parse(filetext, { validation: true }); //enable validation, otherwise the validator will not be called!
 
 const ast = new Robot(document.parseResult.value as RobotMLT);

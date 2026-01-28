@@ -1,7 +1,8 @@
-import type { RobotML } from "robot-ml-language";
+// import type { RobotML } from "robot-ml-language";
 import {
 	createRobotMlServices,
 	RobotMlLanguageMetaData,
+	RobotML
 } from "robot-ml-language";
 import chalk from "chalk";
 import { Command } from "commander";
@@ -23,6 +24,7 @@ export const generateAction = async (
 	const services = createRobotMlServices(NodeFileSystem).RobotMl;
 	const model = await extractAstNode<RobotML>(source, services);
 	const generatedFilePath = generateOutput(model, source, destination);
+	model.accept(services.visitors.RobotMLAstPrinterVisitor)
 	console.log(chalk.green(`Code generated succesfully: ${generatedFilePath}`));
 };
 

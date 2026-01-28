@@ -12,11 +12,11 @@
 		"src"
 	],
 	"bin": {
-		"robot-ml-cli": "./dist/cli"
+		"robot-ml-cli": "./dist/cli.js"
 	},
 	"scripts": {
 		"clean": "shx rm -fr *.tsbuildinfo dist",
-		"build": "rolldown -c rolldown.config.ts && bun build ./dist/ast.js --compile --outfile=./dist/cli",
+		"build": "rolldown -c rolldown.config.ts && bun build ./dist/main.js --compile --outfile=./dist/cli",
 		"test": "bun ./src/ast.ts"
 	},
 	"devDependencies": {

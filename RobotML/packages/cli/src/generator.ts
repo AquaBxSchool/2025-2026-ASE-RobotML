@@ -1,5 +1,5 @@
 import type { RobotML } from "robot-ml-language";
-import { expandToNode, toString } from "langium/generate";
+import { expandToNode, joinToNode, toString } from "langium/generate";
 import * as fs from "node:fs";
 import { extractDestinationAndName } from "./util.js";
 
@@ -12,8 +12,10 @@ export function generateOutput(
 
 	const fileNode = expandToNode`
         // TODO : place here generated code
-    `.appendNewLineIfNotEmpty();
-
+		// ${joinToNode(model.functions)}
+		`.appendNewLineIfNotEmpty();
+		
+		// ${model.accept(services.visitors.HelloWorldInterpreter)}
 	if (!fs.existsSync(data.destination)) {
 		fs.mkdirSync(data.destination, { recursive: true });
 	}
