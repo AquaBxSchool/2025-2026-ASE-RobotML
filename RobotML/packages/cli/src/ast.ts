@@ -20,7 +20,8 @@ import type {
     GetSensor as GetSensorT,
     GetSpeed as GetSpeedT,
     VariableRef as VariableRefT,
-    VariableDec as VariableDecT
+    VariableDec as VariableDecT,
+    Type as TypeT,
 } from "robot-ml-language";
 import { EmptyFileSystem, Reference } from "langium";
 import { parseHelper } from "langium/test";
@@ -42,7 +43,7 @@ class Robot implements Visitor {
 class FunctionDeclaration implements Visitor, Statement {
     name: string
     block: Block
-    returnType: string
+    returnType: TypeT
     parameters: ArgumentDec[]
 
     constructor(el: FunctionDeclarationT) {
@@ -56,7 +57,12 @@ class FunctionDeclaration implements Visitor, Statement {
 }
 
 class ArgumentDec implements Visitor, Statement {
+    name: string
+    returnType?: TypeT
+
     constructor(el: ArgumentDecT) {
+      this.name = el.name
+      this.returnType = el.type
     }
 }
 

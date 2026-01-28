@@ -3,9 +3,9 @@ Void main() {
 }
 
 String bar() {
-    return "bar" 
+    return "bar"
 }
 
-Boolean foo() {
+Boolean foo(void: Void, int: Integer) {
     return "bar" == bar()
 }
