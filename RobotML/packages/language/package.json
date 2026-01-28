@@ -28,7 +28,7 @@
 	},
 	"scripts": {
 		"clean": "shx rm -fr *.tsbuildinfo out",
-		"build": "langium generate",
+		"build": "langium generate && bun build --outfile ./out/index.js ./src/index.ts",
 		"build:clean": "npm run clean && npm run build",
 		"langium:generate": "langium generate",
 		"langium:watch": "langium generate --watch",
