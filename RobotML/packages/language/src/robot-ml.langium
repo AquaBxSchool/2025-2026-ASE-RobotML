@@ -151,7 +151,7 @@ interface Assignation extends Statement {
 }
 
 Assignation returns Assignation:
-    variableRef=VariableRef '=' expression=Expression
+    variableRef=VariableRef '=' expression=Expr
 ;
 
 // Expression
@@ -159,8 +159,6 @@ Assignation returns Assignation:
 interface Expression {
 }
 
-Expression returns Expression:
-    BinaryExpr;
 
 interface Unary extends Expression {
     op:("-"|"!")
@@ -171,7 +169,7 @@ Unary returns Unary:
     op=("!"|"-") expr=Expr;
 
 Expr returns Expression:
-    '(' {Expression} Expression ')' | PrimaryExpression | {Unary} Unary;
+    '(' {Expression} BinaryExpr ')' |  {Expression} BinaryExpr  | PrimaryExpression | {Unary} Unary;
 
 infix BinaryExpr on Expr:
     right assoc '^'
