@@ -7,7 +7,6 @@
     "scripts": {
         "clean": "yarn workspaces run clean",
         "build": "yarn workspaces run build",
-        "yarn:install": "yarn install",
         "cli": "robot-ml-cli"
     },
     "devDependencies": {

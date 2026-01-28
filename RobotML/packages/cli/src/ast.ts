@@ -169,7 +169,13 @@ class VariableRef implements Visitor, Expression {
 }
 
 class VariableDec implements Visitor, Statement {
+    name : string
+    type ?: TypeT
+    expression ?: Expression
     constructor(el: VariableDecT) {
+        this.name = el.name
+        this.type = el.type
+        this.expression = el.expression ? ExpressionVisit(el.expression) : undefined
     }
 }
 
