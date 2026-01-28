@@ -14,7 +14,6 @@ beforeAll(async () => {
 });
 */
 
-describe('Parsing tests', () => {
-
-    // TODO: Add parsing tests
+describe("Parsing tests", () => {
+	// TODO: Add parsing tests
 });

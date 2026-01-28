@@ -15,7 +15,6 @@ beforeAll(async () => {
 });
 */
 
-describe('Validating', () => {
-
-    // TODO: Add validation tests
+describe("Validating", () => {
+	// TODO: Add validation tests
 });

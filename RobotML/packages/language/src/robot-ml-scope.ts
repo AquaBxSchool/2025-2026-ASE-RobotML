@@ -21,28 +21,28 @@
 //         while (container) {
 //             if (isBlock(container)) {
 //                 const precomputed: AstNodeDescription[] = [];
-                
+
 //                 for (const statement of container.statements) {
 //                     if (statement === childNode) {
 //                         break;
 //                     }
-                    
+
 //                     if (isAssignationDec(statement) && statement.variableDecl) {
 //                          const desc = this.descriptions.createDescription(
-//                              statement.variableDecl, 
+//                              statement.variableDecl,
 //                              statement.variableDecl.name
 //                          );
 //                          precomputed.push(desc);
 //                     }
 //                 }
-                
+
 //                 return new MapScope(precomputed, super.getScope(context));
 //             }
 
 //             childNode = container;
 //             container = container.$container;
 //         }
-        
+
 //         return undefined;
 //     }
 // }

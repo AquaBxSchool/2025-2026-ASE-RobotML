@@ -18,7 +18,6 @@ afterEach(async () => {
 });
 */
 
-describe('Linking tests', () => {
-
-    // TODO: Add linking tests
+describe("Linking tests", () => {
+	// TODO: Add linking tests
 });

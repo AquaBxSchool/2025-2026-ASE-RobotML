@@ -1,16 +1,14 @@
 {
-    "projectName": "RobotMl",
-    "languages": [
-        {
-            "id": "robot-ml",
-            "grammar": "src/robot-ml.langium",
-            "fileExtensions": [
-                "robot"
-            ],
-            "textMate": {
-                "out": "syntaxes/robot-ml.tmLanguage.json"
-            }
-        }
-    ],
-    "out": "src/generated"
+	"projectName": "RobotMl",
+	"languages": [
+		{
+			"id": "robot-ml",
+			"grammar": "src/robot-ml.langium",
+			"fileExtensions": ["robot"],
+			"textMate": {
+				"out": "syntaxes/robot-ml.tmLanguage.json"
+			}
+		}
+	],
+	"out": "src/generated"
 }

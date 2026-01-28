@@ -1,7 +1,10 @@
-import { startLanguageServer } from 'langium/lsp';
-import { NodeFileSystem } from 'langium/node';
-import { createConnection, ProposedFeatures } from 'vscode-languageserver/node.js';
-import { createRobotMlServices } from 'robot-ml-language';
+import { startLanguageServer } from "langium/lsp";
+import { NodeFileSystem } from "langium/node";
+import {
+	createConnection,
+	ProposedFeatures,
+} from "vscode-languageserver/node.js";
+import { createRobotMlServices } from "robot-ml-language";
 
 // Create a connection to the client
 const connection = createConnection(ProposedFeatures.all);
