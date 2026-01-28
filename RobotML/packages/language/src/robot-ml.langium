@@ -76,6 +76,7 @@ interface Rotate extends Statement {
 Rotate returns Rotate:
     'Rotate(' expression=Expression  ')'
 ;
+
 // Movement Statement
 
 interface Movement extends Statement {
@@ -101,7 +102,6 @@ interface Rightward extends Movement {}
 Rightward returns Rightward:
     'Rightward(' expression=Expression  ')'
 ;
-
 
 // Declaration Statemens
 
