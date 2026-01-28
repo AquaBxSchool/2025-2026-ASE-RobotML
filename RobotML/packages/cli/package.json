@@ -12,7 +12,7 @@
 		"src"
 	],
 	"bin": {
-		"robot-ml-cli": "./dist/cli.js"
+		"robot-ml-cli": "./dist/cli"
 	},
 	"scripts": {
 		"clean": "shx rm -fr *.tsbuildinfo dist",

@@ -2193,12 +2193,9 @@ langium-visitor@^1.4.4:
   dependencies:
     chalk "^5.4.1"
     langium "^3.3.1"
-    langium-visitor "file:../../../../../../../.cache/yarn/v6/npm-langium-visitor-1.4.4-integrity/node_modules/langium-visitor"
+    langium-visitor "file:../../../../../.cache/yarn/v6/npm-langium-visitor-1.4.4-integrity/node_modules/langium-visitor"
     minimist "^1.2.8"
     nunjucks "^3.2.4"
-
-"langium-visitor@file:":
-  version "0.0.1"
 
 langium@^3.3.1:
   version "3.5.0"
