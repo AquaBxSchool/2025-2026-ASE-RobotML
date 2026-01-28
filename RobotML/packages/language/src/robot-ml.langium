@@ -12,10 +12,10 @@ interface Statement {
 }
 
 Statement returns Statement:
-    FunctionDeclaration | Block | VariableDec | Loop | Assignation | FunctionCall | Condition | SetSpeed | SetClock | Rotate | Forward | Backward | Leftward | Rightward
+    FunctionDeclaration | Block | VariableDec | Loop | Assignation | FunctionCall | Condition | SetSpeed | SetClock | Rotate | Forward | Backward | Leftward | Rightward | FnReturn
 ;
 
-interface FnReturn {
+interface FnReturn extends Statement {
     expression: Expression
 }
 
@@ -25,11 +25,10 @@ FnReturn returns FnReturn:
 
 interface Block extends Statement {
     statements: Statement[]
-    returnStmt?: FnReturn
 }
 
 Block returns Block:
-    {Block} '{' ( statements+=Statement)*  (returnStmt=FnReturn)? '}'
+    {Block} '{' ( statements+=Statement)* '}'
 ;
 
 // Control Flow
@@ -44,12 +43,12 @@ Condition returns Condition:
 ;
 
 interface Loop extends Statement {
-    conditions: Expression
-    block: Block[]
+	condition: Expression
+	block: Block
 }
 
 Loop returns Loop:
-    'while' '(' conditions=Expression ')' block+=Block
+    'while' '(' condition=Expression ')' block=Block
 ;
 
 // Builtins Statements
@@ -188,9 +187,9 @@ interface Literal extends Expression {
 }
 
 PrimaryExpression:
-    {VariableRef} VariableRef  | 
-    {FunctionCall} FunctionCall | 
-    {Builtins} Builtins | 
+    {VariableRef} VariableRef  |
+    {FunctionCall} FunctionCall |
+    {Builtins} Builtins |
     {Literal} (value=INT | value=STRING | value=FLOAT | value=BOOL)
 ;
 

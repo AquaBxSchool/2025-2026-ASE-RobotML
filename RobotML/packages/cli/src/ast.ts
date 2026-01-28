@@ -1,5 +1,5 @@
 import { createRobotMlServices } from "robot-ml-language";
-import type {
+import {
     FunctionDeclaration as FunctionDeclarationT,
     RobotML as RobotMLT,
     Block as BlockT,
@@ -21,10 +21,13 @@ import type {
     GetSpeed as GetSpeedT,
     VariableRef as VariableRefT,
     VariableDec as VariableDecT,
+    Loop as LoopT,
     Type as TypeT,
     Unary as UnaryT,
     Literal as LiteralT,
-    BinaryExpr as BinaryExprT
+    BinaryExpr as BinaryExprT,
+    FnReturn as FnReturnT,
+    Assignation as AssignationT
 } from "robot-ml-language";
 import { EmptyFileSystem, Reference } from "langium";
 import { parseHelper } from "langium/test";
@@ -90,8 +93,9 @@ class Condition implements Visitor, Statement {
 
     constructor(el: ConditionT) {
         assert.strictEqual(el.$type,  "Condition");
+        console.log(el)
+        console.log(el.conditions)
         this.expression = el.conditions.map(ExpressionVisit)
-        this.blocks = el.block.map(el => new Block(el))
         this.blocks = el.block.map(el => new Block(el))
     }
 }
@@ -210,6 +214,34 @@ class Literal<T> implements Visitor, Expression {
     }
 }
 
+class Loop implements Visitor, Statement {
+    condition: Expression
+    block: Block
+    constructor(el: LoopT) {
+
+        assert.strictEqual(el.$type,  "Loop");
+        this.condition =  ExpressionVisit(el.condition)
+        this.block = new Block(el.block)
+    }
+}
+
+class Assignation implements Visitor, Statement {
+  variable: string
+  expr: Expression
+
+  constructor(el: AssignationT) {
+      this.variable = ReferenceParse(el.variableRef.ref)
+      this.expr = ExpressionVisit(el.expression)
+  }
+}
+
+class FnReturn implements Visitor, Statement {
+  expr: Expression
+  constructor(el: FnReturnT) {
+    this.expr = ExpressionVisit(el.expression)
+  }
+}
+
 function ReferenceParse(el:Reference) {
     return el.$refText
 }
@@ -286,6 +318,15 @@ function StatementVisit(el: StatementT): Statement {
         }
         case "VariableDec": {
             return new VariableDec(el as VariableDecT)
+        }
+        case "Loop": {
+            return new Loop(el as LoopT)
+        }
+        case "Assignation": {
+            return new Assignation(el as AssignationT)
+        }
+        case "FnReturn": {
+          return new FnReturn(el as FnReturnT)
         }
         default: {
             throw `Statement Not defined ${el.$type}`
