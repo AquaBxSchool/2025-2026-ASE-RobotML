@@ -15,6 +15,9 @@ import {
 	RobotMlValidator,
 	registerValidationChecks,
 } from "./robot-ml-validator.js";
+import { RobotMlAcceptWeaver } from "./semantics/robot-ml-accept-weaver.js";
+import { registerVisitorAsValidator } from "./semantics/robot-ml-visitor.js";
+import { RobotMLTypeCheckVisitor } from "./robot-ml-typecheck.js";
 // import { MyLanguageScopeProvider } from './robot-ml-scope.js';
 
 /**
@@ -24,6 +27,10 @@ export type RobotMlAddedServices = {
 	validation: {
 		RobotMlValidator: RobotMlValidator;
 	};
+	visitors: {
+      RobotMlAcceptWeaver: RobotMlAcceptWeaver
+      RobotMLTypeCheckVisitor: RobotMLTypeCheckVisitor
+    }
 };
 
 /**
@@ -47,6 +54,10 @@ export const RobotMlModule: Module<
 	references: {
 		// ScopeProvider: (services) => new MyLanguageScopeProvider(services)
 	},
+	visitors: {
+      RobotMlAcceptWeaver: (services) => new RobotMlAcceptWeaver(services),
+      RobotMLTypeCheckVisitor: () => new RobotMLTypeCheckVisitor()
+    }
 };
 
 /**
@@ -78,6 +89,8 @@ export function createRobotMlServices(context: DefaultSharedModuleContext): {
 		RobotMlModule,
 	);
 	shared.ServiceRegistry.register(RobotMl);
+	RobotMl.visitors.RobotMlAcceptWeaver;
+	registerVisitorAsValidator(RobotMl.visitors.RobotMLTypeCheckVisitor, RobotMl); // This is to register the validation visitor to the validation registry of Langium
 	registerValidationChecks(RobotMl);
 	if (!context.connection) {
 		// We don't run inside a language server
