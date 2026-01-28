@@ -1,5 +1,5 @@
 {
-    "name": "vscode-RobotML",
+    "name": "robot-ml-vscode",
     "description": "The extension specific package",
     "version": "0.0.1",
     "displayName": "RobotML",
