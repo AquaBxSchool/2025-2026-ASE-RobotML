@@ -1,6 +1,5 @@
 Void main() {
-    foo() == true
-    return 
+    return foo() == true
 }
 
 String bar() {

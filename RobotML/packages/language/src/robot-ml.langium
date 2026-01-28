@@ -163,7 +163,7 @@ infix BinaryExpr on Expr:
     right assoc '^'
     > '*' | '/' 
     > '+' | '-' 
-    > "==" | ">="  | "<=" | ">"  | "<"
+    > "!=" | "==" | ">="  | "<=" | ">"  | "<"
     > "&&"
     > "||"
     ;
@@ -171,7 +171,7 @@ infix BinaryExpr on Expr:
 type PrimaryExpression = VariableRef | FunctionCall | Builtins | string;
 
 PrimaryExpression returns PrimaryExpression:
-    VariableRef  | FunctionCall | Builtins | INT | STRING | FLOAT 
+    VariableRef  | FunctionCall | Builtins | INT | STRING | FLOAT | BOOL
 ;
 
 type Declaration = VariableDec | ArgumentDec;
@@ -230,9 +230,14 @@ Sensor returns Sensor:
 ;
 
 terminal FLOAT returns number: /[0-9]+\.[0-9]+([eE][+-]?[0-9]+)?/;
+terminal BOOL returns number: 'true' | 'false';  
 terminal ID returns string:'^'? (/[a-z]+/ | /[A-Z]+/ | '_' )(/[a-z]+/ | /[A-Z]+/ | '_' | /[0-9]+/ )* ;
 terminal INT returns number: /[0-9]+/;
 terminal STRING returns string:'"' ('\\' . |  !('\\' | '"' ))*'"'  | "'" ('\\' . |  !('\\' | "'" ))*"'"  ;
-hidden terminal ML_COMMENT returns string:'/*'  -> '*/'  ;
-hidden terminal SL_COMMENT returns string:'//'  !('\n' | '\r' )('\r'? '\n' )?  ;
-hidden terminal WS returns string:(' ' | '\t' | '\r' | '\n' )+;
+// hidden terminal ML_COMMENT returns string:'/*'  -> '*/'  ;
+// hidden terminal SL_COMMENT returns string:'//'  !('\n' | '\r' )('\r'? '\n' )?  ;
+// hidden terminal WS returns string:(' ' | '\t' | '\r' | '\n' )+;
+
+hidden terminal WS: /\s+/;
+hidden terminal ML_COMMENT: /\/\*[\s\S]*?\*\//;
+hidden terminal SL_COMMENT: /\/\/[^\n\r]*/;

@@ -20,6 +20,7 @@ import type {
     GetSensor as GetSensorT,
     GetSpeed as GetSpeedT,
     VariableRef as VariableRefT,
+    VariableDec as VariableDecT
 } from "robot-ml-language";
 import { EmptyFileSystem, Reference } from "langium";
 import { parseHelper } from "langium/test";
@@ -142,6 +143,11 @@ class VariableRef implements Visitor, Expression {
     }
 }
 
+class VariableDec implements Visitor, Statement {
+    constructor(el: VariableDecT) {
+    }
+}
+
 function ReferenceParse(el:Reference) {
     return el.$refText
 }
@@ -164,7 +170,7 @@ function ExpressionVisit(el: ExpressionT): Expression {
             return new VariableRef(el as VariableRefT)
         }
         default: {
-            throw `Not defined ${el.$type}`
+            throw `Expression Not defined ${el.$type}`
         }
     }
 }
@@ -207,8 +213,11 @@ function StatementVisit(el: StatementT): Statement {
         case "SetSpeed": {
             return new SetSpeed(el as SetSpeedT)
         }
+        case "VariableDec": {
+            return new VariableDec(el as VariableDecT)
+        }
         default: {
-            throw `Not defined ${el.$type}`
+            throw `Statement Not defined ${el.$type}`
         }
     }
 }

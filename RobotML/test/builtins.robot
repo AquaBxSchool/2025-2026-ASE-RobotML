@@ -1,6 +1,6 @@
 Void main() {
-    GetSensor(Distance)
-    GetClock()
-    GetSpeed()
-    setSpeed(h)
+    let _ = GetSensor(Distance)
+    let _ = GetClock()
+    let s = GetSpeed()
+    setSpeed(s)
 }
