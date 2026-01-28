@@ -1,14 +1,12 @@
 {
-	"extends": "../../tsconfig.json",
-	"compilerOptions": {
-		"rootDir": "src",
-		"outDir": "out",
-		"declarationDir": "out"
-	},
-	"references": [
-		{
-			"path": "../language/tsconfig.src.json"
-		}
-	],
-	"include": ["src/**/*.ts"]
+    "compilerOptions": {
+        "alwaysStrict": false,
+        "target": "ESNext",
+        "module": "NodeNext",
+        "moduleResolution":"NodeNext",
+        "outDir": "dist",
+        "composite": true,
+        "skipLibCheck": true,
+    },
+    "include": [ "src/**/*.ts", "src/index.ts" ],
 }

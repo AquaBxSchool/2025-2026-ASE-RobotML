@@ -6,7 +6,7 @@
 			"grammar": "src/robot-ml.langium",
 			"fileExtensions": ["robot"],
 			"textMate": {
-				"out": "syntaxes/robot-ml.tmLanguage.json"
+				"out": "dist/robot-ml.tmLanguage.json"
 			}
 		}
 	],

@@ -8,17 +8,16 @@
 		"npm": ">=10.2.3"
 	},
 	"files": [
-		"bin",
+		"dist",
 		"src"
 	],
 	"bin": {
-		"robot-ml-cli": "./bin/cli"
+		"robot-ml-cli": "./dist/cli"
 	},
 	"scripts": {
-		"clean": "shx rm -fr *.tsbuildinfo out",
-		"build": "bun build ./src/ast.ts --compile --outfile=./bin/cli --external langium --external chalk --external commander",
-		"test": "bun ./src/ast.ts",
-		"build:clean": "npm run clean && npm run build"
+		"clean": "shx rm -fr *.tsbuildinfo dist",
+		"build": "rolldown -c rolldown.config.ts && bun build ./dist/ast.js --compile --outfile=./dist/cli",
+		"test": "bun ./src/ast.ts"
 	},
 	"devDependencies": {
 		"robot-ml-language": "*",

@@ -10,21 +10,15 @@
 		"cli": "robot-ml-cli"
 	},
 	"devDependencies": {
-		"@types/node": "^24.10.2",
+		"@types/node": "^25.1.0",
 		"shx": "^0.4.0",
-		"typescript": "^5.9.3",
-		"langium": "^4.1.2"
-	},
-	"dependencies": {
-		"yarn": "^1.22.22"
-	},
-	"volta": {
-		"node": "20.19.2",
-		"npm": "10.8.2"
+		"vitest": "^4.0.18",
+		"rolldown-plugin-dts": "^0.21.7",
+    	"rolldown": "^1.0.0-rc.2"
 	},
 	"workspaces": [
 		"packages/language",
-		"packages/cli",
-		"packages/extension"
+		"packages/extension",
+		"packages/cli"
 	]
 }
