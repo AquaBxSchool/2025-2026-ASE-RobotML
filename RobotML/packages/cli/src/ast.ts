@@ -22,6 +22,9 @@ import type {
     VariableRef as VariableRefT,
     VariableDec as VariableDecT,
     Type as TypeT,
+    Unary as UnaryT,
+    Literal as LiteralT,
+    BinaryExpr as BinaryExprT
 } from "robot-ml-language";
 import { EmptyFileSystem, Reference } from "langium";
 import { parseHelper } from "langium/test";
@@ -145,6 +148,17 @@ class SetSpeed implements Visitor, Statement {
     }
 }
 
+class VariableDec implements Visitor, Statement {
+    name : string
+    type ?: TypeT
+    expression ?: Expression
+    constructor(el: VariableDecT) {
+        this.name = el.name
+        this.type = el.type
+        this.expression = el.expression ? ExpressionVisit(el.expression) : undefined
+    }
+}
+
 class GetClock implements Visitor, Expression {
     constructor(el: GetClockT) {
         assert.strictEqual(el.$type,  "GetClock");
@@ -160,6 +174,27 @@ class GetSensor implements Visitor, Expression {
 class GetSpeed implements Visitor, Expression {
     constructor(el: GetSpeedT) {}
 }
+
+class Unary implements Visitor, Expression {
+    op : "-"|"!"
+    expr : Expression
+    constructor(el: UnaryT) {
+        this.op = el.op
+        this.expr = ExpressionVisit(el.expr)
+    }
+}
+
+class BinaryExpression implements Visitor, Expression {
+    operator : any
+    left : Expression
+    right : Expression
+    constructor(el: BinaryExprT) {
+        this.left = ExpressionVisit(el.left)
+        this.right = ExpressionVisit(el.right)
+        this.operator = el.operator
+    }
+}
+
 class VariableRef implements Visitor, Expression {
     ref : String
     constructor(el: VariableRefT) {
@@ -168,14 +203,10 @@ class VariableRef implements Visitor, Expression {
     }
 }
 
-class VariableDec implements Visitor, Statement {
-    name : string
-    type ?: TypeT
-    expression ?: Expression
-    constructor(el: VariableDecT) {
-        this.name = el.name
-        this.type = el.type
-        this.expression = el.expression ? ExpressionVisit(el.expression) : undefined
+class Literal<T> implements Visitor, Expression {
+    value : T
+    constructor(el: T) {
+        this.value = el
     }
 }
 
@@ -199,6 +230,15 @@ function ExpressionVisit(el: ExpressionT): Expression {
         }
         case "VariableRef": {
             return new VariableRef(el as VariableRefT)
+        }
+        case "BinaryExpr": {
+            return new BinaryExpression(el as BinaryExprT)
+        }
+        case "Unary": {
+            return new Unary(el as UnaryT)
+        }
+        case "Literal": {
+            return new Literal((el as LiteralT).value)
         }
         default: {
             throw `Expression Not defined ${el.$type}`

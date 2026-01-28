@@ -172,7 +172,7 @@ Unary returns Unary:
     op=("!"|"-") expr=Expr;
 
 Expr returns Expression:
-    '(' {Expression} Expression ')' | {PrimaryExpression} PrimaryExpression | {Unary} Unary;
+    '(' {Expression} Expression ')' | PrimaryExpression | {Unary} Unary;
 
 infix BinaryExpr on Expr:
     right assoc '^'
@@ -183,10 +183,15 @@ infix BinaryExpr on Expr:
     > "||"
     ;
 
-type PrimaryExpression = VariableRef | FunctionCall | Builtins | string;
+interface Literal extends Expression {
+    value : number | string | boolean
+}
 
-PrimaryExpression returns PrimaryExpression:
-    VariableRef  | FunctionCall | Builtins | INT | STRING | FLOAT | BOOL
+PrimaryExpression:
+    {VariableRef} VariableRef  | 
+    {FunctionCall} FunctionCall | 
+    {Builtins} Builtins | 
+    {Literal} (value=INT | value=STRING | value=FLOAT | value=BOOL)
 ;
 
 type Declaration = VariableDec | ArgumentDec;
