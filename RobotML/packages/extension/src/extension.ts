@@ -26,9 +26,7 @@ export function deactivate(): Thenable<void> | undefined {
 async function startLanguageClient(
 	context: vscode.ExtensionContext,
 ): Promise<LanguageClient> {
-	const serverModule = context.asAbsolutePath(
-		path.join("out", "language.cjs"),
-	);
+	const serverModule = context.asAbsolutePath(path.join("out", "language.cjs"));
 	// The debug options for the server
 	// --inspect=6009: runs the server in Node's Inspector mode so VS Code can attach to the server for debugging.
 	// By setting `process.env.DEBUG_BREAK` to a truthy value, the language server will wait until a debugger is attached.

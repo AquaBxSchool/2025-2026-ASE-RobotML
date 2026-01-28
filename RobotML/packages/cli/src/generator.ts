@@ -15,7 +15,7 @@ export function generateOutput(
 		// ${joinToNode(model.functions)}
 		`.appendNewLineIfNotEmpty();
 
-		// ${model.accept(services.visitors.HelloWorldInterpreter)}
+	// ${model.accept(services.visitors.HelloWorldInterpreter)}
 	if (!fs.existsSync(data.destination)) {
 		fs.mkdirSync(data.destination, { recursive: true });
 	}

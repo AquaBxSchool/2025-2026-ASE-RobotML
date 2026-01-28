@@ -23,20 +23,20 @@ export async function extractDocument(
 	// 	);
 	// await services.shared.workspace.DocumentBuilder.build([document], {
 	// 	validation: true,
- //  });
+	//  });
 
 	const parse = parseHelper(services);
 
-  const file = Bun.file(fileName);
+	const file = Bun.file(fileName);
 
-  if (!file.exists()) {
+	if (!file.exists()) {
 		console.error(chalk.red(`File ${fileName} does not exist.`));
 		process.exit(1);
 	}
 
-  const filetext = await file.text();
+	const filetext = await file.text();
 
-  const document = await parse(filetext, { validation: true });
+	const document = await parse(filetext, { validation: true });
 
 	const validationErrors = (document.diagnostics ?? []).filter(
 		(e) => e.severity === 1,

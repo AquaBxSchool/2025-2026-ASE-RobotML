@@ -29,10 +29,10 @@ export type RobotMlAddedServices = {
 		RobotMlValidator: RobotMlValidator;
 	};
 	visitors: {
-      RobotMlAcceptWeaver: RobotMlAcceptWeaver
-      RobotMLTypeCheckVisitor: RobotMLTypeCheckVisitor
-      RobotMLAstPrinterVisitor: RobotMLAstPrinterVisitor
-    }
+		RobotMlAcceptWeaver: RobotMlAcceptWeaver;
+		RobotMLTypeCheckVisitor: RobotMLTypeCheckVisitor;
+		RobotMLAstPrinterVisitor: RobotMLAstPrinterVisitor;
+	};
 };
 
 /**
@@ -57,10 +57,10 @@ export const RobotMlModule: Module<
 		// ScopeProvider: (services) => new MyLanguageScopeProvider(services)
 	},
 	visitors: {
-      RobotMlAcceptWeaver: (services) => new RobotMlAcceptWeaver(services),
-      RobotMLTypeCheckVisitor: () => new RobotMLTypeCheckVisitor(),
-      RobotMLAstPrinterVisitor: () => new RobotMLAstPrinterVisitor()
-    }
+		RobotMlAcceptWeaver: (services) => new RobotMlAcceptWeaver(services),
+		RobotMLTypeCheckVisitor: () => new RobotMLTypeCheckVisitor(),
+		RobotMLAstPrinterVisitor: () => new RobotMLAstPrinterVisitor(),
+	},
 };
 
 /**

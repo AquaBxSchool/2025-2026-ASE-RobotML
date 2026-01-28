@@ -7,14 +7,16 @@
 	"scripts": {
 		"clean": "yarn workspaces run clean",
 		"build": "yarn workspaces run build",
-		"cli": "robot-ml-cli"
+		"cli": "robot-ml-cli",
+		"fmt": "biome format --write"
 	},
 	"devDependencies": {
 		"@types/node": "^25.1.0",
-		"shx": "^0.4.0",
-		"vitest": "^4.0.18",
+		"@biomejs/biome": "^0.3.3",
+		"rolldown": "^1.0.0-rc.2",
 		"rolldown-plugin-dts": "^0.21.7",
-    	"rolldown": "^1.0.0-rc.2"
+		"shx": "^0.4.0",
+		"vitest": "^4.0.18"
 	},
 	"workspaces": [
 		"packages/language",
