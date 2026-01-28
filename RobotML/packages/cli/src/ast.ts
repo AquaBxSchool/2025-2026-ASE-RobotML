@@ -34,7 +34,11 @@ import { parseHelper } from "langium/test";
 import { parseArgs } from "util";
 import assert from "assert";
 
-interface Visitor { }
+interface Visitor {
+    // static_analysis() : string
+    // generate() : string
+}
+
 interface Statement { }
 interface Expression { }
 
