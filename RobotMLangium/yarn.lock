@@ -179,7 +179,7 @@
     "@babel/helper-string-parser" "^8.0.0-beta.4"
     "@babel/helper-validator-identifier" "^8.0.0-beta.4"
 
-"@biomejs/biome@^0.3.3":
+"@biomejs/biome@^2.3.13":
   version "2.3.13"
   resolved "https://registry.yarnpkg.com/@biomejs/biome/-/biome-2.3.13.tgz#966c015d8610137f65c97c081bf69a44b423963b"
   integrity sha512-Fw7UsV0UAtWIBIm0M7g5CRerpu1eKyKAXIazzxhbXYUyMkwNrkX/KLkGI7b+uVDQ5cLUMfOC9vR60q9IDYDstA==
