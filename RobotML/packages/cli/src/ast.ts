@@ -25,6 +25,7 @@ import type {
 import { EmptyFileSystem, Reference } from "langium";
 import { parseHelper } from "langium/test";
 import { parseArgs } from "util";
+import assert from "assert";
 
 interface Visitor { }
 interface Statement { }
@@ -40,11 +41,13 @@ class Robot implements Visitor {
 
 class FunctionDeclaration implements Visitor, Statement {
     name: string
-    block
+    block: Block
     returnType: string
     parameters: ArgumentDec[]
 
     constructor(el: FunctionDeclarationT) {
+        assert.strictEqual(el.$type,  "FunctionDeclaration");
+
         this.name = el.name
         this.block = new Block(el.block)
         this.returnType = el.returnType
@@ -61,12 +64,14 @@ class Block implements Visitor, Statement {
     statements: Statement[]
 
     constructor(el: BlockT) {
+        assert.strictEqual(el.$type,  "Block");
         this.statements = el.statements.map(StatementVisit)
     }
 }
 
 class Backward implements Visitor, Statement {
     constructor(el: BackwardT) {
+        assert.strictEqual(el.$type,  "Backward");
         throw `Not Implemented ${el.$type}`
     }
 }
@@ -75,6 +80,7 @@ class Condition implements Visitor, Statement {
     expression: Expression[]
 
     constructor(el: ConditionT) {
+        assert.strictEqual(el.$type,  "Condition");
         this.expression = el.conditions.map(ExpressionVisit)
         this.blocks = el.block.map(el => new Block(el))
         this.blocks = el.block.map(el => new Block(el))
@@ -82,6 +88,7 @@ class Condition implements Visitor, Statement {
 }
 class Forward implements Visitor, Statement {
     constructor(el: ForwardT) {
+        assert.strictEqual(el.$type,  "Forward");
         throw `Not Implemented ${el.$type}`
     }
 }
@@ -89,48 +96,58 @@ class FunctionCall implements Visitor, Statement, Expression {
     parameters : Expression[]
     decl : string
     constructor(el: FunctionCallT) {
+        assert.strictEqual(el.$type,  "FunctionCall");
         this.decl = ReferenceParse(el.functiondeclaration)
         this.parameters = el.parameters
     }
 }
 class Leftward implements Visitor, Statement {
     constructor(el: LeftwardT) {
+        assert.strictEqual(el.$type,  "Leftward");
         throw `Not Implemented ${el.$type}`
     }
 }
 class Movement implements Visitor, Statement {
     constructor(el: MovementT) {
+        assert.strictEqual(el.$type,  "Movement");
         throw `Not Implemented ${el.$type}`
     }
 }
 class Rightward implements Visitor, Statement {
     constructor(el: RightwardT) {
+        assert.strictEqual(el.$type,  "Rightward");
         throw `Not Implemented ${el.$type}`
     }
 }
 class Rotate implements Visitor, Statement {
     constructor(el: RotateT) {
+        assert.strictEqual(el.$type,  "Rotate");
         throw `Not Implemented ${el.$type}`
     }
 }
 class SetClock implements Visitor, Statement {
     constructor(el: SetClockT) {
+        assert.strictEqual(el.$type,  "SetClock");
         throw `Not Implemented ${el.$type}`
     }
 }
+
 class SetSpeed implements Visitor, Statement {
     constructor(el: SetSpeedT) {
+        assert.strictEqual(el.$type,  "SetSpeed");
         throw `Not Implemented ${el.$type}`
     }
 }
 
 class GetClock implements Visitor, Expression {
     constructor(el: GetClockT) {
+        assert.strictEqual(el.$type,  "GetClock");
         throw `Not Implemented ${el.$type}`
     }
 }
 class GetSensor implements Visitor, Expression {
     constructor(el: GetSensorT) {
+        assert.strictEqual(el.$type,  "GetSensor");
         throw `Not Implemented ${el.$type}`
     }
 }
@@ -140,6 +157,7 @@ class GetSpeed implements Visitor, Expression {
 class VariableRef implements Visitor, Expression {
     ref : String
     constructor(el: VariableRefT) {
+        assert.strictEqual(el.$type,  "VariableRef");
         this.ref = ReferenceParse(el.ref)
     }
 }
@@ -241,7 +259,7 @@ if (values.file === undefined) {
     throw "File not providen"
 }
 
-const file = Bun.file(values.file); 
+const file = Bun.file(values.file);
 console.log(file)
 const filetext = await file.text()
 const document = await parse(filetext, { validation: true }); //enable validation, otherwise the validator will not be called!

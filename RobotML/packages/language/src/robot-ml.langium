@@ -25,10 +25,11 @@ FnReturn returns FnReturn:
 
 interface Block extends Statement {
 	statements: Statement[]
+	returnStmt?: FnReturn
 }
 
 Block returns Block:
-    {Block} '{' ( statements+=Statement  )*  (FnReturn)? '}' 
+    {Block} '{' ( statements+=Statement)*  (returnStmt=FnReturn)? '}'
 ;
 
 // Control Flow
@@ -125,7 +126,7 @@ interface ArgumentDec {
 
 ArgumentDec returns ArgumentDec:
     name=ID (':' ^type=Type  )?
-; 
+;
 
 interface FunctionDeclaration extends Statement {
 	returnType: Type
@@ -161,8 +162,8 @@ Expr: '(' expr=Expression ')' | '-' value=Expr | value=PrimaryExpression;
 
 infix BinaryExpr on Expr:
     right assoc '^'
-    > '*' | '/' 
-    > '+' | '-' 
+    > '*' | '/'
+    > '+' | '-'
     > "!=" | "==" | ">="  | "<=" | ">"  | "<"
     > "&&"
     > "||"
@@ -230,7 +231,7 @@ Sensor returns Sensor:
 ;
 
 terminal FLOAT returns number: /[0-9]+\.[0-9]+([eE][+-]?[0-9]+)?/;
-terminal BOOL returns number: 'true' | 'false';  
+terminal BOOL returns number: 'true' | 'false';
 terminal ID returns string:'^'? (/[a-z]+/ | /[A-Z]+/ | '_' )(/[a-z]+/ | /[A-Z]+/ | '_' | /[0-9]+/ )* ;
 terminal INT returns number: /[0-9]+/;
 terminal STRING returns string:'"' ('\\' . |  !('\\' | '"' ))*'"'  | "'" ('\\' . |  !('\\' | "'" ))*"'"  ;
