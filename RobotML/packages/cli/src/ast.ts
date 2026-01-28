@@ -82,9 +82,10 @@ class Block implements Visitor, Statement {
 }
 
 class Backward implements Visitor, Statement {
+    expr: Expression
     constructor(el: BackwardT) {
         assert.strictEqual(el.$type,  "Backward");
-        throw `Not Implemented ${el.$type}`
+        this.expr = ExpressionVisit(el.expression)
     }
 }
 class Condition implements Visitor, Statement {
@@ -100,9 +101,10 @@ class Condition implements Visitor, Statement {
     }
 }
 class Forward implements Visitor, Statement {
+    expr: Expression
     constructor(el: ForwardT) {
         assert.strictEqual(el.$type,  "Forward");
-        throw `Not Implemented ${el.$type}`
+        this.expr = ExpressionVisit(el.expression)
     }
 }
 class FunctionCall implements Visitor, Statement, Expression {
@@ -111,44 +113,50 @@ class FunctionCall implements Visitor, Statement, Expression {
     constructor(el: FunctionCallT) {
         assert.strictEqual(el.$type,  "FunctionCall");
         this.decl = ReferenceParse(el.functiondeclaration)
-        this.parameters = el.parameters
+        this.parameters = el.parameters.map(ExpressionVisit)
     }
 }
 class Leftward implements Visitor, Statement {
+    expr: Expression
     constructor(el: LeftwardT) {
         assert.strictEqual(el.$type,  "Leftward");
-        throw `Not Implemented ${el.$type}`
+        this.expr = ExpressionVisit(el.expression)
     }
 }
 class Movement implements Visitor, Statement {
+    expr: Expression
     constructor(el: MovementT) {
         assert.strictEqual(el.$type,  "Movement");
-        throw `Not Implemented ${el.$type}`
+        this.expr = ExpressionVisit(el.expression)
     }
 }
 class Rightward implements Visitor, Statement {
+    expr: Expression
     constructor(el: RightwardT) {
         assert.strictEqual(el.$type,  "Rightward");
-        throw `Not Implemented ${el.$type}`
+        this.expr = ExpressionVisit(el.expression)
     }
 }
 class Rotate implements Visitor, Statement {
+    expr: Expression
     constructor(el: RotateT) {
         assert.strictEqual(el.$type,  "Rotate");
-        throw `Not Implemented ${el.$type}`
+        this.expr = ExpressionVisit(el.expression)
     }
 }
 class SetClock implements Visitor, Statement {
+    expr: Expression
     constructor(el: SetClockT) {
         assert.strictEqual(el.$type,  "SetClock");
-        throw `Not Implemented ${el.$type}`
+        this.expr = ExpressionVisit(el.expression)
     }
 }
 
 class SetSpeed implements Visitor, Statement {
+    expr: Expression
     constructor(el: SetSpeedT) {
         assert.strictEqual(el.$type,  "SetSpeed");
-        throw `Not Implemented ${el.$type}`
+        this.expr = ExpressionVisit(el.expression)
     }
 }
 
@@ -166,13 +174,11 @@ class VariableDec implements Visitor, Statement {
 class GetClock implements Visitor, Expression {
     constructor(el: GetClockT) {
         assert.strictEqual(el.$type,  "GetClock");
-        throw `Not Implemented ${el.$type}`
     }
 }
 class GetSensor implements Visitor, Expression {
     constructor(el: GetSensorT) {
         assert.strictEqual(el.$type,  "GetSensor");
-        throw `Not Implemented ${el.$type}`
     }
 }
 class GetSpeed implements Visitor, Expression {
