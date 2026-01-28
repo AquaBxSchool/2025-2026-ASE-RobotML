@@ -20,7 +20,7 @@ interface FnReturn extends Statement {
 }
 
 FnReturn returns FnReturn:
-    'return' expression=Expression
+    'return' expression=BinaryExpr
 ;
 
 interface Block extends Statement {
@@ -39,7 +39,7 @@ interface Condition extends Statement {
 }
 
 Condition returns Condition:
-    'if' '(' conditions+=Expression ')' block+=Block ('elif' '(' conditions+=Expression ')' block+=Block )*  ('else'  block+=Block )?
+    'if' '(' conditions+=BinaryExpr ')' block+=Block ('elif' '(' conditions+=BinaryExpr ')' block+=Block )*  ('else'  block+=Block )?
 ;
 
 interface Loop extends Statement {
@@ -48,7 +48,7 @@ interface Loop extends Statement {
 }
 
 Loop returns Loop:
-    'while' '(' condition=Expression ')' block=Block
+    'while' '(' condition=BinaryExpr ')' block=Block
 ;
 
 // Builtins Statements
@@ -58,7 +58,7 @@ interface SetSpeed extends Statement {
 }
 
 SetSpeed returns SetSpeed:
-    'setSpeed(' expression=Expression ')'
+    'setSpeed(' expression=BinaryExpr ')'
 ;
 
 interface SetClock extends Statement {
@@ -66,7 +66,7 @@ interface SetClock extends Statement {
 }
 
 SetClock returns SetClock:
-    'SetClock(' expression=Expression ')'
+    'SetClock(' expression=BinaryExpr ')'
 ;
 
 interface Rotate extends Statement {
@@ -74,7 +74,7 @@ interface Rotate extends Statement {
 }
 
 Rotate returns Rotate:
-    'Rotate(' expression=Expression  ')'
+    'Rotate(' expression=BinaryExpr  ')'
 ;
 
 // Movement Statement
@@ -86,25 +86,25 @@ interface Movement extends Statement {
 interface Forward extends Movement {
 }
 Forward returns Forward:
-    'Forward(' expression=Expression  ')'
+    'Forward(' expression=BinaryExpr  ')'
 ;
 
 interface Backward extends Movement {
 }
 Backward returns Backward:
-    'Backward(' expression=Expression  ')'
+    'Backward(' expression=BinaryExpr  ')'
 ;
 
 interface Leftward extends Movement {
 }
 Leftward returns Leftward:
-    'Leftward(' expression=Expression  ')'
+    'Leftward(' expression=BinaryExpr  ')'
 ;
 
 interface Rightward extends Movement {
 }
 Rightward returns Rightward:
-    'Rightward(' expression=Expression  ')'
+    'Rightward(' expression=BinaryExpr  ')'
 ;
 
 // Declaration Statemens
@@ -120,7 +120,7 @@ interface VariableDec extends Statement {
 }
 
 VariableDec returns VariableDec:
-    'let' name=ID (':' ^type=Type  )? ('=' expression=Expression)?
+    'let' name=ID (':' ^type=Type  )? ('=' expression=BinaryExpr)?
 ;
 
 interface ArgumentDec {
@@ -151,7 +151,7 @@ interface Assignation extends Statement {
 }
 
 Assignation returns Assignation:
-    variableRef=VariableRef '=' expression=Expr
+    variableRef=VariableRef '=' expression=BinaryExpr
 ;
 
 // Expression
@@ -169,7 +169,7 @@ Unary returns Unary:
     op=("!"|"-") expr=Expr;
 
 Expr returns Expression:
-    '(' {Expression} BinaryExpr ')' |  {Expression} BinaryExpr  | PrimaryExpression | {Unary} Unary;
+    '(' {Expression} BinaryExpr ')' | PrimaryExpression | {Unary} Unary;
 
 infix BinaryExpr on Expr:
     right assoc '^'
@@ -207,7 +207,7 @@ interface FunctionCall extends Statement, Expression {
 }
 
 FunctionCall returns FunctionCall:
-    functiondeclaration=[FunctionDeclaration:ID] '(' ( parameters+=Expression ("," parameters+=Expression )*  )? ')'
+    functiondeclaration=[FunctionDeclaration:ID] '(' ( parameters+=BinaryExpr ("," parameters+=BinaryExpr )*  )? ')'
 ;
 
 // Builtins
