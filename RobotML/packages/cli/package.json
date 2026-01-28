@@ -17,14 +17,15 @@
     
     "scripts": {
         "clean": "shx rm -fr *.tsbuildinfo out",
-        "build": "bun build ./src/ast.ts --compile --outfile=./bin/cli",
+        "build": "bun build ./src/ast.ts --compile --outfile=./bin/cli --external langium --external chalk --external commander",
         "test": "bun ./src/ast.ts",
         "build:clean": "npm run clean && npm run build"
     },
     "devDependencies": {
         "robot-ml-language": "*",
         "chalk": "~5.6.2",
-        "commander": "~14.0.2"
+        "commander": "~14.0.2",
+        "@types/bun":"^1.3.7"
     },
     "volta": {
         "node": "20.19.2",

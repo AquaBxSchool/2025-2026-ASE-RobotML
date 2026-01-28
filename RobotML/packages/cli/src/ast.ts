@@ -24,6 +24,7 @@ import type {
 } from "robot-ml-language";
 import { EmptyFileSystem, Reference } from "langium";
 import { parseHelper } from "langium/test";
+import { parseArgs } from "util";
 
 interface Visitor { }
 interface Statement { }
@@ -225,15 +226,25 @@ function StatementVisit(el: StatementT): Statement {
 const services = createRobotMlServices(EmptyFileSystem);
 const parse = parseHelper(services.RobotMl);
 
-const document = await parse(`
-Void ddd(fezfe: Void) {
+const { values } = parseArgs({
+  args: Bun.argv,
+  options: {
+    file: {
+      type: "string",
+    },
+  },
+  strict: true,
+  allowPositionals: true,
+});
 
+if (values.file === undefined) {
+    throw "File not providen"
 }
 
-Void main(entree : Float) {
-
-}
-`, { validation: true }); //enable validation, otherwise the validator will not be called!
+const file = Bun.file(values.file); 
+console.log(file)
+const filetext = await file.text()
+const document = await parse(filetext, { validation: true }); //enable validation, otherwise the validator will not be called!
 
 const ast = new Robot(document.parseResult.value as RobotMLT)
 console.log(JSON.stringify(ast,null,2))
