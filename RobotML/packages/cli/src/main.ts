@@ -1,7 +1,5 @@
-// import type { RobotML } from "robot-ml-language";
 import {
 	createRobotMlServices,
-
 } from "robot-ml-language";
 import {
 	RobotML
@@ -9,6 +7,7 @@ import {
 import {
 	RobotMlLanguageMetaData,
 } from "robot-ml-language/generated";
+
 import chalk from "chalk";
 import { Command } from "commander";
 import { extractAstNode } from "./util.js";
@@ -26,7 +25,16 @@ export const generateAction = async (
 	console.log(chalk.green(`Code generated succesfully: ${generatedFilePath}`));
 };
 
-export default function (): void {
+export const astAction = async (
+	source: string,
+	destination: string,
+): Promise<void> => {
+	const services = createRobotMlServices(NodeFileSystem).RobotMl;
+	const model = await extractAstNode<RobotML>(source, services);
+	model.accept(services.visitors.RobotMLAstPrinterVisitor)
+};
+
+export default function main(): void {
 	const program = new Command();
 
 	// TODO: use Program API to declare the CLI
@@ -40,6 +48,16 @@ export default function (): void {
 		.argument("<destination>", "destination file")
 		.description("Generates code for a provided source file.")
 		.action(generateAction);
+	program
+		.command("ast")
+		.argument(
+			"<file>",
+			`source file (possible file extensions: ${fileExtensions})`,
+		)
+		.description("Print AST")
+		.action(astAction);
 
 	program.parse(process.argv);
 }
+
+main()

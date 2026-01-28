@@ -29,7 +29,7 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
         throw new Error("Method not implemented.");
     }
     visitRobotML(node: RobotML) {
-        throw new Error("Method not implemented.");
+        // throw new Error("Method not implemented.");
     }
     visitStatement(node: Statement) {
         throw new Error("Method not implemented.");

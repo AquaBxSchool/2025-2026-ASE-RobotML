@@ -1,7 +1,7 @@
-import type { RobotML } from "robot-ml-language";
 import { expandToNode, joinToNode, toString } from "langium/generate";
 import * as fs from "node:fs";
 import { extractDestinationAndName } from "./util.js";
+import { RobotML } from "robot-ml-language/semantics";
 
 export function generateOutput(
 	model: RobotML,
