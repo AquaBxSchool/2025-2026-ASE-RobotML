@@ -164,12 +164,12 @@ Expression returns Expression:
     BinaryExpr;
 
 interface Unary extends Expression {
-    op:"-"
+    op:("-"|"!")
     expr:Expression
 }
 
 Unary returns Unary:
-    op="-" expr=Expr;
+    op=("!"|"-") expr=Expr;
 
 Expr returns Expression:
     '(' {Expression} Expression ')' | {PrimaryExpression} PrimaryExpression | {Unary} Unary;
