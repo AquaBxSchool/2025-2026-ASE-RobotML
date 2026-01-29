@@ -26,15 +26,52 @@ describe("Parsing tests", () => {
 
 	it("builtins", async () => {
 		const code = `
-  		void main() {
-          let _ = GetSensor(Distance)
-          let _ = GetClock()
-          let s: float = GetSpeed()
-          setSpeed(s)
-      }
+		void main() {
+		    let d = 10
+        let d2 = 10.1
+        setSpeed(d)
+        SetClock(d)
+        Backward(d)
+        Forward(d)
+        Rightward(d)
+        Leftward(d)
+        Rotate(-d)
+        setSpeed(d2)
+        SetClock(d2)
+        Backward(d2)
+        Forward(d2)
+        Rightward(d2)
+        Leftward(d2)
+        Rotate(-d2)
+        let _ = GetSensor(Distance)
+        let _ = GetClock()
+        let s: float = GetSpeed()
+        setSpeed(s)
+    }
 		`;
 		const result = await parse(code, { validation: true });
 		expect(result.diagnostics?.length).equal(0);
+  });
+
+	it("builtinsErr", async () => {
+		const code = `
+		void main() {
+        let d = true
+        setSpeed(d)
+        SetClock(d)
+        Backward(d)
+        Forward(d)
+        Rightward(d)
+        Leftward(d)
+        Rotate(-d)
+        let _ : string = GetSensor(Distance)
+        let _ : string = GetClock()
+        let s: string = GetSpeed()
+        setSpeed(s)
+    }
+		`;
+		const result = await parse(code, { validation: true });
+		expect(result.diagnostics?.length).equal(12);
 	});
 
 	it("Add an int to a float", async () => {
@@ -62,6 +99,35 @@ describe("Parsing tests", () => {
 		expect(result.diagnostics?.[0]?.message).equal(
 			"Could not add a boolean to a integer [object Object]",
 		);
+  });
+
+	it("Ingnore Variable", async () => {
+		const code = `
+			void main() {
+				let _a : integer = 5
+				let b = _a
+			}
+		`;
+		const result = await parse(code, { validation: true });
+		expect(result.diagnostics?.filter((d) => d.severity === 1).length).equal(1);
+		expect(result.diagnostics?.[0]?.message).equal(
+			"Variable _a does not exist",
+		);
+  });
+
+	it("Decl then assignation", async () => {
+		const code = `
+			void main() {
+				let a_: integer
+				a_ = 10
+			}
+		`;
+		const result = await parse(code, { validation: true });
+		console.log(result.diagnostics)
+		expect(result.diagnostics?.filter((d) => d.severity === 1).length).equal(0);
+		// expect(result.diagnostics?.[0]?.message).equal(
+		// 	"Variable _a does not exist",
+		// );
 	});
 
 	it("controlflow", async () => {
