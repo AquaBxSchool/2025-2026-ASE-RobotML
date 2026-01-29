@@ -187,7 +187,7 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 						if (!checkNumber1 && !checkNumber2) {
 							this.validationAccept(
 								"error",
-								`Cound not apply the operation between a ${typeL} and a ${typeR} ${node}`,
+								`Cound not apply the operation ${node2.operator} between a ${typeL} and a ${typeR} ${node}`,
 								{
 									node: node,
 								},
@@ -229,7 +229,7 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 						if (!checkNumber1 && !checkNumber2) {
 							this.validationAccept(
 								"error",
-								`Cound not apply the operation between a ${typeL} and a ${typeR} ${node}`,
+								`Cound not apply the operation ${node2.operator} between a ${typeL} and a ${typeR} ${node}`,
 								{
 									node: node,
 								},
