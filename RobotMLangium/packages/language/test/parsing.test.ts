@@ -38,7 +38,7 @@ describe("Parsing tests", () => {
 		expect(result.diagnostics?.length).equal(0);
 	});
 
-	it("build1", async () => {
+	it("Add an int to a float", async () => {
 		const code = `
 			void main() {
 				let a : integer = 5
@@ -49,7 +49,7 @@ describe("Parsing tests", () => {
 		expect(result.diagnostics?.length).equal(0);
 	});
 
-	it("build2", async () => {
+	it("Add a int to a bool", async () => {
 		const code = `
 			void main() {
 				let a : integer = 5

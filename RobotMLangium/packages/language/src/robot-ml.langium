@@ -109,9 +109,9 @@ Rightward returns Rightward:
 
 // Declaration Statemens
 
-type Type = 'string' | 'boolean' | 'integer' | 'float' | 'void';
+type Type = 'string' | 'boolean' | 'integer' | 'float' | 'void' | 'error';
 Type returns Type:
-    'string' | 'boolean' | 'integer' | 'float' | 'void';
+    'string' | 'boolean' | 'integer' | 'float' | 'void' | 'error';
 
 interface VariableDec extends Statement {
     name: string

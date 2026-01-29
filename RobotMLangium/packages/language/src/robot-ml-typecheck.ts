@@ -77,6 +77,7 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 									node: node,
 								},
 							);
+							throw "Error"
 						}
 						return { type: "boolean" };
 					}
@@ -113,6 +114,7 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 									node: node,
 								},
 							);
+							throw "Error"
 						}
 						return { type: "boolean" };
 					}
@@ -149,7 +151,8 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 								{
 									node: node,
 								},
-							);
+							)
+							throw "Error"
 						}
 
 						if (checkNumber) {
@@ -192,6 +195,7 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 									node: node,
 								},
 							);
+							throw "Error"
 						}
 
 						if (checkNumber1) {
@@ -234,6 +238,7 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 									node: node,
 								},
 							);
+							throw "Error"
 						}
 						return { type: "boolean" };
 					}
@@ -381,6 +386,8 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 		this.symbolTable.endScope();
 	}
 	visitStatement(node: Statement) {
+		try {
+		
 		switch (node.$type) {
 			case "FunctionDeclaration":
 				this.visitFunctionDeclaration(
@@ -431,6 +438,9 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 				break;
 			default:
 				break;
+		}
+				} catch (error) {
+			
 		}
 	}
 	visitAssignation(node: Assignation) {
