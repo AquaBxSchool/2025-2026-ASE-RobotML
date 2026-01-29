@@ -575,9 +575,23 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 	}
 	visitVariableDec(node: VariableDec) {
 		if (node.expression) {
-			this.visitExpression(node.expression);
-		}
+      const { type } = this.visitExpression(node.expression);
+      if (!node.type) {
+        node.type = type;
+      }
+      if (node.type !== type) {
+        this.validationAccept(
+				"error",
+				`Missmatch type between rtype ${type} and ltype ${node.type} `,
+				{
+					node: node,
+				},
+			);
+      }
+    }
 
-		this.symbolTable.put(node.name, node.type ?? "void", { node });
+    if (!node.name.startsWith('_')) {
+      this.symbolTable.put(node.name, node.type ?? "void", { node });
+    }
 	}
 }

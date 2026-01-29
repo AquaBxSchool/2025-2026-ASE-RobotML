@@ -27,12 +27,12 @@ describe("Parsing tests", () => {
 
 	it("builtins", async () => {
 		const code = `
-			void main() {
-				let _ = GetSensor(Distance)
-				let _ = GetClock()
-				let s: integer = GetSpeed()
-				setSpeed(s)
-			}
+  		void main() {
+          let _ = GetSensor(Distance)
+          let _ = GetClock()
+          let s: float = GetSpeed()
+          setSpeed(s)
+      }
 		`;
 		const result = await parse(code, { validation: true });
 		expect(result.diagnostics?.length).equal(0);
@@ -78,25 +78,25 @@ describe("Parsing tests", () => {
 	it("math", async () => {
     const code = `
       integer main() {
-          let b: integer = 9
-          let a: integer = -10
-          let c: float = a / 1
-          let _ = b * 1
-          let _ = c - 1
-          let _ = c + 1
-          let _ = c == 1
-          let _ = c <= 1
-          let _ = c >= 1
-          let _ = c != 1
-          let _ = c < 1
-          let _ = c > 1
-          let _ = c == c && 1 == 1
-          let _ = c == c || 1 == 1
-          let _ = c ^ 1
-          let c = ((10 * (12 + 4 + b) == 20) || a < b / b)
+              let b: integer = 9
+              let a: integer = -10
+              let c: integer = a / 1
+              let _ = b * 1
+              let _ = c - 1
+              let _ = c + 1
+              let _ = c == 1
+              let _ = c <= 1
+              let _ = c >= 1
+              let _ = c != 1
+              let _ = c < 1
+              let _ = c > 1
+              let _ = c == c && 1 == 1
+              let _ = c == c || 1 == 1
+              let _ = c ^ 1
+              let c = ((10 * (12 + 4 + b) == 20) || a < b / b)
 
-          return c
-      }
+              return c
+          }
 		`;
 		const result = await parse(code, { validation: true });
 		expect(result.diagnostics?.length).equal(0);
