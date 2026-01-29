@@ -3,7 +3,6 @@
 	"description": "The language specific package",
 	"version": "0.0.1",
 	"type": "module",
-
 	"main": "./dist/index.js",
 	"module": "./dist/index.js",
 	"types": "./dist/src/index.d.ts",
@@ -30,6 +29,8 @@
 		"vitest": "*",
 		"rolldown-plugin-dts": "*",
 		"rolldown": "*",
+		"@stryker-mutator/core": "^9.4.0",
+		"@stryker-mutator/vitest-runner": "^9.4.0",
 		"typescript": "^5.9.3"
 	},
 	"scripts": {

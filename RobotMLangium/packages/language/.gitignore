@@ -1,3 +1,6 @@
 /out
 /src/generated
 /src/semantics/**
+
+# stryker temp files
+.stryker-tmp
