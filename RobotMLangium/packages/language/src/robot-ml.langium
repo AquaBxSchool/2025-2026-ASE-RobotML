@@ -109,9 +109,9 @@ Rightward returns Rightward:
 
 // Declaration Statemens
 
-type Type = 'String' | 'Boolean' | 'Integer' | 'Float' | 'Void';
+type Type = 'string' | 'boolean' | 'integer' | 'float' | 'void';
 Type returns Type:
-    'String' | 'Boolean' | 'Integer' | 'Float' | 'Void';
+    'string' | 'boolean' | 'integer' | 'float' | 'void';
 
 interface VariableDec extends Statement {
     name: string
@@ -247,7 +247,7 @@ Sensor returns Sensor:
 ;
 
 terminal FLOAT returns number: /[0-9]+\.[0-9]+([eE][+-]?[0-9]+)?/;
-terminal BOOL returns number: 'true' | 'false';
+terminal BOOL returns boolean: 'true' | 'false';
 terminal ID returns string:'^'? (/[a-z]+/ | /[A-Z]+/ | '_' )(/[a-z]+/ | /[A-Z]+/ | '_' | /[0-9]+/ )*;
 terminal INT returns number: /[0-9]+/;
 terminal STRING returns string:'"' ('\\' . |  !('\\' | '"' ))*'"'  | "'" ('\\' . |  !('\\' | "'" ))*"'";

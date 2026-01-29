@@ -1,4 +1,5 @@
-import { SymbolInfo, SymbolTable } from "./SymbolTable.ts";
+import type { BinaryExpr } from "./generated.ts";
+import { SymbolTable } from "./SymbolTable.ts";
 import {
 	type ArgumentDec,
 	type Assignation,
@@ -24,47 +25,351 @@ import {
 	type SetClock,
 	type SetSpeed,
 	type Statement,
+	type Type,
 	type Unary,
 	type VariableDec,
 	type VariableRef,
 } from "./semantics.ts";
 
-export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
-	symbolTable: SymbolTable = new SymbolTable();
+interface Value {
+	type: Type;
+}
 
-	visitArgumentDec(node: ArgumentDec) {}
-	visitExpression(node: Expression) {
-		throw new Error("Method not implemented.");
+function isFloat(n) {
+	return Number(n) === n && n % 1 !== 0 && n - parseInt(n);
+}
+
+export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
+	symbolTable: SymbolTable;
+
+	constructor() {
+		super();
+		this.symbolTable = new SymbolTable();
 	}
-	visitFunctionCall(node: FunctionCall) {
-		throw new Error("Method not implemented.");
+	visitArgumentDec(node: ArgumentDec) {
+		this.symbolTable.put(node.name, node.type, { node: node });
 	}
-	visitGetClock(node: GetClock) {
-		throw new Error("Method not implemented.");
+	visitExpression(node: Expression): Value {
+		switch (node.$type) {
+			case "BinaryExpr": {
+				const node2 = node as unknown as BinaryExpr;
+
+				switch (node2.operator) {
+					// bool only
+					case "&&":
+					case "||": {
+						const { type: typeL } =
+							this.visitExpression(
+								node2.left as unknown as Expression,
+							);
+						const { type: typeR } =
+							this.visitExpression(
+								node2.right as unknown as Expression,
+							);
+						if (
+							typeL !== typeR ||
+							typeL !== "boolean"
+						) {
+							this.validationAccept(
+								"error",
+								`Cound not apply a boolean operation between a ${typeL} and ${typeR} a ${node}`,
+								{
+									node: node,
+								},
+							);
+						}
+						return { type: "boolean" };
+					}
+
+					// t1 == t1 or int == float or float == int
+					case "!=":
+					case "==": {
+						const { type: typeL } =
+							this.visitExpression(
+								node2.left as unknown as Expression,
+							);
+						const { type: typeR } =
+							this.visitExpression(
+								node2.right as unknown as Expression,
+							);
+
+						const checkNumber =
+							(typeL === "float" &&
+								typeR === "integer") ||
+							(typeL === "integer" &&
+								typeR === "float");
+
+						if (
+							!(
+								typeL === typeR &&
+								typeL !== "void"
+							) &&
+							!checkNumber
+						) {
+							this.validationAccept(
+								"error",
+								`Cound not check the equality between a ${typeL} and a ${typeR} ${node}`,
+								{
+									node: node,
+								},
+							);
+						}
+						return { type: "boolean" };
+					}
+
+					// (t1 == t1 and t1 != bool and t1 != t1) or int + float or float + int
+
+					case "+": {
+						const { type: typeL } =
+							this.visitExpression(
+								node2.left as unknown as Expression,
+							);
+						const { type: typeR } =
+							this.visitExpression(
+								node2.right as unknown as Expression,
+							);
+
+						const checkNumber =
+							(typeL === "float" &&
+								typeR === "integer") ||
+							(typeL === "integer" &&
+								typeR === "float");
+
+						if (
+							!(
+								typeL === typeR &&
+								typeL !== "boolean" &&
+								typeL !== "void"
+							) &&
+							!checkNumber
+						) {
+							this.validationAccept(
+								"error",
+								`Could not add a ${typeL} to a ${typeR} ${node}`,
+								{
+									node: node,
+								},
+							);
+						}
+
+						if (checkNumber) {
+							return { type: "float" };
+						} else {
+							return { type: typeR };
+						}
+					}
+
+					case "*":
+					case "-":
+					case "/":
+					case "^": {
+						const { type: typeL } =
+							this.visitExpression(
+								node2.left as unknown as Expression,
+							);
+						const { type: typeR } =
+							this.visitExpression(
+								node2.right as unknown as Expression,
+							);
+
+						const checkNumber1 =
+							(typeL === "float" &&
+								typeR === "integer") ||
+							(typeL === "integer" &&
+								typeR === "float");
+
+						const checkNumber2 =
+							(typeL === "float" &&
+								typeR === "float") ||
+							(typeL === "integer" &&
+								typeR === "integer");
+
+						if (!checkNumber1 && !checkNumber2) {
+							this.validationAccept(
+								"error",
+								`Cound not apply the operation between a ${typeL} and a ${typeR} ${node}`,
+								{
+									node: node,
+								},
+							);
+						}
+
+						if (checkNumber1) {
+							return { type: "float" };
+						} else {
+							return { type: typeR };
+						}
+					}
+
+					case "<":
+					case "<=":
+					case ">":
+					case ">=": {
+						const { type: typeL } =
+							this.visitExpression(
+								node2.left as unknown as Expression,
+							);
+						const { type: typeR } =
+							this.visitExpression(
+								node2.right as unknown as Expression,
+							);
+
+						const checkNumber1 =
+							(typeL === "float" &&
+								typeR === "integer") ||
+							(typeL === "integer" &&
+								typeR === "float");
+
+						const checkNumber2 =
+							(typeL === "float" &&
+								typeR === "float") ||
+							(typeL === "integer" &&
+								typeR === "integer");
+
+						if (!checkNumber1 && !checkNumber2) {
+							this.validationAccept(
+								"error",
+								`Cound not apply the operation between a ${typeL} and a ${typeR} ${node}`,
+								{
+									node: node,
+								},
+							);
+						}
+						return { type: "boolean" };
+					}
+				}
+				return;
+			}
+			case "Expression":
+				return this.visitExpression(node as Expression);
+			case "FunctionCall":
+				return this.visitFunctionCall(node as FunctionCall);
+			case "GetClock":
+				return this.visitGetClock(node as GetClock);
+			case "GetSensor":
+				return this.visitGetSensor(node as GetSensor);
+			case "GetSpeed":
+				return this.visitGetSpeed(node as GetSpeed);
+			case "Literal":
+				return this.visitLiteral(node as Literal);
+			case "Unary":
+				return this.visitUnary(node as Unary);
+			case "VariableRef":
+				return this.visitVariableRef(node as VariableRef);
+		}
 	}
-	visitGetSensor(node: GetSensor) {
-		throw new Error("Method not implemented.");
+	visitFunctionCall(node: FunctionCall): Value {
+		const name = node.functiondeclaration.ref.name;
+		if (!this.symbolTable.inScope(name)) {
+			this.validationAccept(
+				"error",
+				`Function ${name} does not exist`,
+				{
+					node: node,
+				},
+			);
+		}
+
+		node.parameters.forEach((e) => {
+			// TODO do check on function arguments <=> parameters expression
+			this.visitExpression(e);
+		});
+
+		const type = this.symbolTable.type(name);
+
+		if (!type) {
+			this.validationAccept(
+				"warning",
+				`Can't find function return type`,
+				{
+					node: node,
+				},
+			);
+		}
+
+		return { type: type ?? "void" };
 	}
-	visitGetSpeed(node: GetSpeed) {
-		throw new Error("Method not implemented.");
+	visitGetClock(_node: GetClock): Value {
+		return { type: "integer" };
 	}
-	visitLiteral(node: Literal) {
-		throw new Error("Method not implemented.");
+	visitGetSensor(_node: GetSensor): Value {
+		return { type: "float" };
 	}
-	visitUnary(node: Unary) {
-		throw new Error("Method not implemented.");
+	visitGetSpeed(_node: GetSpeed): Value {
+		return { type: "float" };
 	}
-	visitVariableRef(node: VariableRef) {
-		throw new Error("Method not implemented.");
+	visitLiteral(node: Literal): Value {
+		switch (typeof node.value) {
+			case "string":
+				return { type: "string" };
+			case "number": {
+				if (isFloat(node)) {
+					return { type: "float" };
+				} else {
+					return { type: "integer" };
+				}
+			}
+			case "boolean":
+				return { type: "boolean" };
+		}
+	}
+	visitUnary(node: Unary): Value {
+		const { type } = this.visitExpression(node.expr);
+
+		const check =
+			(node.op === "!" && type === "boolean") ||
+			(node.op === "-" && (type === "integer" || type === "float"));
+
+		if (!check) {
+			this.validationAccept(
+				"error",
+				`Could not apply ${node.op} on a ${type}`,
+				{
+					node: node,
+				},
+			);
+		}
+
+		return { type: type };
+	}
+	visitVariableRef(node: VariableRef): Value {
+		console.error(node.ref);
+
+		const name = node.ref.ref.name;
+
+		if (!this.symbolTable.inScope(name)) {
+			console.trace(this.symbolTable.inScope(name));
+			this.validationAccept(
+				"error",
+				`Variable ${name} does not exist`,
+				{
+					node: node,
+				},
+			);
+		}
+
+		const type = this.symbolTable.type(name);
+
+		if (!type) {
+			this.validationAccept("warning", `Can't find variable type`, {
+				node: node,
+			});
+		}
+
+		return { type: type ?? "void" };
 	}
 	visitRobotML(node: RobotML) {
 		// throw new Error("Method not implemented.");
 
 		const main_function = node.functions.find((f) => f.name === "main");
 		if (main_function === undefined) {
-			this.validationAccept("error", "There is no main functions defined", {
-				node: node,
-			});
+			this.validationAccept(
+				"error",
+				"There is no main functions defined",
+				{
+					node: node,
+				},
+			);
 		}
 
 		this.symbolTable.beginScope();
@@ -76,27 +381,91 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 		this.symbolTable.endScope();
 	}
 	visitStatement(node: Statement) {
-		throw new Error("Method not implemented.");
+		switch (node.$type) {
+			case "FunctionDeclaration":
+				this.visitFunctionDeclaration(
+					node as FunctionDeclaration,
+				);
+				break;
+			case "Block":
+				this.visitBlock(node as Block);
+				break;
+			case "VariableDec":
+				this.visitVariableDec(node as VariableDec);
+				break;
+			case "Loop":
+				this.visitLoop(node as Loop);
+				break;
+			case "Assignation":
+				this.visitAssignation(node as Assignation);
+				break;
+			case "FunctionCall":
+				this.visitFunctionCall(node as FunctionCall);
+				break;
+			case "Condition":
+				this.visitCondition(node as Condition);
+				break;
+			case "SetSpeed":
+				this.visitSetSpeed(node as SetSpeed);
+				break;
+			case "SetClock":
+				this.visitSetClock(node as SetClock);
+				break;
+			case "Rotate":
+				this.visitRotate(node as Rotate);
+				break;
+			case "Forward":
+				this.visitForward(node as Forward);
+				break;
+			case "Backward":
+				this.visitBackward(node as Backward);
+				break;
+			case "Leftward":
+				this.visitLeftward(node as Leftward);
+				break;
+			case "Rightward":
+				this.visitRightward(node as Rightward);
+				break;
+			case "FnReturn":
+				this.visitFnReturn(node as FnReturn);
+				break;
+			default:
+				break;
+		}
 	}
 	visitAssignation(node: Assignation) {
-		throw new Error("Method not implemented.");
+		this.visitVariableRef(node.variableRef);
+		this.visitExpression(node.expression);
+		// FIXME: Check type
 	}
+
 	visitBlock(node: Block) {
-		throw new Error("Method not implemented.");
+		this.symbolTable.beginScope();
+
+		node.statements.forEach((s) => {
+			this.visitStatement(s);
+		});
+
+		this.symbolTable.beginScope();
 	}
 	visitCondition(node: Condition) {
-		throw new Error("Method not implemented.");
+		node.conditions.forEach((value, index) => {
+			this.visitExpression(value);
+			this.visitBlock(node.block.at(index));
+		});
+
+		if (node.conditions.length < node.block.length) {
+			this.visitBlock(node.block.at(-1));
+		}
 	}
 	visitFnReturn(node: FnReturn) {
-		throw new Error("Method not implemented.");
+		// TODO add check for return type on function decl
+		this.visitExpression(node.expression);
 	}
 	visitFunctionDeclaration(node: FunctionDeclaration) {
-		this.symbolTable.put(
-			node.name,
-			new SymbolInfo(node.$cstNode.offset, 0, node.$cstNode.text),
-		);
+		var type = node.returnType ?? "void";
 
-		// TODO check return type
+		this.symbolTable.put(node.name, type, { node: node });
 
 		node.parameters.forEach((p) => {
 			this.visitArgumentDec(p);
@@ -105,33 +474,110 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 		this.visitBlock(node.block);
 	}
 	visitLoop(node: Loop) {
-		throw new Error("Method not implemented.");
+		this.visitExpression(node.condition);
+		this.visitBlock(node.block);
 	}
 	visitMovement(node: Movement) {
-		throw new Error("Method not implemented.");
+		const { type } = this.visitExpression(node.expression);
+		if (type !== "float" && type !== "integer") {
+			this.validationAccept(
+				"error",
+				`Movement does not support type ${type}`,
+				{
+					node: node,
+				},
+			);
+		}
 	}
 	visitBackward(node: Backward) {
-		throw new Error("Method not implemented.");
+		const { type } = this.visitExpression(node.expression);
+		if (type !== "float" && type !== "integer") {
+			this.validationAccept(
+				"error",
+				`Backward does not support type ${type}`,
+				{
+					node: node,
+				},
+			);
+		}
 	}
 	visitForward(node: Forward) {
-		throw new Error("Method not implemented.");
+		const { type } = this.visitExpression(node.expression);
+		if (type !== "float" && type !== "integer") {
+			this.validationAccept(
+				"error",
+				`Forward does not support type ${type}`,
+				{
+					node: node,
+				},
+			);
+		}
 	}
 	visitLeftward(node: Leftward) {
-		throw new Error("Method not implemented.");
+		const { type } = this.visitExpression(node.expression);
+		if (type !== "float" && type !== "integer") {
+			this.validationAccept(
+				"error",
+				`Leftward does not support type ${type}`,
+				{
+					node: node,
+				},
+			);
+		}
 	}
 	visitRightward(node: Rightward) {
-		throw new Error("Method not implemented.");
+		const { type } = this.visitExpression(node.expression);
+		if (type !== "float" && type !== "integer") {
+			this.validationAccept(
+				"error",
+				`Rightward does not support type ${type}`,
+				{
+					node: node,
+				},
+			);
+		}
 	}
 	visitRotate(node: Rotate) {
-		throw new Error("Method not implemented.");
+		const { type } = this.visitExpression(node.expression);
+		if (type !== "float" && type !== "integer") {
+			this.validationAccept(
+				"error",
+				`Rotate does not support type ${type}`,
+				{
+					node: node,
+				},
+			);
+		}
 	}
 	visitSetClock(node: SetClock) {
-		throw new Error("Method not implemented.");
+		const { type } = this.visitExpression(node.expression);
+		if (type !== "float" && type !== "integer") {
+			this.validationAccept(
+				"error",
+				`SetClock does not support type ${type}`,
+				{
+					node: node,
+				},
+			);
+		}
 	}
 	visitSetSpeed(node: SetSpeed) {
-		throw new Error("Method not implemented.");
+		const { type } = this.visitExpression(node.expression);
+		if (type !== "float" && type !== "integer") {
+			this.validationAccept(
+				"error",
+				`SetSpeed does not support type ${type}`,
+				{
+					node: node,
+				},
+			);
+		}
 	}
 	visitVariableDec(node: VariableDec) {
-		throw new Error("Method not implemented.");
+		if (node.expression) {
+			this.visitExpression(node.expression);
+		}
+
+		this.symbolTable.put(node.name, node.type ?? "void", { node });
 	}
 }

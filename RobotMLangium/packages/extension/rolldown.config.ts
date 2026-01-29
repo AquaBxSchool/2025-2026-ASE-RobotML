@@ -2,11 +2,7 @@ import { defineConfig, RolldownOptions } from "rolldown";
 
 const minify = process.argv.includes("--minify");
 
-const createConfig = (
-	input: string,
-	dir: string,
-	file: string,
-): RolldownOptions => ({
+const createConfig = (input: string, dir: string, file: string): RolldownOptions => ({
 	input,
 	platform: "node",
 	external: ["vscode"],

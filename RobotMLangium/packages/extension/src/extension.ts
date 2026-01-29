@@ -1,7 +1,4 @@
-import type {
-	LanguageClientOptions,
-	ServerOptions,
-} from "vscode-languageclient/node.js";
+import type { LanguageClientOptions, ServerOptions } from "vscode-languageclient/node.js";
 import type * as vscode from "vscode";
 import * as path from "node:path";
 import { LanguageClient, TransportKind } from "vscode-languageclient/node.js";
@@ -9,9 +6,7 @@ import { LanguageClient, TransportKind } from "vscode-languageclient/node.js";
 let client: LanguageClient;
 
 // This function is called when the extension is activated.
-export async function activate(
-	context: vscode.ExtensionContext,
-): Promise<void> {
+export async function activate(context: vscode.ExtensionContext): Promise<void> {
 	client = await startLanguageClient(context);
 }
 

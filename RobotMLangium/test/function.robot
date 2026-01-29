@@ -1,11 +1,11 @@
-Void main() {
+void main() {
     return foo() == true
 }
 
-String bar() {
+string bar() {
     return "bar"
 }
 
-Boolean foo(void: Void, int: Integer) {
+boolean foo(void2: void, int: integer) {
     return "bar" == bar()
 }

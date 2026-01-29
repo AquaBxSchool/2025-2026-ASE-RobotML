@@ -18,10 +18,7 @@ export const generateAction = async (
 	console.log(chalk.green(`Code generated succesfully: ${generatedFilePath}`));
 };
 
-export const astAction = async (
-	source: string,
-	_destination: string,
-): Promise<void> => {
+export const astAction = async (source: string, _destination: string): Promise<void> => {
 	const services = createRobotMlServices(NodeFileSystem).RobotMl;
 	const model = await extractAstNode<RobotML>(source, services);
 	model.accept(services.visitors.RobotMLAstPrinterVisitor);
@@ -32,8 +29,7 @@ export default function main(): void {
 
 	// TODO: use Program API to declare the CLI
 	const fileExtensions = RobotMlLanguageMetaData.fileExtensions.join(", ");
-	program
-		.command("generate")
+	program.command("generate")
 		.argument(
 			"<file>",
 			`source file (possible file extensions: ${fileExtensions})`,
@@ -41,8 +37,7 @@ export default function main(): void {
 		.argument("<destination>", "destination file")
 		.description("Generates code for a provided source file.")
 		.action(generateAction);
-	program
-		.command("ast")
+	program.command("ast")
 		.argument(
 			"<file>",
 			`source file (possible file extensions: ${fileExtensions})`,

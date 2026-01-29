@@ -64,13 +64,15 @@ export class RobotMLAstPrinterVisitor implements RobotMlVisitor {
 		print("RobotML Program\n");
 
 		node.functions.forEach((node) => {
-			this.visitFunctionDeclaration(node);
+			// this.visitFunctionDeclaration(node);
 		});
 	}
 	visitStatement(node: Statement) {
 		switch (node.$type) {
 			case "FunctionDeclaration":
-				this.visitFunctionDeclaration(node as FunctionDeclaration);
+				this.visitFunctionDeclaration(
+					node as FunctionDeclaration,
+				);
 				break;
 			case "VariableDec":
 				this.visitVariableDec(node as VariableDec);

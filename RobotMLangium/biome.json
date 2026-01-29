@@ -1,5 +1,10 @@
 {
 	"files": {
 		"includes": ["**", "!**/*.cjs"]
+	},
+	"formatter": {
+		"indentStyle": "tab",
+		"indentWidth": 8,
+		"lineWidth": 90
 	}
 }

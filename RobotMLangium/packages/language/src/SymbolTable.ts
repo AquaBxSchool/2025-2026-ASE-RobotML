@@ -1,5 +1,11 @@
+import type { AstNode, DiagnosticInfo } from "langium";
+import type { Type } from "./semantics.ts";
+
 class Stack<T> {
-	list: Array<T> = [];
+	list: Array<T>;
+	constructor() {
+		this.list = [];
+	}
 	push(el: T) {
 		this.list.push(el);
 	}
@@ -12,8 +18,10 @@ class Stack<T> {
 }
 
 export class SymbolTable {
-	scopes = new Stack<Map<String, SymbolInfo>>();
-
+	scopes: Stack<Map<string, [Type, DiagnosticInfo<AstNode>]>>;
+	constructor() {
+		this.scopes = new Stack<Map<string, [Type, DiagnosticInfo<AstNode>]>>();
+	}
 	beginScope() {
 		this.scopes.push(new Map());
 	}
@@ -32,17 +40,31 @@ export class SymbolTable {
 	 *
 	 * @throws EmptyStackException if the scopes stack is empty.
 	 */
-	put(symbol: string, symbol_info: SymbolInfo) {
-		this.scopes.at(-1)?.set(symbol, symbol_info);
+	put(symbol: string, type: Type, info: DiagnosticInfo<AstNode>) {
+		this.scopes.at(-1)?.set(symbol, [type, info]);
 	}
 
 	inScope(symbol: string): boolean {
-		for (let scope of this.scopes.list) {
-			if (Object.keys(scope).includes(symbol)) {
-				return true;
+		console.error(this.scopes.list);
+		for (const scope of this.scopes.list) {
+			for (const s of scope.keys()) {
+				if (s === symbol) {
+					return true;
+				}
 			}
 		}
 		return false;
+	}
+
+	type(symbol: string): Type | undefined {
+		for (const scope of this.scopes.list) {
+			for (const [s, [type, _]] of scope.entries()) {
+				if (s === symbol) {
+					return type;
+				}
+			}
+		}
+		return undefined;
 	}
 
 	toString(): string {

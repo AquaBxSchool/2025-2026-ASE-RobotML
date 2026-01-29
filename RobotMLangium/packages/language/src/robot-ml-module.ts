@@ -11,10 +11,7 @@ import {
 	RobotMlGeneratedModule,
 	RobotMlGeneratedSharedModule,
 } from "./generated/module.js";
-import {
-	RobotMlValidator,
-	registerValidationChecks,
-} from "./robot-ml-validator.js";
+import { RobotMlValidator, registerValidationChecks } from "./robot-ml-validator.js";
 import { RobotMlAcceptWeaver } from "./semantics/robot-ml-accept-weaver.js";
 import { registerVisitorAsValidator } from "./semantics/robot-ml-visitor.js";
 import { RobotMLTypeCheckVisitor } from "./robot-ml-typecheck.js";
