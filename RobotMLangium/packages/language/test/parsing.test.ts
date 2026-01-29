@@ -74,11 +74,54 @@ describe("Parsing tests", () => {
 		expect(result.diagnostics?.length).equal(12);
 	});
 
-	it("Add an int to a float", async () => {
+	it("Authorized additions", async () => {
 		const code = `
 			void main() {
-				let a : integer = 5
-				let b : float = 5.1 + a
+				let a : float = 5.1 + 5
+				let b : float = 5 + 5.1
+				let c : integer = 5 + 5
+				let d : string = "5" + "5"
+				let e : float = 5.1 + 5.1
+				let f : float = e + e
+				let g : float = e + c
+			}
+		`;
+		const result = await parse(code, { validation: true });
+		console.log(result.diagnostics);
+
+		expect(result.diagnostics?.length).equal(0);
+	});
+
+	it("Authorized arithmetic operations", async () => {
+		const code = `
+			void main() {
+				let a1 : float = 5.1 - 5
+				let b1 : float = 5 - 5.1
+				let c1 : integer = 5 - 5
+				let e1 : float = 5.1 - 5.1
+				let f1 : float = e1 - e1
+				let g1 : float = e1 - c1
+
+				let a2 : float = 5.1 * 5
+				let b2 : float = 5 * 5.1
+				let c2 : integer = 5 * 5
+				let e2 : float = 5.1 * 5.1
+				let f2 : float = e2 * e2
+				let g2 : float = e2 * c2
+
+				let a3 : float = 5.1 / 5
+				let b3 : float = 5 / 5.1
+				let c3 : integer = 5 / 5
+				let e3 : float = 5.1 / 5.1
+				let f3 : float = e3 / e3
+				let g3 : float = e3 / c3
+
+				let a4 : float = 5.1 ^ 5
+				let b4 : float = 5 ^ 5.1
+				let c4 : integer = 5 ^ 5
+				let e4 : float = 5.1 ^ 5.1
+				let f4 : float = e4 ^ e4
+				let g4 : float = e4 ^ c4
 			}
 		`;
 		const result = await parse(code, { validation: true });
@@ -90,14 +133,34 @@ describe("Parsing tests", () => {
 	it("Add a int to a bool", async () => {
 		const code = `
 			void main() {
-				let a : integer = 5
-				let b : boolean = true + a
+				let truc : void
+				let a = true + truc
+				let b = truc + true
+
+				let c = truc + truc
+				let d = true + true
+
+				let e : string = "true" + 5
 			}
 		`;
 		const result = await parse(code, { validation: true });
-		expect(result.diagnostics?.length).equal(1);
+		expect(result.diagnostics?.length).equal(5);
 		expect(result.diagnostics?.[0]?.message).equal(
-			"Could not add a boolean to a integer [object Object]",
+			"Could not add a boolean to a void [object Object]",
+		);
+		expect(result.diagnostics?.[1]?.message).equal(
+			"Could not add a void to a boolean [object Object]",
+		);
+
+		expect(result.diagnostics?.[2]?.message).equal(
+			"Could not add a void to a void [object Object]",
+		);
+		expect(result.diagnostics?.[3]?.message).equal(
+			"Could not add a boolean to a boolean [object Object]",
+		);
+
+		expect(result.diagnostics?.[4]?.message).equal(
+			"Could not add a string to a integer [object Object]",
 		);
   });
 
