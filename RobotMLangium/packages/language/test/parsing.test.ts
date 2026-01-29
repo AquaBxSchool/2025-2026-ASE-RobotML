@@ -51,7 +51,7 @@ describe("Parsing tests", () => {
 		`;
 		const result = await parse(code, { validation: true });
 		expect(result.diagnostics?.length).equal(0);
-  });
+	});
 
 	it("builtinsErr", async () => {
 		const code = `
@@ -162,7 +162,7 @@ describe("Parsing tests", () => {
 		expect(result.diagnostics?.[4]?.message).equal(
 			"Could not add a string to a integer [object Object]",
 		);
-  });
+	});
 
 	it("Ingnore Variable", async () => {
 		const code = `
@@ -172,11 +172,13 @@ describe("Parsing tests", () => {
 			}
 		`;
 		const result = await parse(code, { validation: true });
-		expect(result.diagnostics?.filter((d) => d.severity === 1).length).equal(1);
+		expect(result.diagnostics?.filter((d) => d.severity === 1).length).equal(
+			1,
+		);
 		expect(result.diagnostics?.[0]?.message).equal(
 			"Variable _a does not exist",
 		);
-  });
+	});
 
 	it("Decl then assignation", async () => {
 		const code = `
@@ -186,8 +188,10 @@ describe("Parsing tests", () => {
 			}
 		`;
 		const result = await parse(code, { validation: true });
-		console.log(result.diagnostics)
-		expect(result.diagnostics?.filter((d) => d.severity === 1).length).equal(0);
+		console.log(result.diagnostics);
+		expect(result.diagnostics?.filter((d) => d.severity === 1).length).equal(
+			0,
+		);
 		// expect(result.diagnostics?.[0]?.message).equal(
 		// 	"Variable _a does not exist",
 		// );
