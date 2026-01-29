@@ -58,7 +58,9 @@ describe("Parsing tests", () => {
 		`;
 		const result = await parse(code, { validation: true });
 		expect(result.diagnostics?.length).equal(1);
-		expect(result.diagnostics![0]!.message).equal("Could not add a boolean to a integer [object Object]");
+		expect(result.diagnostics![0]!.message).equal(
+			"Could not add a boolean to a integer [object Object]",
+		);
 	});
 
 	it("controlflow", async () => {
@@ -81,10 +83,10 @@ describe("Parsing tests", () => {
 		`;
 		const result = await parse(code, { validation: true });
 		expect(result.diagnostics?.length).equal(0);
-  });
+	});
 
 	it("function", async () => {
-    const code = `
+		const code = `
       string bar() {
           return "bar"
       }
@@ -97,9 +99,9 @@ describe("Parsing tests", () => {
 		`;
 		const result = await parse(code, { validation: true });
 		expect(result.diagnostics?.length).equal(0);
-  });
+	});
 	it("math", async () => {
-    const code = `
+		const code = `
       integer main() {
               let b: integer = 9
               let a: integer = -10

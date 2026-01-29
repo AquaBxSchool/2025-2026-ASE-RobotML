@@ -10,7 +10,7 @@ class Stack<T> {
 		this.list.push(el);
 	}
 	pop(): T {
-		return this.list.splice(0, 1)[0];
+		return this.list.pop()!;
 	}
 	at(i: number): T | undefined {
 		return this.list.at(i);
@@ -57,11 +57,11 @@ export class SymbolTable {
 	}
 
 	type(symbol: string): Type | undefined {
-		for (const scope of this.scopes.list) {
-			for (const [s, [type, _]] of scope.entries()) {
-				if (s === symbol) {
-					return type;
-				}
+		// Iterate backwards from the top of the stack to the bottom
+		for (let i = this.scopes.list.length - 1; i >= 0; i--) {
+			const scope = this.scopes.list[i];
+			if (scope.has(symbol)) {
+				return scope.get(symbol)![0];
 			}
 		}
 		return undefined;
