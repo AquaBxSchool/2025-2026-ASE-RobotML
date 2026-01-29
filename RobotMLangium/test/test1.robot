@@ -1,8 +1,8 @@
-void aaa(fezfe: void) {
+integer aaa(fezfe: void) {
     
 }
 
-void ddd(fezfe: void) {
+void ddd(fezfe: integer) {
     let a = 0
 
     fezfe = 10
@@ -19,47 +19,47 @@ void ddd(fezfe: void) {
 
     while (a) {
         a = a + 1
-        let b: Float = a
+        let b: Integer = a
     }
 
-    let g: float = 10.2 
-    let h: integer = 10 
-    let v: string = "ADZDZ" 
+    // let g: float = 10.2 
+    // let h: integer = 10 
+    // let v: string = "ADZDZ" 
 
-    let h = GetSensor(Distance)
-    let h = GetClock()
-    let h = GetSpeed()
+    // let h = GetSensor(Distance)
+    // let h = GetClock()
+    // let h = GetSpeed()
 
-    aaa(h)
+    // aaa(h)
 
-    setSpeed(h)
-
-
+    // setSpeed(h)
 
 
-    {
-        {
-            {
-                return a
-            }
-        }
-    }
+
+
+    // {
+    //     {
+    //         {
+    //             return a
+    //         }
+    //     }
+    // }
 }
 
-void main(entree : Float, a :  void, b: void) { 
-    let h = 1 + (a) let c = main() c = c  if ((12 + 4 == b) || a < b) {
-    } if ( main() ) { let e : void = 10} 
-    elif ( a == b ) {
-        let e : void = GetSpeed()
-    }
-    elif ( (((((((((b))))))))) ) {
-        let e : void = GetSpeed()
-    }
-    elif ( main() == main() ) {
-        let e : void = GetSpeed()
-    }
-    else {
-    }
+void main(entree : float, a :  void, b: void) { 
+    // let h = 1 + (a) let c = main() c = c  if ((12 + 4 == b) || a < b) {
+    // } if ( main() ) { let e : void = 10} 
+    // elif ( a == b ) {
+    //     let e : void = GetSpeed()
+    // }
+    // elif ( (((((((((b))))))))) ) {
+    //     let e : void = GetSpeed()
+    // }
+    // elif ( main() == main() ) {
+    //     let e : void = GetSpeed()
+    // }
+    // else {
+    // }
 }
 
-void void3(void2: void, int: Boolean) {let v: String = int if (int) {setSpeed(void2)} while (void2) {let h = 1 + ((12 + 4 == int) || void < int) return GetSensor(Distance)}}
+// void void3(void2: void, int: Boolean) {let v: String = int if (int) {setSpeed(void2)} while (void2) {let h = 1 + ((12 + 4 == int) || void < int) return GetSensor(Distance)}}

@@ -35,9 +35,11 @@ interface Value {
 	type: Type;
 }
 
-function isFloat(n : number) : boolean {
-	console.trace(n,Number(n) === n && n % 1 !== 0)
+function isFloat(n: number): boolean {
+	console.trace(n, Number(n) === n && n % 1 !== 0);
 	return Number(n) === n && n % 1 !== 0;
+	// function isFloat(n) {
+	// return !Number.isInteger(n);
 }
 
 export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
@@ -78,7 +80,7 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 									node: node,
 								},
 							);
-							throw "Error"
+							throw "Error";
 						}
 						return { type: "boolean" };
 					}
@@ -115,7 +117,7 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 									node: node,
 								},
 							);
-							throw "Error"
+							throw "Error";
 						}
 						return { type: "boolean" };
 					}
@@ -152,8 +154,8 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 								{
 									node: node,
 								},
-							)
-							throw "Error"
+							);
+							throw "Error";
 						}
 
 						if (checkNumber) {
@@ -196,7 +198,7 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 									node: node,
 								},
 							);
-							throw "Error"
+							throw "Error";
 						}
 
 						if (checkNumber1) {
@@ -239,7 +241,7 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 									node: node,
 								},
 							);
-							throw "Error"
+							throw "Error";
 						}
 						return { type: "boolean" };
 					}
@@ -341,10 +343,16 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 	visitVariableRef(node: VariableRef): Value {
 		console.error(node.ref);
 
+		if (!node.ref.ref) {
+			this.validationAccept("error", `ref does not exist`, {
+				node: node,
+			});
+		}
+
 		const name = node.ref.ref.name;
 
 		if (!this.symbolTable.inScope(name)) {
-			console.trace(this.symbolTable.inScope(name));
+			// console.trace(this.symbolTable.inScope(name));
 			this.validationAccept(
 				"error",
 				`Variable ${name} does not exist`,
@@ -388,61 +396,58 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 	}
 	visitStatement(node: Statement) {
 		try {
-		
-		switch (node.$type) {
-			case "FunctionDeclaration":
-				this.visitFunctionDeclaration(
-					node as FunctionDeclaration,
-				);
-				break;
-			case "Block":
-				this.visitBlock(node as Block);
-				break;
-			case "VariableDec":
-				this.visitVariableDec(node as VariableDec);
-				break;
-			case "Loop":
-				this.visitLoop(node as Loop);
-				break;
-			case "Assignation":
-				this.visitAssignation(node as Assignation);
-				break;
-			case "FunctionCall":
-				this.visitFunctionCall(node as FunctionCall);
-				break;
-			case "Condition":
-				this.visitCondition(node as Condition);
-				break;
-			case "SetSpeed":
-				this.visitSetSpeed(node as SetSpeed);
-				break;
-			case "SetClock":
-				this.visitSetClock(node as SetClock);
-				break;
-			case "Rotate":
-				this.visitRotate(node as Rotate);
-				break;
-			case "Forward":
-				this.visitForward(node as Forward);
-				break;
-			case "Backward":
-				this.visitBackward(node as Backward);
-				break;
-			case "Leftward":
-				this.visitLeftward(node as Leftward);
-				break;
-			case "Rightward":
-				this.visitRightward(node as Rightward);
-				break;
-			case "FnReturn":
-				this.visitFnReturn(node as FnReturn);
-				break;
-			default:
-				break;
-		}
-				} catch (error) {
-			
-		}
+			switch (node.$type) {
+				case "FunctionDeclaration":
+					this.visitFunctionDeclaration(
+						node as FunctionDeclaration,
+					);
+					break;
+				case "Block":
+					this.visitBlock(node as Block);
+					break;
+				case "VariableDec":
+					this.visitVariableDec(node as VariableDec);
+					break;
+				case "Loop":
+					this.visitLoop(node as Loop);
+					break;
+				case "Assignation":
+					this.visitAssignation(node as Assignation);
+					break;
+				case "FunctionCall":
+					this.visitFunctionCall(node as FunctionCall);
+					break;
+				case "Condition":
+					this.visitCondition(node as Condition);
+					break;
+				case "SetSpeed":
+					this.visitSetSpeed(node as SetSpeed);
+					break;
+				case "SetClock":
+					this.visitSetClock(node as SetClock);
+					break;
+				case "Rotate":
+					this.visitRotate(node as Rotate);
+					break;
+				case "Forward":
+					this.visitForward(node as Forward);
+					break;
+				case "Backward":
+					this.visitBackward(node as Backward);
+					break;
+				case "Leftward":
+					this.visitLeftward(node as Leftward);
+					break;
+				case "Rightward":
+					this.visitRightward(node as Rightward);
+					break;
+				case "FnReturn":
+					this.visitFnReturn(node as FnReturn);
+					break;
+				default:
+					break;
+			}
+		} catch {}
 	}
 	visitAssignation(node: Assignation) {
 		this.visitVariableRef(node.variableRef);

@@ -1,9 +1,8 @@
-import { describe } from "vitest";
-import { createRobotMlServices } from "../src/";
-import type { RobotML } from "robot-ml-language/semantics";
-import { parseHelper } from "langium/test";
 import { EmptyFileSystem } from "langium";
-import { beforeEach, expect, it } from "vitest";
+import { parseHelper } from "langium/test";
+import type { RobotML } from "robot-ml-language/semantics";
+import { beforeEach, describe, expect, it } from "vitest";
+import { createRobotMlServices } from "../src/";
 
 let services: ReturnType<typeof createRobotMlServices>;
 let parse: ReturnType<typeof parseHelper<RobotML>>;
@@ -20,7 +19,7 @@ describe("Parsing tests", () => {
 		const result = await parse(code, { validation: true });
 
 		expect(result.diagnostics?.length).equal(1);
-		expect(result.diagnostics![0]!.message).equal(
+		expect(result.diagnostics?.[0]?.message).equal(
 			"There is no main functions defined",
 		);
 	});
@@ -46,6 +45,8 @@ describe("Parsing tests", () => {
 			}
 		`;
 		const result = await parse(code, { validation: true });
+		console.log(result.diagnostics);
+
 		expect(result.diagnostics?.length).equal(0);
 	});
 
@@ -58,7 +59,7 @@ describe("Parsing tests", () => {
 		`;
 		const result = await parse(code, { validation: true });
 		expect(result.diagnostics?.length).equal(1);
-		expect(result.diagnostics![0]!.message).equal(
+		expect(result.diagnostics?.[0]?.message).equal(
 			"Could not add a boolean to a integer [object Object]",
 		);
 	});
@@ -91,6 +92,7 @@ describe("Parsing tests", () => {
           return "bar"
       }
       boolean foo(void2: void, int: integer) {
+          int = 10
           return "bar" == bar()
       }
   		void main() {

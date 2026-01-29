@@ -61,7 +61,7 @@ export class SymbolTable {
 		for (let i = this.scopes.list.length - 1; i >= 0; i--) {
 			const scope = this.scopes.list[i];
 			if (scope.has(symbol)) {
-				return scope.get(symbol)![0];
+				return scope.get(symbol)?.[0];
 			}
 		}
 		return undefined;
@@ -73,45 +73,5 @@ export class SymbolTable {
 			retString += `${Object.values(scope).join("\n")}\n`;
 		}
 		return retString;
-	}
-}
-
-export class SymbolInfo {
-	private line: number;
-	private column: number;
-	private content: string;
-
-	constructor(l: number, col: number, con: string) {
-		this.line = l;
-		this.column = col;
-		this.content = con;
-	}
-
-	public getLine(): number {
-		return this.line;
-	}
-
-	public setLine(l: number) {
-		this.line = l;
-	}
-
-	public getColumn(): number {
-		return this.column;
-	}
-
-	public setColumn(c: number) {
-		this.column = c;
-	}
-
-	public getContent(): string {
-		return this.content;
-	}
-
-	public setContent(c: string) {
-		this.content = c;
-	}
-
-	public toString(): string {
-		return `${this.content} (${this.line}, ${this.column})`;
 	}
 }
