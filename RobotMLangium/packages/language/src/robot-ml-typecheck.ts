@@ -35,8 +35,9 @@ interface Value {
 	type: Type;
 }
 
-function isFloat(n) {
-	return Number(n) === n && n % 1 !== 0 && n - parseInt(n);
+function isFloat(n : number) : boolean {
+	console.trace(n,Number(n) === n && n % 1 !== 0)
+	return Number(n) === n && n % 1 !== 0;
 }
 
 export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
@@ -308,7 +309,7 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 			case "string":
 				return { type: "string" };
 			case "number": {
-				if (isFloat(node)) {
+				if (isFloat(node.value)) {
 					return { type: "float" };
 				} else {
 					return { type: "integer" };

@@ -42,7 +42,7 @@ describe("Parsing tests", () => {
 		const code = `
 			void main() {
 				let a : integer = 5
-				let b : float = 5.0 + a
+				let b : float = 5.1 + a
 			}
 		`;
 		const result = await parse(code, { validation: true });
