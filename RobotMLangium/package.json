@@ -6,7 +6,7 @@
 	"private": true,
 	"scripts": {
 		"clean": "yarn workspaces run clean",
-		"build": "yarn workspaces run build && yarn test && yarn fmt",
+		"build": "yarn fmt && yarn workspaces run build && yarn test",
 		"test": "yarn workspaces run test",
 		"mutation": "yarn workspaces run mutation",
 		"cli": "robot-ml-cli",
