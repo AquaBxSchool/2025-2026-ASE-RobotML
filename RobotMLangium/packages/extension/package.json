@@ -39,7 +39,9 @@
 		"prepare": "shx mkdir -p ./syntaxes/ && shx cp -f ../language/dist/robot-ml.tmLanguage.json ./syntaxes",
 		"compile": "rolldown -c rolldown.config.ts --minify",
 		"package": "vsce package --yarn --ignoreFile .vscodeignore -o out/ext.vsix",
-		"build": "yarn prepare && yarn compile && yarn package"
+		"build": "yarn prepare && yarn compile && yarn package",
+		"test": "echo Nothing to do",
+		"mutation": "echo Nothing to do"
 	},
 	"devDependencies": {
 		"robot-ml-language": "*",
