@@ -3,12 +3,12 @@ import { createRobotMlServices } from "../src/";
 import type { RobotML } from "robot-ml-language/semantics";
 import { parseHelper } from "langium/test";
 import { EmptyFileSystem } from "langium";
-import { beforeAll, expect, it } from "vitest";
+import { beforeEach, expect, it } from "vitest";
 
 let services: ReturnType<typeof createRobotMlServices>;
 let parse: ReturnType<typeof parseHelper<RobotML>>;
 
-beforeAll(async () => {
+beforeEach(async () => {
 	services = createRobotMlServices(EmptyFileSystem);
 	parse = parseHelper(services.RobotMl);
 });
@@ -36,6 +36,29 @@ describe("Parsing tests", () => {
 		`;
 		const result = await parse(code, { validation: true });
 		expect(result.diagnostics?.length).equal(0);
+	});
+
+	it("build1", async () => {
+		const code = `
+			void main() {
+				let a : integer = 5
+				let b : float = 5.0 + a
+			}
+		`;
+		const result = await parse(code, { validation: true });
+		expect(result.diagnostics?.length).equal(0);
+	});
+
+	it("build2", async () => {
+		const code = `
+			void main() {
+				let a : integer = 5
+				let b : boolean = true + a
+			}
+		`;
+		const result = await parse(code, { validation: true });
+		expect(result.diagnostics?.length).equal(1);
+		expect(result.diagnostics![0]!.message).equal("Could not add a boolean to a integer [object Object]");
 	});
 
 	it("controlflow", async () => {
