@@ -87,9 +87,80 @@ describe("Parsing tests", () => {
 			}
 		`;
 		const result = await parse(code, { validation: true });
-		console.log(result.diagnostics);
 
 		expect(result.diagnostics?.length).equal(0);
+	});
+
+	it("Authorized Equality", async () => {
+		const code = `
+			void main() {
+				let a : boolean = 5 == 5
+				let b : boolean = 5 != 6
+
+				let c : boolean = "5" == "5"
+				let d : boolean = "5" != "6"
+
+				let e : boolean = 5.1 == 5.1
+				let f : boolean = 5.1 != 6.1
+
+				let g : boolean = 5 == 6.1
+				let h : boolean = 5 != 6.1
+
+				let i : boolean = true == true
+				let j : boolean = false != true
+			}
+		`;
+		const result = await parse(code, { validation: true });
+
+		expect(result.diagnostics?.length).equal(0);
+	});
+
+	it("Unauthorized Equality", async () => {
+		const code = `
+			void main() {
+				let a1 : boolean = "5.1" == 5
+				let b1 : boolean = 5 != "5.1"
+				let c1 : boolean = 5.1 == "5"
+				let d1 : boolean = "5" != 5.1
+
+				let a2 : boolean = true == 5
+				let b2 : boolean = 5 != true
+				let c2 : boolean = 5.1 == true
+				let d2 : boolean = false != 5.1
+
+			}
+		`;
+		const result = await parse(code, { validation: true });
+
+		expect(result.diagnostics?.length).equal(8);
+
+		expect(result.diagnostics?.[0]?.message).equal(
+			"Could not apply the operation == between a string and a integer [object Object]",
+		);
+		expect(result.diagnostics?.[1]?.message).equal(
+			"Could not apply the operation != between a integer and a string [object Object]",
+		);
+
+		expect(result.diagnostics?.[2]?.message).equal(
+			"Could not apply the operation == between a float and a string [object Object]",
+		);
+		expect(result.diagnostics?.[3]?.message).equal(
+			"Could not apply the operation != between a string and a float [object Object]",
+		);
+
+		expect(result.diagnostics?.[4]?.message).equal(
+			"Could not apply the operation == between a boolean and a integer [object Object]",
+		);
+		expect(result.diagnostics?.[5]?.message).equal(
+			"Could not apply the operation != between a integer and a boolean [object Object]",
+		);
+
+		expect(result.diagnostics?.[6]?.message).equal(
+			"Could not apply the operation == between a float and a boolean [object Object]",
+		);
+		expect(result.diagnostics?.[7]?.message).equal(
+			"Could not apply the operation != between a boolean and a float [object Object]",
+		);
 	});
 
 	it("Authorized arithmetic operations", async () => {
@@ -125,9 +196,198 @@ describe("Parsing tests", () => {
 			}
 		`;
 		const result = await parse(code, { validation: true });
-		console.log(result.diagnostics);
 
 		expect(result.diagnostics?.length).equal(0);
+	});
+
+	it("Unauthorized arithmetic operations", async () => {
+		const code = `
+			void main() {
+				let a1 : float = "5.1" * 5
+				let b1 : float = 5 - "5.1"
+				let c1 : float = 5.1 / "5"
+				let d1 : float = "5" ^ 5.1
+
+				let a2 : float = true * 5
+				let b2 : float = 5 - true
+				let c2 : float = 5.1 / true
+				let d2 : float = false ^ 5.1
+			}
+		`;
+		const result = await parse(code, { validation: true });
+
+		expect(result.diagnostics?.length).equal(8);
+
+		expect(result.diagnostics?.[0]?.message).equal(
+			"Could not apply the operation * between a string and a integer [object Object]",
+		);
+		expect(result.diagnostics?.[1]?.message).equal(
+			"Could not apply the operation - between a integer and a string [object Object]",
+		);
+
+		expect(result.diagnostics?.[2]?.message).equal(
+			"Could not apply the operation / between a float and a string [object Object]",
+		);
+		expect(result.diagnostics?.[3]?.message).equal(
+			"Could not apply the operation ^ between a string and a float [object Object]",
+		);
+
+		expect(result.diagnostics?.[4]?.message).equal(
+			"Could not apply the operation * between a boolean and a integer [object Object]",
+		);
+		expect(result.diagnostics?.[5]?.message).equal(
+			"Could not apply the operation - between a integer and a boolean [object Object]",
+		);
+
+		expect(result.diagnostics?.[6]?.message).equal(
+			"Could not apply the operation / between a float and a boolean [object Object]",
+		);
+		expect(result.diagnostics?.[7]?.message).equal(
+			"Could not apply the operation ^ between a boolean and a float [object Object]",
+		);
+	});
+
+	it("Authorized comparaisons", async () => {
+		const code = `
+			void main() {
+				let a1 : boolean = 5.1 < 5
+				let b1 : boolean = 5 < 5.1
+				let c1 : boolean = 5 < 5
+				let e1 : boolean = 5.1 < 5.1
+
+				let a2 : boolean = 5.1 > 5
+				let b2 : boolean = 5 > 5.1
+				let c2 : boolean = 5 > 5
+				let e2 : boolean = 5.1 > 5.1
+
+				let a3 : boolean = 5.1 <= 5
+				let b3 : boolean = 5 <= 5.1
+				let c3 : boolean = 5 <= 5
+				let e3 : boolean = 5.1 <= 5.1
+
+				let a4 : boolean = 5.1 >= 5
+				let b4 : boolean = 5 >= 5.1
+				let c4 : boolean = 5 >= 5
+				let e4 : boolean = 5.1 >= 5.1
+			}
+		`;
+		const result = await parse(code, { validation: true });
+
+		expect(result.diagnostics?.length).equal(0);
+	});
+
+	it("Unauthorized comparaisons", async () => {
+		const code = `
+			void main() {
+				let a1 : boolean = "5.1" < 5
+				let b1 : boolean = 5 <= "5.1"
+				let c1 : boolean = 5.1 > "5"
+				let d1 : boolean = "5" >= 5.1
+
+				let a2 : boolean = true < 5
+				let b2 : boolean = 5 <= true
+				let c2 : boolean = 5.1 > true
+				let d2 : boolean = false >= 5.1
+			}
+		`;
+		const result = await parse(code, { validation: true });
+
+		expect(result.diagnostics?.length).equal(8);
+
+		expect(result.diagnostics?.[0]?.message).equal(
+			"Could not apply the operation < between a string and a integer [object Object]",
+		);
+		expect(result.diagnostics?.[1]?.message).equal(
+			"Could not apply the operation <= between a integer and a string [object Object]",
+		);
+
+		expect(result.diagnostics?.[2]?.message).equal(
+			"Could not apply the operation > between a float and a string [object Object]",
+		);
+		expect(result.diagnostics?.[3]?.message).equal(
+			"Could not apply the operation >= between a string and a float [object Object]",
+		);
+
+		expect(result.diagnostics?.[4]?.message).equal(
+			"Could not apply the operation < between a boolean and a integer [object Object]",
+		);
+		expect(result.diagnostics?.[5]?.message).equal(
+			"Could not apply the operation <= between a integer and a boolean [object Object]",
+		);
+
+		expect(result.diagnostics?.[6]?.message).equal(
+			"Could not apply the operation > between a float and a boolean [object Object]",
+		);
+		expect(result.diagnostics?.[7]?.message).equal(
+			"Could not apply the operation >= between a boolean and a float [object Object]",
+		);
+	});
+
+	it("Authorized boolean operations", async () => {
+		const code = `
+			void main() {
+				let a : boolean = false && true
+				let b : boolean = true || false
+				let c : boolean = a && b
+				let d : boolean = a || b
+			}
+		`;
+		const result = await parse(code, { validation: true });
+
+		expect(result.diagnostics?.length).equal(0);
+	});
+
+	it("Unauthorized boolean operations", async () => {
+		const code = `
+			void main() {
+				let a1 : boolean = "5.1" && 5
+				let b1 : boolean = 5 || "5.1"
+				let c1 : boolean = 5.1 && "5"
+				let d1 : boolean = "5" || 5.1
+
+				let a2 : boolean = true && 5
+				let b2 : boolean = 5 || true
+				let c2 : boolean = 5.1 && true
+				let d2 : boolean = false || 5.1
+
+				let a3 : boolean = 5.1 || 5.1
+			}
+		`;
+		const result = await parse(code, { validation: true });
+
+		expect(result.diagnostics?.length).equal(9);
+
+		expect(result.diagnostics?.[0]?.message).equal(
+			"Could not apply the operation && between a string and a integer [object Object]",
+		);
+		expect(result.diagnostics?.[1]?.message).equal(
+			"Could not apply the operation || between a integer and a string [object Object]",
+		);
+
+		expect(result.diagnostics?.[2]?.message).equal(
+			"Could not apply the operation && between a float and a string [object Object]",
+		);
+		expect(result.diagnostics?.[3]?.message).equal(
+			"Could not apply the operation || between a string and a float [object Object]",
+		);
+
+		expect(result.diagnostics?.[4]?.message).equal(
+			"Could not apply the operation && between a boolean and a integer [object Object]",
+		);
+		expect(result.diagnostics?.[5]?.message).equal(
+			"Could not apply the operation || between a integer and a boolean [object Object]",
+		);
+
+		expect(result.diagnostics?.[6]?.message).equal(
+			"Could not apply the operation && between a float and a boolean [object Object]",
+		);
+		expect(result.diagnostics?.[7]?.message).equal(
+			"Could not apply the operation || between a boolean and a float [object Object]",
+		);
+
+		expect(result.diagnostics?.[8]?.message).equal(
+			"Could not apply the operation || between a float and a float [object Object]",
+		);
 	});
 
 	it("Add a int to a bool", async () => {
@@ -188,7 +448,6 @@ describe("Parsing tests", () => {
 			}
 		`;
 		const result = await parse(code, { validation: true });
-		console.log(result.diagnostics);
 		expect(result.diagnostics?.filter((d) => d.severity === 1).length).equal(
 			0,
 		);

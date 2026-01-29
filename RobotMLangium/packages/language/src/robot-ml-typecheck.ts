@@ -36,10 +36,9 @@ interface Value {
 }
 
 function isFloat(n: number): boolean {
-	console.trace(n, Number(n) === n && n % 1 !== 0);
-	return Number(n) === n && n % 1 !== 0;
+	// return Number(n) === n && n % 1 !== 0;
 	// function isFloat(n) {
-	// return !Number.isInteger(n);
+	return !Number.isInteger(n);
 }
 
 export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
@@ -75,7 +74,7 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 						) {
 							this.validationAccept(
 								"error",
-								`Cound not apply a boolean operation between a ${typeL} and ${typeR} a ${node}`,
+								`Could not apply the operation ${node2.operator} between a ${typeL} and a ${typeR} ${node}`,
 								{
 									node: node,
 								},
@@ -112,7 +111,7 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 						) {
 							this.validationAccept(
 								"error",
-								`Cound not check the equality between a ${typeL} and a ${typeR} ${node}`,
+								`Could not apply the operation ${node2.operator} between a ${typeL} and a ${typeR} ${node}`,
 								{
 									node: node,
 								},
@@ -193,7 +192,7 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 						if (!checkNumber1 && !checkNumber2) {
 							this.validationAccept(
 								"error",
-								`Cound not apply the operation ${node2.operator} between a ${typeL} and a ${typeR} ${node}`,
+								`Could not apply the operation ${node2.operator} between a ${typeL} and a ${typeR} ${node}`,
 								{
 									node: node,
 								},
@@ -236,7 +235,7 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 						if (!checkNumber1 && !checkNumber2) {
 							this.validationAccept(
 								"error",
-								`Cound not apply the operation ${node2.operator} between a ${typeL} and a ${typeR} ${node}`,
+								`Could not apply the operation ${node2.operator} between a ${typeL} and a ${typeR} ${node}`,
 								{
 									node: node,
 								},

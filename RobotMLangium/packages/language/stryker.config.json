@@ -5,5 +5,9 @@
 	"reporters": ["html", "clear-text", "progress", "dashboard"],
 	"testRunner": "vitest",
 	"testRunner_comment": "Take a look at https://stryker-mutator.io/docs/stryker-js/vitest-runner for information about the vitest plugin.",
-	"coverageAnalysis": "perTest"
+	"coverageAnalysis": "perTest",
+	"mutate": [
+        "src/SymbolTable.ts",
+        "src/robot-ml-typecheck.ts"
+    ]
 }
