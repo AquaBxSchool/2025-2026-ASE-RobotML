@@ -99,15 +99,6 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 	visitFunctionCall(node: FunctionCall): string {
 		return `${node.functiondeclaration.ref.name}(${node.parameters.map((p) => this.visitExpression(p)).join(", ")})`;
 	}
-	visitGetClock(node: GetClock): string {
-		throw new Error("Method visitGetClock() not implemented.");
-	}
-	visitGetSensor(node: GetSensor): string {
-		throw new Error("Method visitGetSensor() not implemented.");
-	}
-	visitGetSpeed(node: GetSpeed): string {
-		throw new Error("Method visitGetSpeed() not implemented.");
-	}
 	visitUnary(node: Unary): string {
 		return `${node.op} ${this.visitExpression(node.expr)}`;
 	}
@@ -187,20 +178,11 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 	visitBlock(node: Block): string {
 		return `{\n${node.statements.map((p) => this.visitStatement(p)).join(";\n")}\n}`;
 	}
-	visitCondition(node: Condition): string {
-		throw new Error("Method visitCondition() not implemented.");
-	}
 	visitFnReturn(node: FnReturn): string {
 		return `return ${this.visitExpression(node.expression)}`;
 	}
 	visitFunctionDeclaration(node: FunctionDeclaration): string {
 		return `${typeMap.get(node.returnType)} ${node.name} ( ${node.parameters.map((p) => this.visitArgumentDec(p)).join(", ")} )\n${this.visitBlock(node.block)}`;
-	}
-	visitLoop(node: Loop): string {
-		throw new Error("Method visitLoop() not implemented.");
-	}
-	visitMovement(node: Movement): string {
-		throw new Error("Method visitMovement() not implemented.");
 	}
 	visitBackward(node: Backward): string {
 		return `
@@ -224,12 +206,6 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 			delay(500);
 		`;
 	}
-	visitLeftward(node: Leftward): string {
-		throw new Error("Method visitLeftward() not implemented.");
-	}
-	visitRightward(node: Rightward): string {
-		throw new Error("Method visitRightward() not implemented.");
-	}
 	visitRotate(node: Rotate): string {
 		return `
 			dist_accel = speed * 2.9940119760479043;
@@ -241,6 +217,21 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 			delay(500);
 		`;
 	}
+	visitCondition(node: Condition): string {
+		throw new Error("Method visitCondition() not implemented.");
+	}
+	visitLoop(node: Loop): string {
+		throw new Error("Method visitLoop() not implemented.");
+	}
+	visitMovement(node: Movement): string {
+		throw new Error("Method visitMovement() not implemented.");
+	}
+	visitLeftward(node: Leftward): string {
+		throw new Error("Method visitLeftward() not implemented.");
+	}
+	visitRightward(node: Rightward): string {
+		throw new Error("Method visitRightward() not implemented.");
+	}
 	visitSetClock(node: SetClock): string {
 		throw new Error("Method visitSetClock() not implemented.");
 	}
@@ -249,5 +240,14 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 	}
 	visitVariableDec(node: VariableDec): string {
 		throw new Error("Method visitVariableDec() not implemented.");
+	}
+	visitGetClock(node: GetClock): string {
+		throw new Error("Method visitGetClock() not implemented.");
+	}
+	visitGetSensor(node: GetSensor): string {
+		throw new Error("Method visitGetSensor() not implemented.");
+	}
+	visitGetSpeed(node: GetSpeed): string {
+		throw new Error("Method visitGetSpeed() not implemented.");
 	}
 }
