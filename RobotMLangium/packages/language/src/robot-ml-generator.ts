@@ -68,6 +68,17 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 	}
 	visitRobotML(node: RobotML) {
 		throw new Error("Method not implemented.");
+
+		return `
+			#include <PinChangeInt.h>
+			#include <PinChangeIntConfig.h>
+			#include <EEPROM.h>
+			#define _NAMIKI_MOTOR // for Namiki 22CL-103501PG80:1
+			#include <fuzzy_table.h>
+			#include <PID_Beta6.h>
+			#include <MotorWheel.h>
+			#include <Omni4WD.h>
+		`
 	}
 	visitStatement(node: Statement) {
 		throw new Error("Method not implemented.");
