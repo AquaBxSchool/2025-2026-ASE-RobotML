@@ -5,8 +5,10 @@ import {
 	type Assignation,
 	type Backward,
 	type Block,
+	BoolLiteral,
 	type Condition,
 	type Expression,
+	FloatLiteral,
 	type FnReturn,
 	type Forward,
 	type FunctionCall,
@@ -14,8 +16,8 @@ import {
 	type GetClock,
 	type GetSensor,
 	type GetSpeed,
+	IntLiteral,
 	type Leftward,
-	type Literal,
 	type Loop,
 	type Movement,
 	type Rightward,
@@ -25,6 +27,7 @@ import {
 	type SetClock,
 	type SetSpeed,
 	type Statement,
+	StringLiteral,
 	type Type,
 	type Unary,
 	type VariableDec,
@@ -35,13 +38,19 @@ interface Value {
 	type: Type;
 }
 
-function isFloat(n: number): boolean {
-	// return Number(n) === n && n % 1 !== 0;
-	// function isFloat(n) {
-	return !Number.isInteger(n);
-}
-
 export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
+	visitBoolLiteral(node: BoolLiteral): Value {
+		return { type: "boolean" };
+	}
+	visitFloatLiteral(node: FloatLiteral): Value {
+		return { type: "float" };
+	}
+	visitIntLiteral(node: IntLiteral): Value {
+		return { type: "integer" };
+	}
+	visitStringLiteral(node: StringLiteral): Value {
+		return { type: "string" };
+	}
 	symbolTable: SymbolTable;
 
 	constructor() {
@@ -257,8 +266,14 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 				return this.visitGetSensor(node as GetSensor);
 			case "GetSpeed":
 				return this.visitGetSpeed(node as GetSpeed);
-			case "Literal":
-				return this.visitLiteral(node as Literal);
+			case "StringLiteral":
+				return this.visitStringLiteral(node as StringLiteral);
+			case "FloatLiteral":
+				return this.visitFloatLiteral(node as FloatLiteral);
+			case "IntLiteral":
+				return this.visitIntLiteral(node as IntLiteral);
+			case "BoolLiteral":
+				return this.visitBoolLiteral(node as BoolLiteral);
 			case "Unary":
 				return this.visitUnary(node as Unary);
 			case "VariableRef":
@@ -304,21 +319,6 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 	}
 	visitGetSpeed(_node: GetSpeed): Value {
 		return { type: "float" };
-	}
-	visitLiteral(node: Literal): Value {
-		switch (typeof node.value) {
-			case "string":
-				return { type: "string" };
-			case "number": {
-				if (isFloat(node.value)) {
-					return { type: "float" };
-				} else {
-					return { type: "integer" };
-				}
-			}
-			case "boolean":
-				return { type: "boolean" };
-		}
 	}
 	visitUnary(node: Unary): Value {
 		const { type } = this.visitExpression(node.expr);

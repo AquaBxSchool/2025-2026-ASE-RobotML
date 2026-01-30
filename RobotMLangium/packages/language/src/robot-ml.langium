@@ -180,15 +180,27 @@ infix BinaryExpr on Expr:
     > "||"
     ;
 
-interface Literal extends Expression {
-    value : number | string | boolean
+interface IntLiteral extends Expression {
+    value : number
+}
+interface StringLiteral extends Expression {
+    value : string
+}
+interface FloatLiteral extends Expression {
+    value : number
+}
+interface BoolLiteral extends Expression {
+    value : boolean
 }
 
 PrimaryExpression:
     {VariableRef} VariableRef  |
     {FunctionCall} FunctionCall |
     {Builtins} Builtins |
-    {Literal} (value=INT | value=STRING | value=FLOAT | value=BOOL)
+    {IntLiteral} value=INT |
+    {StringLiteral} value=STRING |
+    {FloatLiteral} value=FLOAT |
+    {BoolLiteral} value=BOOL
 ;
 
 type Declaration = VariableDec | ArgumentDec;

@@ -4,8 +4,7 @@ import { NodeFileSystem } from "langium/node";
 import { createRobotMlServices } from "robot-ml-language";
 import { RobotMlLanguageMetaData } from "robot-ml-language/generated";
 import type { RobotML } from "robot-ml-language/semantics";
-import { generateOutput } from "./generator.js";
-import { extractAstNode } from "./util.js";
+import { extractAstNode, generateOutput } from "./util.js";
 
 export const generateAction = async (
 	source: string,
@@ -13,8 +12,11 @@ export const generateAction = async (
 ): Promise<void> => {
 	const services = createRobotMlServices(NodeFileSystem).RobotMl;
 	const model = await extractAstNode<RobotML>(source, services);
-	const generatedFilePath = generateOutput(model, source, destination);
-	model.accept(services.visitors.RobotMLGeneratorVisitor);
+	model.accept(services.visitors.RobotMLAstPrinterVisitor);
+
+	let code = model.accept(services.visitors.RobotMLGeneratorVisitor);
+
+	const generatedFilePath = generateOutput(destination, code);
 	console.log(chalk.green(`Code generated succesfully: ${generatedFilePath}`));
 };
 

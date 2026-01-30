@@ -3,8 +3,10 @@ import type {
 	Assignation,
 	Backward,
 	Block,
+	BoolLiteral,
 	Condition,
 	Expression,
+	FloatLiteral,
 	FnReturn,
 	Forward,
 	FunctionCall,
@@ -12,8 +14,8 @@ import type {
 	GetClock,
 	GetSensor,
 	GetSpeed,
+	IntLiteral,
 	Leftward,
-	Literal,
 	Loop,
 	Movement,
 	Rightward,
@@ -23,6 +25,7 @@ import type {
 	SetClock,
 	SetSpeed,
 	Statement,
+	StringLiteral,
 	Unary,
 	VariableDec,
 	VariableRef,
@@ -33,6 +36,18 @@ function print(text: string) {
 }
 
 export class RobotMLAstPrinterVisitor implements RobotMlVisitor {
+	visitBoolLiteral(node: BoolLiteral) {
+		throw new Error("Method not implemented.");
+	}
+	visitFloatLiteral(node: FloatLiteral) {
+		throw new Error("Method not implemented.");
+	}
+	visitIntLiteral(node: IntLiteral) {
+		throw new Error("Method not implemented.");
+	}
+	visitStringLiteral(node: StringLiteral) {
+		throw new Error("Method not implemented.");
+	}
 	visitArgumentDec(node: ArgumentDec) {
 		print(`${node.name} ${node.type ? ": " + node.type : ""}`);
 	}
@@ -50,9 +65,6 @@ export class RobotMLAstPrinterVisitor implements RobotMlVisitor {
 	}
 	visitGetSpeed(node: GetSpeed) {
 		throw new Error("Method visitGetSpeed() not implemented.");
-	}
-	visitLiteral(node: Literal) {
-		throw new Error("Method visitLiteral() not implemented.");
 	}
 	visitUnary(node: Unary) {
 		throw new Error("Method visitUnary() not implemented.");
