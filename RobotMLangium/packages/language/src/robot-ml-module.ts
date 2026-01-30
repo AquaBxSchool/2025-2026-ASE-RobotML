@@ -16,6 +16,7 @@ import { RobotMlAcceptWeaver } from "./semantics/robot-ml-accept-weaver.js";
 import { registerVisitorAsValidator } from "./semantics/robot-ml-visitor.js";
 import { RobotMLTypeCheckVisitor } from "./robot-ml-typecheck.js";
 import { RobotMLAstPrinterVisitor } from "./robot-ml-ast-printer.js";
+import { RobotMLGeneratorVisitor } from "./robot-ml-generator.ts";
 // import { MyLanguageScopeProvider } from './robot-ml-scope.js';
 
 /**
@@ -29,6 +30,7 @@ export type RobotMlAddedServices = {
 		RobotMlAcceptWeaver: RobotMlAcceptWeaver;
 		RobotMLTypeCheckVisitor: RobotMLTypeCheckVisitor;
 		RobotMLAstPrinterVisitor: RobotMLAstPrinterVisitor;
+		RobotMLGeneratorVisitor: RobotMLGeneratorVisitor;
 	};
 };
 
@@ -57,6 +59,7 @@ export const RobotMlModule: Module<
 		RobotMlAcceptWeaver: (services) => new RobotMlAcceptWeaver(services),
 		RobotMLTypeCheckVisitor: () => new RobotMLTypeCheckVisitor(),
 		RobotMLAstPrinterVisitor: () => new RobotMLAstPrinterVisitor(),
+		RobotMLGeneratorVisitor: () => new RobotMLGeneratorVisitor(),
 	},
 };
 

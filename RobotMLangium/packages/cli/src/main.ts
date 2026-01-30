@@ -14,7 +14,7 @@ export const generateAction = async (
 	const services = createRobotMlServices(NodeFileSystem).RobotMl;
 	const model = await extractAstNode<RobotML>(source, services);
 	const generatedFilePath = generateOutput(model, source, destination);
-	model.accept(services.visitors.RobotMLAstPrinterVisitor);
+	model.accept(services.visitors.RobotMLGeneratorVisitor);
 	console.log(chalk.green(`Code generated succesfully: ${generatedFilePath}`));
 };
 

@@ -340,8 +340,6 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 		return { type: type };
 	}
 	visitVariableRef(node: VariableRef): Value {
-		console.error(node.ref);
-
 		if (!node.ref.ref) {
 			this.validationAccept("error", `ref does not exist`, {
 				node: node,

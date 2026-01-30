@@ -45,7 +45,6 @@ export class SymbolTable {
 	}
 
 	inScope(symbol: string): boolean {
-		console.error(this.scopes.list);
 		for (const scope of this.scopes.list) {
 			for (const s of scope.keys()) {
 				if (s === symbol) {
