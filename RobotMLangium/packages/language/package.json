@@ -35,7 +35,7 @@
 	},
 	"scripts": {
 		"build": "langium generate && langium-visitor && rolldown -c rolldown.config.ts && tsc --emitDeclarationOnly --declaration",
-		"clean": "shx rm -fr *.tsbuildinfo dist src/generated src/semantics",
+		"clean": "shx rm -fr *.tsbuildinfo dist src/generated src/semantics .stryker-tmp",
 		"test": "vitest run",
 		"mutation": "stryker run"
 	}

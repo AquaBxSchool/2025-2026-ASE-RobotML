@@ -4,6 +4,7 @@ import type {
 	Backward,
 	Block,
 	BoolLiteral,
+	Cast,
 	Condition,
 	Expression,
 	FloatLiteral,
@@ -78,6 +79,9 @@ export class RobotMLAstPrinterVisitor implements RobotMlVisitor {
 		node.functions.forEach((node) => {
 			// this.visitFunctionDeclaration(node);
 		});
+	}
+	visitCast(node: Cast) {
+		throw new Error("Method not implemented.");
 	}
 	visitStatement(node: Statement) {
 		switch (node.$type) {

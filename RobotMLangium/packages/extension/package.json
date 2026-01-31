@@ -6,7 +6,7 @@
 	"type": "module",
 	"repository": "https://github.com/AquaBxSchool/2025-2026-ASE-RobotML.git",
 	"engines": {
-		"vscode": "^1.107.0"
+		"vscode": "^1.104.0"
 	},
 	"categories": [
 		"Programming Languages"
@@ -47,7 +47,7 @@
 		"robot-ml-language": "*",
 		"@types/node": "*",
 		"rolldown": "*",
-		"@types/vscode": "^1.107.0",
+		"@types/vscode": "^1.104.0",
 		"vscode-languageclient": "~9.0.1",
 		"vscode-languageserver": "~9.0.1",
 		"@vscode/vsce": "^3.7.1"

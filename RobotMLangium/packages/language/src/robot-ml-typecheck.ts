@@ -6,6 +6,7 @@ import {
 	type Backward,
 	type Block,
 	BoolLiteral,
+	Cast,
 	type Condition,
 	type Expression,
 	FloatLiteral,
@@ -349,7 +350,6 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 		const name = node.ref.ref.name;
 
 		if (!this.symbolTable.inScope(name)) {
-			// console.trace(this.symbolTable.inScope(name));
 			this.validationAccept(
 				"error",
 				`Variable ${name} does not exist`,
@@ -512,6 +512,26 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 					node: node,
 				},
 			);
+		}
+	}
+	visitCast(node: Cast): Value {
+		const { type: exp_type } = this.visitExpression(node.expression);
+		const cast_type = node.type;
+
+		switch (`${exp_type}->${cast_type}`) {
+			case "string->bool":
+			case "string->integer":
+			case "string->float":
+				this.validationAccept(
+					"error",
+					`Can't cast ${exp_type} to ${cast_type}`,
+					{
+						node: node,
+					},
+				);
+				throw "error";
+			default:
+				return { type: cast_type };
 		}
 	}
 	visitForward(node: Forward) {

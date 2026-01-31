@@ -6,6 +6,7 @@ import type {
 	Backward,
 	Block,
 	BoolLiteral,
+	Cast,
 	Condition,
 	Expression,
 	FloatLiteral,
@@ -42,6 +43,9 @@ typeMap.set("float", "float");
 typeMap.set("void", "void");
 
 export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
+	visitCast(node: Cast) {
+		throw new Error("Method not implemented.");
+	}
 	symbolTable: SymbolTable;
 
 	constructor() {
@@ -128,10 +132,6 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 				);
 			case "VariableDec":
 				return this.visitVariableDec(node as VariableDec);
-			case "SetSpeed":
-				return this.visitSetSpeed(node as SetSpeed);
-			case "FnReturn":
-				return this.visitFnReturn(node as FnReturn);
 			case "Assignation":
 				return this.visitAssignation(node as Assignation);
 			case "Backward":
@@ -146,10 +146,6 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 				return this.visitForward(node as Forward);
 			case "FunctionCall":
 				return this.visitFunctionCall(node as FunctionCall);
-			case "FunctionDeclaration":
-				return this.visitFunctionDeclaration(
-					node as FunctionDeclaration,
-				);
 			case "Leftward":
 				return this.visitLeftward(node as Leftward);
 			case "Loop":
@@ -166,8 +162,6 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 				return this.visitSetSpeed(node as SetSpeed);
 			case "Statement":
 				return this.visitStatement(node as Statement);
-			case "VariableDec":
-				return this.visitVariableDec(node as VariableDec);
 			default:
 				throw new Error(`Undefined Statement: ${node.$type}`);
 		}

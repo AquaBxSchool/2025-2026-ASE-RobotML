@@ -15,7 +15,6 @@ beforeEach(async () => {
 describe("Parsing tests", () => {
 	it("should fail on empty input", async () => {
 		const code = ``;
-
 		const result = await parse(code, { validation: true });
 
 		expect(result.diagnostics?.length).equal(1);
@@ -28,26 +27,26 @@ describe("Parsing tests", () => {
 		const code = `
 		void main() {
 		    let d = 10
-        let d2 = 10.1
-        setSpeed(d)
-        SetClock(d)
-        Backward(d)
-        Forward(d)
-        Rightward(d)
-        Leftward(d)
-        Rotate(-d)
-        setSpeed(d2)
-        SetClock(d2)
-        Backward(d2)
-        Forward(d2)
-        Rightward(d2)
-        Leftward(d2)
-        Rotate(-d2)
-        let _ = GetSensor(Distance)
-        let _ = GetClock()
-        let s: float = GetSpeed()
-        setSpeed(s)
-    }
+	       let d2 = 10.1
+	       setSpeed(d)
+	       SetClock(d)
+	       Backward(d)
+	       Forward(d)
+	       Rightward(d)
+	       Leftward(d)
+	       Rotate(-d)
+	       setSpeed(d2)
+	       SetClock(d2)
+	       Backward(d2)
+	       Forward(d2)
+	       Rightward(d2)
+	       Leftward(d2)
+	       Rotate(-d2)
+	       let _ = GetSensor(Distance)
+	       let _ = GetClock()
+	       let s: float = GetSpeed()
+	       setSpeed(s)
+	   }
 		`;
 		const result = await parse(code, { validation: true });
 		expect(result.diagnostics?.length).equal(0);
@@ -56,19 +55,19 @@ describe("Parsing tests", () => {
 	it("builtinsErr", async () => {
 		const code = `
 		void main() {
-        let d = true
-        setSpeed(d)
-        SetClock(d)
-        Backward(d)
-        Forward(d)
-        Rightward(d)
-        Leftward(d)
-        Rotate(-d)
-        let _ : string = GetSensor(Distance)
-        let _ : string = GetClock()
-        let s: string = GetSpeed()
-        setSpeed(s)
-    }
+	       let d = true
+	       setSpeed(d)
+	       SetClock(d)
+	       Backward(d)
+	       Forward(d)
+	       Rightward(d)
+	       Leftward(d)
+	       Rotate(-d)
+	       let _ : string = GetSensor(Distance)
+	       let _ : string = GetClock()
+	       let s: string = GetSpeed()
+	       setSpeed(s)
+	   }
 		`;
 		const result = await parse(code, { validation: true });
 		expect(result.diagnostics?.length).equal(12);
@@ -462,7 +461,7 @@ describe("Parsing tests", () => {
 				let c: integer = 0
 
 				while (c <= 10)  {
-   					c = c + 1
+	  					c = c + 1
 				}
 
 				if ( int == 1 ) {
@@ -480,44 +479,102 @@ describe("Parsing tests", () => {
 
 	it("function", async () => {
 		const code = `
-      string bar() {
-          return "bar"
-      }
-      boolean foo(void2: void, int: integer) {
-          int = 10
-          return "bar" == bar()
-      }
-  		void main() {
-          return foo() == true
-      }
+	     string bar() {
+	         return "bar"
+	     }
+	     boolean foo(void2: void, int: integer) {
+	         int = 10
+	         return "bar" == bar()
+	     }
+	 		void main() {
+	         return foo() == true
+	     }
 		`;
 		const result = await parse(code, { validation: true });
 		expect(result.diagnostics?.length).equal(0);
 	});
 	it("math", async () => {
 		const code = `
-      integer main() {
-              let b: integer = 9
-              let a: integer = -10
-              let c: integer = a / 1
-              let _ = b * 1
-              let _ = c - 1
-              let _ = c + 1
-              let _ = c == 1
-              let _ = c <= 1
-              let _ = c >= 1
-              let _ = c != 1
-              let _ = c < 1
-              let _ = c > 1
-              let _ = c == c && 1 == 1
-              let _ = c == c || 1 == 1
-              let _ = c ^ 1
-              let c = ((10 * (12 + 4 + b) == 20) || a < b / b)
+	     integer main() {
+	             let b: integer = 9
+	             let a: integer = -10
+	             let c: integer = a / 1
+	             let _ = b * 1
+	             let _ = c - 1
+	             let _ = c + 1
+	             let _ = c == 1
+	             let _ = c <= 1
+	             let _ = c >= 1
+	             let _ = c != 1
+	             let _ = c < 1
+	             let _ = c > 1
+	             let _ = c == c && 1 == 1
+	             let _ = c == c || 1 == 1
+	             let _ = c ^ 1
+	             let c = ((10 * (12 + 4 + b) == 20) || a < b / b)
 
-              return c
-          }
+	             return c
+	         }
 		`;
 		const result = await parse(code, { validation: true });
 		expect(result.diagnostics?.length).equal(0);
+	});
+	it("cast", async () => {
+		const code = `
+		void main() {
+	       let bf = true
+	       let bt = bf
+	       let _ = 10 in boolean == false
+	       let _ = bf in float == 0.0
+	       let _ = bf in integer == 0
+	       let _ = bf in boolean == true
+	       let _ = bf in float == 1
+	       let _ = bf in integer == 1
+
+	       let u = -230
+	       let _ = u in boolean == 1
+	       let _ = u in float == -230.0
+
+	       let i = 20
+	       let _ = i in boolean == 1
+	       let _ = i in float == 20.
+
+	       let f = 10.
+	       let _ = f in boolean == 1
+	       let _ = f in integer == 10
+	       let _ = f in float == 10.
+
+	       let fh1 = 10.5
+	       let _ = fh1 in integer == 10
+
+	       let fh2 = 10.6
+	       let _ = fh2 in integer == 11
+
+	       let fh3 = 10.3
+	       let _ = fh3 in integer == 10
+
+	       let oi = 0
+	       let _ = oi in boolean == 0
+
+	       let of = 0.0
+	       let _ = of in boolean == 0
+	   }
+		`;
+		const result = await parse(code, { validation: true });
+		expect(result.diagnostics?.length).equal(0);
+	});
+
+	it("scope", async () => {
+		const code = `
+		void main() {
+	     let _errror = value + 1
+	     let value = 10
+	   }
+		`;
+		const result = await parse(code, { validation: true });
+		expect(result.diagnostics?.length).equal(3);
+		expect(result.diagnostics?.[0]?.message).equal(
+			"Variable value does not exist",
+		);
 	});
 });

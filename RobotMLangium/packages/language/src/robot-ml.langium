@@ -159,19 +159,32 @@ Assignation returns Assignation:
 interface Expression {
 }
 
-
 interface Unary extends Expression {
     op:("-"|"!")
     expr:Expression
 }
 
-Unary returns Unary:
-    op=("!"|"-") expr=Expr;
+Unary returns Expression:
+    {Unary} op=("!"|"-") expr=Atomic;
+
+interface Cast extends Expression {
+    expression: Expression
+    type: Type
+}
+
+Cast returns Expression:
+    {Cast} expression=Atomic 'in' type=Type;
+
+PrimaryExpr returns Expression:
+    Unary | Cast | Atomic;
+
+Atomic returns Expression:
+    '(' Expr ')' | PrimaryExpression;
 
 Expr returns Expression:
-    '(' {Expression} BinaryExpr ')' | PrimaryExpression | {Unary} Unary;
+    BinaryExpr;
 
-infix BinaryExpr on Expr:
+infix BinaryExpr on PrimaryExpr:
     right assoc '^'
     > '*' | '/'
     > '+' | '-'
@@ -258,7 +271,7 @@ Sensor returns Sensor:
     'Distance' | 'Color'
 ;
 
-terminal FLOAT returns number: /[0-9]+\.[0-9]+([eE][+-]?[0-9]+)?/;
+terminal FLOAT returns number: /[0-9]+\.[0-9]*([eE][+-]?[0-9]+)?/;
 terminal BOOL returns boolean: 'true' | 'false';
 terminal ID returns string:'^'? (/[a-z]+/ | /[A-Z]+/ | '_' )(/[a-z]+/ | /[A-Z]+/ | '_' | /[0-9]+/ )*;
 terminal INT returns number: /[0-9]+/;
