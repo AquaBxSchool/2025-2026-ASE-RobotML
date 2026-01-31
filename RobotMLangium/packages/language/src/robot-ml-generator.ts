@@ -93,7 +93,7 @@ void rotate(Omni4WD & Omni, int angle) {
 		rotateLeft(Omni, -angle);
 	}
 	else {
-		rotateRight(Omni, -angle);
+		rotateRight(Omni, angle);
 	}
 }
 `;
