@@ -8,5 +8,8 @@ boolean foo(void2: void, int: integer) {
 }
 
 void main() {
+    Forward( 10 )
+    //Leftward( 10 )
+    Rotate( 10 )
     return foo() == true
 }

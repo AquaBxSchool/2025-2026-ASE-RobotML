@@ -35,6 +35,69 @@ import type {
 } from "./semantics.ts";
 import { RobotMlValidationVisitor } from "./semantics.ts";
 
+const functions = `
+float distanceRadial(float angle) {
+	return angle * pi / 180 * 141.17
+}
+float delaying(float distance) {
+	return (167*(distance/speed - 2.9940119760479043));
+}
+void forward(Omni4WD & Omni, int distance) {
+	float delaying = delaying(distance);
+	Omni.setCarAdvance(speed);
+	Omni.setCarSpeedMMPS(speed, 500); // 7.8mm
+	delay(delaying); // 35.1mm
+	Omni.setCarSpeedMMPS(0, 500); // 7.8mm
+	// 50.1mm
+}
+void leftward(Omni4WD & Omni, int distance) {
+	float delaying = delaying(distance);
+	Omni.setCarLeft(speed);
+	Omni.setCarSpeedMMPS(speed, 500); // 7.8mm
+	delay(delaying); // 35.1mm
+	Omni.setCarSpeedMMPS(0, 500); // 7.8mm
+	// 50.1mm
+}
+void rightward(Omni4WD & Omni, int distance) {
+	float delaying = delaying(distance);
+	Omni.setCarRight(speed);
+	Omni.setCarSpeedMMPS(speed, 500); // 7.8mm
+	delay(delaying); // 35.1mm
+	Omni.setCarSpeedMMPS(0, 500); // 7.8mm
+	// 50.1mm
+}
+void backward(Omni4WD & Omni, int distance) {
+	float delaying = delaying(distance);
+	Omni.setCarBackoff(speed);
+	Omni.setCarSpeedMMPS(speed, 500); // 7.8mm
+	delay(delaying); // 35.1mm
+	Omni.setCarSpeedMMPS(0, 500); // 7.8mm
+	// 50.1mm
+}
+void rotateLeft(Omni4WD & Omni, int angle) {
+	float delaying = delaying(distanceRadial(angle));
+	Omni.setCarRotateLeft(speed);
+	Omni.setCarSpeedMMPS(speed, 500);
+	delay(delaying);
+	Omni.setCarSpeedMMPS(0, 500);
+}
+void rotateRight(Omni4WD & Omni, int angle) {
+	float delaying = delaying(distanceRadial(angle));
+	Omni.setCarRotateRight(speed);
+	Omni.setCarSpeedMMPS(speed, 500);
+	delay(delaying);
+	Omni.setCarSpeedMMPS(0, 500);
+}
+void rotate(Omni4WD & Omni, int angle) {
+	if (angle < 0){
+		rotateLeft(Omni, -angle);
+	}
+	else {
+		rotateRight(Omni, -angle);
+	}
+}
+`;
+
 const typeMap: Map<Type, string> = new Map();
 typeMap.set("string", "std::string");
 typeMap.set("boolean", "bool");
@@ -122,7 +185,19 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 			"#include <string>",
 		];
 
-		return `${includes.join("\n")}\n\n${node.functions.map((p) => this.visitFunctionDeclaration(p)).join("\n\n")}`;
+		const constants = [
+			"irqISR(irq1, isr1)",
+			"MotorWheel wheel1(3, 2, 4, 5, &irq1)",
+			"irqISR(irq2, isr2)",
+			"MotorWheel wheel2(11, 12, 14, 15, &irq2)",
+			"irqISR(irq3, isr3)",
+			"MotorWheel wheel3(9, 8, 16, 17, &irq3)",
+			"irqISR(irq4, isr4)",
+			"MotorWheel wheel4(10, 7, 18, 19, &irq4)",
+			"Omni4WD Omni(&wheel1, &wheel2, &wheel3, &wheel4)",
+		];
+
+		return `${includes.join("\n")}\n\n${constants.join(";\n")}\n\n${functions}\n\n${node.functions.map((p) => this.visitFunctionDeclaration(p)).join("\n\n")}`;
 	}
 	visitStatement(node: Statement): string {
 		switch (node.$type) {
@@ -179,37 +254,19 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 		return `${typeMap.get(node.returnType)} ${node.name} ( ${node.parameters.map((p) => this.visitArgumentDec(p)).join(", ")} )\n${this.visitBlock(node.block)}`;
 	}
 	visitBackward(node: Backward): string {
-		return `
-			dist_accel = speed * 2.9940119760479043;
-			delaying = (167 * (-${this.visitExpression(node.expression)} - dist_accel)) / speed;
-			Omni.setCarAdvance(speed);
-			Omni.setCarSpeedMMPS(speed, 500);
-			delay(delaying);
-			Omni.setCarSlow2Stop(500);
-			delay(500);
-		`;
+		return `backward(Omni,${this.visitExpression(node.expression)})`;
 	}
 	visitForward(node: Forward): string {
-		return `
-			dist_accel = speed * 2.9940119760479043;
-			delaying = (167 * (${this.visitExpression(node.expression)} - dist_accel)) / speed;
-			Omni.setCarAdvance(speed);
-			Omni.setCarSpeedMMPS(speed, 500);
-			delay(delaying);
-			Omni.setCarSlow2Stop(500);
-			delay(500);
-		`;
+		return `forward(Omni,${this.visitExpression(node.expression)})`;
 	}
 	visitRotate(node: Rotate): string {
-		return `
-			dist_accel = speed * 2.9940119760479043;
-			delaying = (167 * ((${this.visitExpression(node.expression)} * 2.4638813) - dist_accel)) / speed;
-			Omni.setCarRotateRight(speed);
-			Omni.setCarSpeedMMPS(speed, 500);
-			delay(delaying);
-			Omni.setCarSlow2Stop(500);
-			delay(500);
-		`;
+		return `rotate(Omni,${this.visitExpression(node.expression)})`;
+	}
+	visitLeftward(node: Leftward): string {
+		return `leftward(Omni,${this.visitExpression(node.expression)})`;
+	}
+	visitRightward(node: Rightward): string {
+		return `rightward(Omni,${this.visitExpression(node.expression)})`;
 	}
 	visitCondition(node: Condition): string {
 		throw new Error("Method visitCondition() not implemented.");
@@ -219,12 +276,6 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 	}
 	visitMovement(node: Movement): string {
 		throw new Error("Method visitMovement() not implemented.");
-	}
-	visitLeftward(node: Leftward): string {
-		throw new Error("Method visitLeftward() not implemented.");
-	}
-	visitRightward(node: Rightward): string {
-		throw new Error("Method visitRightward() not implemented.");
 	}
 	visitSetClock(node: SetClock): string {
 		throw new Error("Method visitSetClock() not implemented.");
