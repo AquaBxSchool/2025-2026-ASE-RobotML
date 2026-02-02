@@ -37,55 +37,55 @@ import { RobotMlValidationVisitor } from "./semantics.ts";
 
 const functions = `
 float distanceRadial(float angle) {
-	return angle * pi / 180 * 141.17
+	return angle * pi / 180 * 141.17;
 }
 float delaying(float distance) {
 	return (167*(distance/speed - 2.9940119760479043));
 }
 void forward(Omni4WD & Omni, int distance) {
-	float delaying = delaying(distance);
+	float delay_time = delaying(distance);
 	Omni.setCarAdvance(speed);
 	Omni.setCarSpeedMMPS(speed, 500); // 7.8mm
-	delay(delaying); // 35.1mm
+	delay(delay_time); // 35.1mm
 	Omni.setCarSpeedMMPS(0, 500); // 7.8mm
 	// 50.1mm
 }
 void leftward(Omni4WD & Omni, int distance) {
-	float delaying = delaying(distance);
+	float delay_time = delaying(distance);
 	Omni.setCarLeft(speed);
 	Omni.setCarSpeedMMPS(speed, 500); // 7.8mm
-	delay(delaying); // 35.1mm
+	delay(delay_time); // 35.1mm
 	Omni.setCarSpeedMMPS(0, 500); // 7.8mm
 	// 50.1mm
 }
 void rightward(Omni4WD & Omni, int distance) {
-	float delaying = delaying(distance);
+	float delay_time = delaying(distance);
 	Omni.setCarRight(speed);
 	Omni.setCarSpeedMMPS(speed, 500); // 7.8mm
-	delay(delaying); // 35.1mm
+	delay(delay_time); // 35.1mm
 	Omni.setCarSpeedMMPS(0, 500); // 7.8mm
 	// 50.1mm
 }
 void backward(Omni4WD & Omni, int distance) {
-	float delaying = delaying(distance);
+	float delay_time = delaying(distance);
 	Omni.setCarBackoff(speed);
 	Omni.setCarSpeedMMPS(speed, 500); // 7.8mm
-	delay(delaying); // 35.1mm
+	delay(delay_time); // 35.1mm
 	Omni.setCarSpeedMMPS(0, 500); // 7.8mm
 	// 50.1mm
 }
 void rotateLeft(Omni4WD & Omni, int angle) {
-	float delaying = delaying(distanceRadial(angle));
+	float delay_time = delaying(distanceRadial(angle));
 	Omni.setCarRotateLeft(speed);
 	Omni.setCarSpeedMMPS(speed, 500);
-	delay(delaying);
+	delay(delay_time);
 	Omni.setCarSpeedMMPS(0, 500);
 }
 void rotateRight(Omni4WD & Omni, int angle) {
-	float delaying = delaying(distanceRadial(angle));
+	float delay_time = delaying(distanceRadial(angle));
 	Omni.setCarRotateRight(speed);
 	Omni.setCarSpeedMMPS(speed, 500);
-	delay(delaying);
+	delay(delay_time);
 	Omni.setCarSpeedMMPS(0, 500);
 }
 void rotate(Omni4WD & Omni, int angle) {
@@ -99,11 +99,15 @@ void rotate(Omni4WD & Omni, int angle) {
 `;
 
 const typeMap: Map<Type, string> = new Map();
-typeMap.set("string", "std::string");
+typeMap.set("string", "const char *");
 typeMap.set("boolean", "bool");
 typeMap.set("integer", "int");
 typeMap.set("float", "float");
 typeMap.set("void", "void");
+
+function join_comma(value: string[]) {
+	return value.map((el) => (el += ";\n")).join("");
+}
 
 export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 	visitCast(node: Cast) {
@@ -182,7 +186,6 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 			"#include <PID_Beta6.h>",
 			"#include <MotorWheel.h>",
 			"#include <Omni4WD.h>",
-			"#include <string>",
 		];
 
 		const constants = [
@@ -195,9 +198,11 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 			"irqISR(irq4, isr4)",
 			"MotorWheel wheel4(10, 7, 18, 19, &irq4)",
 			"Omni4WD Omni(&wheel1, &wheel2, &wheel3, &wheel4)",
+			"float speed = 0.0",
+			"float pi = 3.1415",
 		];
 
-		return `${includes.join("\n")}\n\n${constants.join(";\n")}\n\n${functions}\n\n${node.functions.map((p) => this.visitFunctionDeclaration(p)).join("\n\n")}`;
+		return `${includes.join("\n")}\n\n${join_comma(constants)}\n${functions}\n${node.functions.map((p) => this.visitFunctionDeclaration(p)).join("\n\n")}`;
 	}
 	visitStatement(node: Statement): string {
 		switch (node.$type) {
@@ -245,7 +250,7 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 		return `${this.visitVariableRef(node.variableRef)} = ${this.visitExpression(node.expression)}`;
 	}
 	visitBlock(node: Block): string {
-		return `{\n${node.statements.map((p) => this.visitStatement(p)).join(";\n")}\n}`;
+		return `{\n${join_comma(node.statements.map((p) => this.visitStatement(p)))}\n}`;
 	}
 	visitFnReturn(node: FnReturn): string {
 		return `return ${this.visitExpression(node.expression)}`;

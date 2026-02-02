@@ -17,7 +17,7 @@
 	},
 	"scripts": {
 		"clean": "shx rm -fr *.tsbuildinfo dist",
-		"build": "rolldown -c rolldown.config.ts && bun build ./dist/main.js --compile --outfile=./dist/cli",
+		"build": "rolldown -c rolldown.config.ts && bun build ./dist/main.js --compile --outfile=./dist/cli && shx cp -r ./lib ./dist/",
 		"test": "echo Nothing to do",
 		"mutation": "echo Nothing to do"
 	},

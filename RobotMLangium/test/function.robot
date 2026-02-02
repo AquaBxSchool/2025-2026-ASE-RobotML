@@ -2,14 +2,15 @@ string bar() {
     return "bar"
 }
 
-boolean foo(void2: void, int: integer) {
-    int = 10
+boolean foo(val: integer) {
+    val = 10
     return "bar" == bar()
 }
 
-void main() {
+integer main() {
     Forward( 10 )
     //Leftward( 10 )
     Rotate( 10 )
-    return foo() == true
+    // let t : boolean = foo() == true
+    return 0
 }

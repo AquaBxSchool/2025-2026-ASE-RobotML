@@ -5,6 +5,8 @@ import { createRobotMlServices } from "robot-ml-language";
 import { RobotMlLanguageMetaData } from "robot-ml-language/generated";
 import type { RobotML } from "robot-ml-language/semantics";
 import { extractAstNode, generateOutput } from "./util.js";
+import { $ } from "bun";
+import { dirname, join } from "path";
 
 export const generateAction = async (
 	source: string,
@@ -24,6 +26,14 @@ export const astAction = async (source: string, _destination: string): Promise<v
 	const services = createRobotMlServices(NodeFileSystem).RobotMl;
 	const model = await extractAstNode<RobotML>(source, services);
 	model.accept(services.visitors.RobotMLAstPrinterVisitor);
+};
+
+export const compileAction = async (dir: string): Promise<void> => {
+	const exeDir = dirname(process.execPath);
+	const libPath = join(exeDir, "lib");
+	const output =
+		await $`arduino-cli compile -b arduino:avr:uno ${dir} --libraries ${libPath}/../lib/`.text();
+	console.log(output);
 };
 
 export default function main(): void {
@@ -46,6 +56,10 @@ export default function main(): void {
 		)
 		.description("Print AST")
 		.action(astAction);
+	program.command("compile")
+		.argument("<dir>", `arduino project folder previously generated`)
+		.description("Compile into binary")
+		.action(compileAction);
 
 	program.parse(process.argv);
 }

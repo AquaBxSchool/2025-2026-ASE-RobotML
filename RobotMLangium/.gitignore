@@ -9,4 +9,3 @@ out/
 syntaxes/
 *.tsbuildinfo
 *.vsix
-lib/
