@@ -2,12 +2,9 @@ import * as path from "node:path";
 import chalk from "chalk";
 import type { AstNode, LangiumCoreServices, LangiumDocument } from "langium";
 import { parseHelper } from "langium/test";
-import * as fs from "node:fs";
-import { expandToNode, joinToNode, toString } from "langium/generate";
-import type { RobotML } from "robot-ml-language/semantics";
 
 export function generateOutput(destination: string, content: string): string {
-	const file = Bun.file(destination);
+	const file = Bun.file(`${destination}/${destination}.ino`);
 
 	if (!file.exists()) {
 		console.error(chalk.red(`File ${destination} does not exist.`));

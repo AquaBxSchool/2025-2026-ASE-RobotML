@@ -32,7 +32,7 @@ export const compileAction = async (dir: string): Promise<void> => {
 	const exeDir = dirname(process.execPath);
 	const libPath = join(exeDir, "lib");
 	const output =
-		await $`arduino-cli compile -b arduino:avr:uno ${dir} --libraries ${libPath}/../lib/`.text();
+		await $`arduino-cli compile -b arduino:avr:uno ${dir} --libraries ${libPath} --output-dir ${dir}/build`.text();
 	console.log(output);
 };
 
