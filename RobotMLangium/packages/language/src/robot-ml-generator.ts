@@ -282,11 +282,11 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 	visitVariableDec(node: VariableDec): string {
 		return `${typeMap.get(node.type)} ${node.name} = ${this.visitExpression(node.expression)}`;
 	}
+	visitLoop(node: Loop): string {
+		return `while (${this.visitExpression(node.condition)}) \n ${this.visitBlock(node.block)}`
+	}
 	visitCondition(node: Condition): string {
 		throw new Error("Method visitCondition() not implemented.");
-	}
-	visitLoop(node: Loop): string {
-		throw new Error("Method visitLoop() not implemented.");
 	}
 	visitMovement(node: Movement): string {
 		throw new Error("Method visitMovement() not implemented.");
