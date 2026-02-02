@@ -8,9 +8,10 @@ boolean foo(val: integer) {
 }
 
 integer main() {
+    setSpeed( 20 )
     Forward( 10 )
-    //Leftward( 10 )
+    Leftward( 10 )
     Rotate( 10 )
-    // let t : boolean = foo() == true
+    let t : boolean = foo(1) == true
     return 0
 }

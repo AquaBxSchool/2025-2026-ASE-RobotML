@@ -31,9 +31,16 @@ export const astAction = async (source: string, _destination: string): Promise<v
 export const compileAction = async (dir: string): Promise<void> => {
 	const exeDir = dirname(process.execPath);
 	const libPath = join(exeDir, "lib");
-	const output =
-		await $`arduino-cli compile -b arduino:avr:uno ${dir} --libraries ${libPath} --output-dir ${dir}/build`.text();
-	console.log(output);
+	try {
+		const result =
+			await $`arduino-cli compile -b arduino:avr:uno ${dir} --libraries ${libPath} --output-dir ${dir}/build`.quiet();
+		console.log(result.stdout.toString());
+	} catch (err: any) {
+		// This will now show you the specific C++ compiler errors in your console
+		console.error("Compilation Failed:");
+		console.error(err.stderr?.toString() || err.message);
+		process.exit(1);
+	}
 };
 
 export default function main(): void {
