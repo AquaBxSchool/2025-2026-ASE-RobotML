@@ -37,7 +37,7 @@ import { RobotMlValidationVisitor } from "./semantics.ts";
 
 const functions = `
 float distanceRadial(float angle) {
-	return angle * pi / 180 * 141.17;
+	return angle * PI / 180 * 141.17;
 }
 float delaying(float distance) {
 	return (167*(distance/speed - 2.9940119760479043));
@@ -199,7 +199,6 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 			"MotorWheel wheel4(10, 7, 18, 19, &irq4)",
 			"Omni4WD Omni(&wheel1, &wheel2, &wheel3, &wheel4)",
 			"float speed = 0.0",
-			"float pi = 3.1415",
 		];
 
 		return `${includes.join("\n")}\n\n${join_comma(constants)}\n${functions}\n${node.functions.map((p) => this.visitFunctionDeclaration(p)).join("\n\n")}`;
