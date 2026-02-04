@@ -25,7 +25,7 @@
 	"devDependencies": {
 		"langium-cli": "^4.2.0",
 		"langium": "^4.2.0",
-		"@aquabx/langium-visitor": "^1.4.5",
+		"langium-visitor": "^1.4.5",
 		"vitest": "*",
 		"rolldown-plugin-dts": "*",
 		"rolldown": "*",

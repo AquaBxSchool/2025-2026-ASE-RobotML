@@ -2,16 +2,6 @@
 # yarn lockfile v1
 
 
-"@aquabx/langium-visitor@^1.4.5":
-  version "1.4.5"
-  resolved "https://registry.yarnpkg.com/@aquabx/langium-visitor/-/langium-visitor-1.4.5.tgz#aeada8f08de01cf5540a807449b126117ceff6f8"
-  integrity sha512-qlE6a1jbfq9M3kmWCYBIjYQejrPay+nRO8Cgjnlkdf/tgfum97qEaSecj1Y2wNiel8VCHCzywQjrJZgvJXFc7w==
-  dependencies:
-    chalk "^5.4.1"
-    langium "^3.3.1"
-    minimist "^1.2.8"
-    nunjucks "^3.2.4"
-
 "@azu/format-text@^1.0.1", "@azu/format-text@^1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@azu/format-text/-/format-text-1.0.2.tgz#abd46dab2422e312bd1bfe36f0d427ab6039825d"
@@ -2886,6 +2876,16 @@ langium-railroad@~4.2.0:
   dependencies:
     langium "~4.2.0"
     railroad-diagrams "~1.0.0"
+
+langium-visitor@^1.4.5:
+  version "1.4.5"
+  resolved "https://registry.yarnpkg.com/langium-visitor/-/langium-visitor-1.4.5.tgz#72a5313638655ce57f54c5f57a6eca11ace3748f"
+  integrity sha512-z6yRPnzNFmhBvhIZ33Mftw8a989CJCrnHSGlXS/tYyhiW0GxJbgzmaa5IiE/aLS1omjoZnX4S+yuA1fpJFVmiQ==
+  dependencies:
+    chalk "^5.4.1"
+    langium "^3.3.1"
+    minimist "^1.2.8"
+    nunjucks "^3.2.4"
 
 langium@^3.3.1:
   version "3.5.0"
