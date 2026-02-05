@@ -4,10 +4,16 @@ void main() {
 
     let i = 0
 
-    while (i < 4) {
+    if (GetSensor(Distance) < 100) {
         Move(Forward, 300)
-        Rotate(90)
-        i = i +1
     }
+    else {
+        Rotate(90)
+    }
+
+    // while (i < 4) {
+    //     Move(Forward, 300)
+    //     i = i +1
+    // }
 
 }

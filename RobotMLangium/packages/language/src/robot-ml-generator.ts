@@ -360,7 +360,7 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 	visitCondition(node: Condition): string {
 		let conditionText = "";
 		for (let i = 0; i < node.conditions.length; i++) {
-			conditionText += `${i == 0 ? "if" : "else if"} (${node.conditions}) ${this.visitBlock(node.block.at(-1))}`;
+			conditionText += `${i == 0 ? "if" : "else if"} (${this.visitExpression(node.conditions.at(i))}) ${this.visitBlock(node.block.at(i))}`;
 		}
 
 		if (node.conditions.length < node.block.length) {
