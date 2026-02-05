@@ -3,7 +3,6 @@ import { SymbolTable } from "./SymbolTable.ts";
 import {
 	type ArgumentDec,
 	type Assignation,
-	type Backward,
 	type Block,
 	BoolLiteral,
 	Cast,
@@ -11,17 +10,14 @@ import {
 	type Expression,
 	FloatLiteral,
 	type FnReturn,
-	type Forward,
 	type FunctionCall,
 	type FunctionDeclaration,
 	type GetClock,
 	type GetSensor,
 	type GetSpeed,
 	IntLiteral,
-	type Leftward,
 	type Loop,
 	type Movement,
-	type Rightward,
 	type RobotML,
 	RobotMlValidationVisitor,
 	type Rotate,
@@ -426,18 +422,6 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 				case "Rotate":
 					this.visitRotate(node as Rotate);
 					break;
-				case "Forward":
-					this.visitForward(node as Forward);
-					break;
-				case "Backward":
-					this.visitBackward(node as Backward);
-					break;
-				case "Leftward":
-					this.visitLeftward(node as Leftward);
-					break;
-				case "Rightward":
-					this.visitRightward(node as Rightward);
-					break;
 				case "FnReturn":
 					this.visitFnReturn(node as FnReturn);
 					break;
@@ -502,18 +486,6 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 			);
 		}
 	}
-	visitBackward(node: Backward) {
-		const { type } = this.visitExpression(node.expression);
-		if (type !== "float" && type !== "integer") {
-			this.validationAccept(
-				"error",
-				`Backward does not support type ${type}`,
-				{
-					node: node,
-				},
-			);
-		}
-	}
 	visitCast(node: Cast): Value {
 		const { type: exp_type } = this.visitExpression(node.expression);
 		const cast_type = node.type;
@@ -532,42 +504,6 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 				throw "error";
 			default:
 				return { type: cast_type };
-		}
-	}
-	visitForward(node: Forward) {
-		const { type } = this.visitExpression(node.expression);
-		if (type !== "float" && type !== "integer") {
-			this.validationAccept(
-				"error",
-				`Forward does not support type ${type}`,
-				{
-					node: node,
-				},
-			);
-		}
-	}
-	visitLeftward(node: Leftward) {
-		const { type } = this.visitExpression(node.expression);
-		if (type !== "float" && type !== "integer") {
-			this.validationAccept(
-				"error",
-				`Leftward does not support type ${type}`,
-				{
-					node: node,
-				},
-			);
-		}
-	}
-	visitRightward(node: Rightward) {
-		const { type } = this.visitExpression(node.expression);
-		if (type !== "float" && type !== "integer") {
-			this.validationAccept(
-				"error",
-				`Rightward does not support type ${type}`,
-				{
-					node: node,
-				},
-			);
 		}
 	}
 	visitRotate(node: Rotate) {

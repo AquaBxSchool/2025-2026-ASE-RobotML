@@ -3,7 +3,6 @@ import { SymbolTable } from "./SymbolTable.ts";
 import type {
 	ArgumentDec,
 	Assignation,
-	Backward,
 	Block,
 	BoolLiteral,
 	Cast,
@@ -11,17 +10,14 @@ import type {
 	Expression,
 	FloatLiteral,
 	FnReturn,
-	Forward,
 	FunctionCall,
 	FunctionDeclaration,
 	GetClock,
 	GetSensor,
 	GetSpeed,
 	IntLiteral,
-	Leftward,
 	Loop,
 	Movement,
-	Rightward,
 	RobotML,
 	Rotate,
 	SetClock,
@@ -213,26 +209,18 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 				return this.visitVariableDec(node as VariableDec);
 			case "Assignation":
 				return this.visitAssignation(node as Assignation);
-			case "Backward":
-				return this.visitBackward(node as Backward);
 			case "Block":
 				return this.visitBlock(node as Block);
 			case "Condition":
 				return this.visitCondition(node as Condition);
 			case "FnReturn":
 				return this.visitFnReturn(node as FnReturn);
-			case "Forward":
-				return this.visitForward(node as Forward);
 			case "FunctionCall":
 				return this.visitFunctionCall(node as FunctionCall);
-			case "Leftward":
-				return this.visitLeftward(node as Leftward);
 			case "Loop":
 				return this.visitLoop(node as Loop);
 			case "Movement":
 				return this.visitMovement(node as Movement);
-			case "Rightward":
-				return this.visitRightward(node as Rightward);
 			case "Rotate":
 				return this.visitRotate(node as Rotate);
 			case "SetClock":
@@ -257,20 +245,8 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 	visitFunctionDeclaration(node: FunctionDeclaration): string {
 		return `${typeMap.get(node.returnType)} ${node.name} ( ${node.parameters.map((p) => this.visitArgumentDec(p)).join(", ")} )\n${this.visitBlock(node.block)}`;
 	}
-	visitBackward(node: Backward): string {
-		return `backward(Omni,${this.visitExpression(node.expression)})`;
-	}
-	visitForward(node: Forward): string {
-		return `forward(Omni,${this.visitExpression(node.expression)})`;
-	}
 	visitRotate(node: Rotate): string {
 		return `rotate(Omni,${this.visitExpression(node.expression)})`;
-	}
-	visitLeftward(node: Leftward): string {
-		return `leftward(Omni,${this.visitExpression(node.expression)})`;
-	}
-	visitRightward(node: Rightward): string {
-		return `rightward(Omni,${this.visitExpression(node.expression)})`;
 	}
 	visitSetSpeed(node: SetSpeed): string {
 		return `speed = ${this.visitExpression(node.expression)}`;
@@ -282,7 +258,7 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 		return `${typeMap.get(node.type)} ${node.name} = ${this.visitExpression(node.expression)}`;
 	}
 	visitLoop(node: Loop): string {
-		return `while (${this.visitExpression(node.condition)}) \n ${this.visitBlock(node.block)}`
+		return `while (${this.visitExpression(node.condition)}) \n ${this.visitBlock(node.block)}`;
 	}
 	visitCondition(node: Condition): string {
 		throw new Error("Method visitCondition() not implemented.");

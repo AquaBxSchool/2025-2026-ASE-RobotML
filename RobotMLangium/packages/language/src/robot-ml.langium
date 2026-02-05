@@ -12,7 +12,7 @@ interface Statement {
 }
 
 Statement returns Statement:
-    FunctionDeclaration | Block | VariableDec | Loop | Assignation | FunctionCall | Condition | SetSpeed | SetClock | Rotate | Forward | Backward | Leftward | Rightward | FnReturn
+    FunctionDeclaration | Block | VariableDec | Loop | Assignation | FunctionCall | Condition | SetSpeed | SetClock | Rotate | Movement | FnReturn
 ;
 
 interface FnReturn extends Statement {
@@ -58,7 +58,7 @@ interface SetSpeed extends Statement {
 }
 
 SetSpeed returns SetSpeed:
-    'setSpeed(' expression=BinaryExpr ')'
+    'SetSpeed(' expression=BinaryExpr ')'
 ;
 
 interface SetClock extends Statement {
@@ -79,33 +79,34 @@ Rotate returns Rotate:
 
 // Movement Statement
 
+type MovementType =
+  "LowerLeft" |
+  "UpperRight" |
+  "LowerRight" |
+  "UpperLeft" |
+  "Advance" |
+  "Backoff" |
+  "Left" |
+  "Right"
+;
+MovementType returns MovementType:
+  "LowerLeft" |
+  "UpperRight" |
+  "LowerRight" |
+  "UpperLeft" |
+  "Advance" |
+  "Backoff" |
+  "Left" |
+  "Right"
+;
+
 interface Movement extends Statement {
     expression: Expression
+    type: MovementType
 }
 
-interface Forward extends Movement {
-}
-Forward returns Forward:
-    'Forward(' expression=BinaryExpr  ')'
-;
-
-interface Backward extends Movement {
-}
-Backward returns Backward:
-    'Backward(' expression=BinaryExpr  ')'
-;
-
-interface Leftward extends Movement {
-}
-Leftward returns Leftward:
-    'Leftward(' expression=BinaryExpr  ')'
-;
-
-interface Rightward extends Movement {
-}
-Rightward returns Rightward:
-    'Rightward(' expression=BinaryExpr  ')'
-;
+Movement returns Movement:
+  'Move(' type=MovementType ',' expression=Expr ')';
 
 // Declaration Statemens
 

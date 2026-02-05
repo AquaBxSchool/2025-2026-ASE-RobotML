@@ -1,7 +1,6 @@
 import type {
 	ArgumentDec,
 	Assignation,
-	Backward,
 	Block,
 	BoolLiteral,
 	Cast,
@@ -9,17 +8,14 @@ import type {
 	Expression,
 	FloatLiteral,
 	FnReturn,
-	Forward,
 	FunctionCall,
 	FunctionDeclaration,
 	GetClock,
 	GetSensor,
 	GetSpeed,
 	IntLiteral,
-	Leftward,
 	Loop,
 	Movement,
-	Rightward,
 	RobotML,
 	RobotMlVisitor,
 	Rotate,
@@ -140,18 +136,6 @@ export class RobotMLAstPrinterVisitor implements RobotMlVisitor {
 	}
 	visitMovement(node: Movement) {
 		throw new Error("Method visitMovement() not implemented.");
-	}
-	visitBackward(node: Backward) {
-		throw new Error("Method visitBackward() not implemented.");
-	}
-	visitForward(node: Forward) {
-		throw new Error("Method visitForward() not implemented.");
-	}
-	visitLeftward(node: Leftward) {
-		throw new Error("Method visitLeftward() not implemented.");
-	}
-	visitRightward(node: Rightward) {
-		throw new Error("Method visitRightward() not implemented.");
 	}
 	visitRotate(node: Rotate) {
 		throw new Error("Method visitRotate() not implemented.");
