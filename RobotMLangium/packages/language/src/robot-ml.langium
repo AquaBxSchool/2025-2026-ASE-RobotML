@@ -12,7 +12,7 @@ interface Statement {
 }
 
 Statement returns Statement:
-    FunctionDeclaration | Block | VariableDec | Loop | Assignation | FunctionCall | Condition | SetSpeed | SetClock | Rotate | Movement | FnReturn
+    FunctionDeclaration | Block | Delay | VariableDec | Loop | Assignation | FunctionCall | Condition | SetSpeed | SetClock | Rotate | Movement | FnReturn
 ;
 
 interface FnReturn extends Statement {
@@ -67,6 +67,14 @@ interface SetClock extends Statement {
 
 SetClock returns SetClock:
     'SetClock(' expression=BinaryExpr ')'
+;
+
+interface Delay extends Statement {
+    expression: Expression
+}
+
+Delay returns Delay:
+    'Delay(' expression=BinaryExpr ')'
 ;
 
 interface Rotate extends Statement {

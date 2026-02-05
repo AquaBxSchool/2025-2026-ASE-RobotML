@@ -5,6 +5,7 @@ import type {
 	BoolLiteral,
 	Cast,
 	Condition,
+	Delay,
 	Expression,
 	FloatLiteral,
 	FnReturn,
@@ -33,6 +34,9 @@ function print(text: string) {
 }
 
 export class RobotMLAstPrinterVisitor implements RobotMlVisitor {
+	visitDelay(node: Delay) {
+		throw new Error("Method not implemented.");
+	}
 	visitBoolLiteral(node: BoolLiteral) {
 		throw new Error("Method not implemented.");
 	}

@@ -7,6 +7,7 @@ import type {
 	BoolLiteral,
 	Cast,
 	Condition,
+	Delay,
 	Expression,
 	FloatLiteral,
 	FnReturn,
@@ -175,7 +176,10 @@ function join_comma(value: string[]) {
 }
 
 export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
-	visitCast(node: Cast) {
+	visitDelay(node: Delay): string {
+		throw new Error("Method not implemented.");
+	}
+	visitCast(node: Cast): string {
 		throw new Error("Method not implemented.");
 	}
 	symbolTable: SymbolTable;
@@ -286,6 +290,8 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 				return this.visitAssignation(node as Assignation);
 			case "Block":
 				return this.visitBlock(node as Block);
+			case "Delay":
+				return this.visitDelay(node as Delay);
 			case "Condition":
 				return this.visitCondition(node as Condition);
 			case "FnReturn":

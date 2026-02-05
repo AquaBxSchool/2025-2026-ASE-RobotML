@@ -7,6 +7,7 @@ import {
 	BoolLiteral,
 	Cast,
 	type Condition,
+	Delay,
 	type Expression,
 	FloatLiteral,
 	type FnReturn,
@@ -474,6 +475,18 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 	visitLoop(node: Loop) {
 		this.visitExpression(node.condition);
 		this.visitBlock(node.block);
+	}
+	visitDelay(node: Delay) {
+		const { type } = this.visitExpression(node.expression);
+		if (type !== "float" && type !== "integer") {
+			this.validationAccept(
+				"error",
+				`Movement does not support type ${type}`,
+				{
+					node: node,
+				},
+			);
+		}
 	}
 	visitMovement(node: Movement) {
 		const { type } = this.visitExpression(node.expression);
