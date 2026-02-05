@@ -84,8 +84,8 @@ type MovementType =
   "UpperRight" |
   "LowerRight" |
   "UpperLeft" |
-  "Advance" |
-  "Backoff" |
+  "Forward" |
+  "Backward" |
   "Left" |
   "Right"
 ;
@@ -94,8 +94,8 @@ MovementType returns MovementType:
   "UpperRight" |
   "LowerRight" |
   "UpperLeft" |
-  "Advance" |
-  "Backoff" |
+  "Forward" |
+  "Backward" |
   "Left" |
   "Right"
 ;

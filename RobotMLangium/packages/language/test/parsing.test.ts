@@ -28,24 +28,24 @@ describe("Parsing tests", () => {
 		void main() {
 		    let d = 10
 	       let d2 = 10.1
-	       setSpeed(d)
+	       SetSpeed(d)
 	       SetClock(d)
-	       Backward(d)
-	       Forward(d)
-	       Rightward(d)
-	       Leftward(d)
+	       Move(Backward,d)
+	       Move(Forward,d)
+	       Move(Right,d)
+	       Move(Left,d)
 	       Rotate(-d)
-	       setSpeed(d2)
+	       SetSpeed(d2)
 	       SetClock(d2)
-	       Backward(d2)
-	       Forward(d2)
-	       Rightward(d2)
-	       Leftward(d2)
+	       Move(Backward,d2)
+	       Move(Forward,d2)
+	       Move(Right,d2)
+	       Move(Left,d2)
 	       Rotate(-d2)
 	       let _ = GetSensor(Distance)
 	       let _ = GetClock()
 	       let s: float = GetSpeed()
-	       setSpeed(s)
+	       SetSpeed(s)
 	   }
 		`;
 		const result = await parse(code, { validation: true });
@@ -56,17 +56,17 @@ describe("Parsing tests", () => {
 		const code = `
 		void main() {
 	       let d = true
-	       setSpeed(d)
+	       SetSpeed(d)
 	       SetClock(d)
-	       Backward(d)
-	       Forward(d)
-	       Rightward(d)
-	       Leftward(d)
+	       Move(Backward,d)
+	       Move(Forward,d)
+	       Move(Right,d)
+	       Move(Left,d)
 	       Rotate(-d)
 	       let _ : string = GetSensor(Distance)
 	       let _ : string = GetClock()
 	       let s: string = GetSpeed()
-	       setSpeed(s)
+	       SetSpeed(s)
 	   }
 		`;
 		const result = await parse(code, { validation: true });

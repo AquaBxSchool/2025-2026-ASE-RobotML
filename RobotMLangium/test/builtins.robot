@@ -2,10 +2,11 @@ void main() {
     let d = 10
     SetSpeed(d)
     SetClock(d)
-    Move( Advance, d)
+    Move( Forward, d)
     Move( Left, d)
+    Move( Left, true)
     Move( Right, d)
-    Move( Backoff, d)
+    Move( Backward, d)
     Move( LowerLeft, d)
     Move( UpperRight, d)
     Move( UpperLeft, d)

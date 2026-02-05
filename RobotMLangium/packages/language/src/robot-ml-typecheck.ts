@@ -366,8 +366,6 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 		return { type: type ?? "void" };
 	}
 	visitRobotML(node: RobotML) {
-		// throw new Error("Method not implemented.");
-
 		const main_function = node.functions.find((f) => f.name === "main");
 		if (main_function === undefined) {
 			this.validationAccept(
@@ -424,6 +422,9 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 					break;
 				case "FnReturn":
 					this.visitFnReturn(node as FnReturn);
+					break;
+				case "Movement":
+					this.visitMovement(node as Movement);
 					break;
 				default:
 					break;
