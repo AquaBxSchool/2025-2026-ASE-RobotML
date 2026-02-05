@@ -180,7 +180,9 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 		return `delay((int)${this.visitExpression(node.expression)})`;
 	}
 	visitCast(node: Cast): string {
-		throw new Error("Method not implemented.");
+	  const type = typeMap.get(node.type);
+    const expr = this.visitExpression(node.expression);
+    return `(${type})(${expr})`;
 	}
 	symbolTable: SymbolTable;
 
