@@ -142,6 +142,7 @@ void setup()
 
     Omni.PIDEnable(0.31, 0.01, 0, 10);
 }
+void loop(){;}
 
 `;
 
@@ -151,6 +152,10 @@ typeMap.set("boolean", "bool");
 typeMap.set("integer", "int");
 typeMap.set("float", "float");
 typeMap.set("void", "void");
+
+// Function name inside robotml => function name inside .ino
+const functionDecMap: Map<string, string> = new Map<string, string>([]);
+const forbidenFunctionNames = ["loop", "setup", "main"];
 
 function join_comma(value: string[]) {
 	return value.map((el) => (el += ";\n")).join("");
@@ -215,7 +220,11 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 		}
 	}
 	visitFunctionCall(node: FunctionCall): string {
-		return `${node.functiondeclaration.ref.name}(${node.parameters.map((p) => this.visitExpression(p)).join(", ")})`;
+		const robotMLName = node.functiondeclaration.ref.name;
+
+		const inoName = functionDecMap.get(robotMLName);
+
+		return `${inoName}(${node.parameters.map((p) => this.visitExpression(p)).join(", ")})`;
 	}
 	visitUnary(node: Unary): string {
 		return `${node.op} ${this.visitExpression(node.expr)}`;
@@ -248,7 +257,7 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 			"float speed = 0.0",
 		];
 
-		const entrypoint = "void loop(){entrypoint();}";
+		const entrypoint = "";
 
 		return `${includes.join("\n")}\n\n${join_comma(constants)}\n${functions}\n${node.functions.map((p) => this.visitFunctionDeclaration(p)).join("\n\n")} ${entrypoint}`;
 	}
@@ -296,7 +305,29 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 		return `return ${this.visitExpression(node.expression)}`;
 	}
 	visitFunctionDeclaration(node: FunctionDeclaration): string {
-		return `${typeMap.get(node.returnType)} ${node.name == "main" ? "entrypoint" : node.name} ( ${node.parameters.map((p) => this.visitArgumentDec(p)).join(", ")} )\n${this.visitBlock(node.block)}`;
+		const robotMLName = node.name;
+		const params = node.parameters
+			.map((p) => this.visitArgumentDec(p))
+			.join(", ");
+		const block = `\n${this.visitBlock(node.block)}`;
+		const type = typeMap.get(node.returnType);
+		var inoName = robotMLName;
+
+		if (robotMLName == "main") {
+			return `int ${robotMLName} ( ${params} ) ${block}`;
+		}
+
+		if (!forbidenFunctionNames.find((name) => name == robotMLName)) {
+			inoName = `${inoName}_`;
+		}
+
+		if (functionDecMap.has(robotMLName)) {
+			inoName = `${inoName}_`;
+		}
+
+		functionDecMap.set(robotMLName, inoName);
+
+		return `${type} ${inoName} ( ${params} ) ${block}`;
 	}
 	visitRotate(node: Rotate): string {
 		return `rotate(Omni,${this.visitExpression(node.expression)})`;
