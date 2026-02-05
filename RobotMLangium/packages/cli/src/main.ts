@@ -28,12 +28,23 @@ export const astAction = async (source: string, _destination: string): Promise<v
 	model.accept(services.visitors.RobotMLAstPrinterVisitor);
 };
 
-export const compileAction = async (dir: string): Promise<void> => {
+export const uploadAction = async (serial: string, dir: string): Promise<void> => {
 	const exeDir = dirname(process.execPath);
 	const libPath = join(exeDir, "lib");
 	try {
 		const result =
-			await $`arduino-cli compile -b arduino:avr:uno ${dir} --libraries ${libPath} --output-dir ${dir}/build`.quiet();
+			await $`arduino-cli compile -b arduino:avr:diecimila --libraries ${libPath} ${dir}/${dir}.ino`.quiet();
+		console.log(result.stdout.toString());
+	} catch (err: any) {
+		// This will now show you the specific C++ compiler errors in your console
+		console.error("Compilation Failed:");
+		console.error(err.stderr?.toString() || err.message);
+		process.exit(1);
+	}
+
+	try {
+		const result =
+			await $`arduino-cli upload -p ${serial} --fqbn arduino:avr:diecimila ${dir}/${dir}.ino`.quiet();
 		console.log(result.stdout.toString());
 	} catch (err: any) {
 		// This will now show you the specific C++ compiler errors in your console
@@ -63,10 +74,11 @@ export default function main(): void {
 		)
 		.description("Print AST")
 		.action(astAction);
-	program.command("compile")
+	program.command("upload")
+		.argument("<serial>", `serial`)
 		.argument("<dir>", `arduino project folder previously generated`)
-		.description("Compile into binary")
-		.action(compileAction);
+		.description("Upload to the arduino")
+		.action(uploadAction);
 
 	program.parse(process.argv);
 }

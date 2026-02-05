@@ -134,6 +134,20 @@ void rotate(Omni4WD & Omni, int angle) {
 		rotateRight(Omni, angle);
 	}
 }
+long getDistance() {
+	pinMode(6, OUTPUT);
+	digitalWrite(6, LOW);
+	delayMicroseconds(2);
+	digitalWrite(6, HIGH);
+	delayMicroseconds(5);
+	digitalWrite(6, LOW);
+	pinMode(6, INPUT);
+
+	long duration = pulseIn(6,HIGH);
+	delay(100);
+
+	return duration / 29 / 2 * 10;
+}
 
 void setup()
 {
@@ -383,6 +397,6 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 		throw new Error("Method visitGetClock() not implemented.");
 	}
 	visitGetSensor(node: GetSensor): string {
-		throw new Error("Method visitGetSensor() not implemented.");
+		return "getDistance()";
 	}
 }
