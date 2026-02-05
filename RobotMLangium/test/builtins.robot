@@ -4,7 +4,6 @@ void main() {
     SetClock(d)
     Move( Forward, d)
     Move( Left, d)
-    Move( Left, true)
     Move( Right, d)
     Move( Backward, d)
     Move( LowerLeft, d)

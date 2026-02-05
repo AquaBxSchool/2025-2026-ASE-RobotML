@@ -9,7 +9,7 @@ boolean foo(val: integer) {
 
 integer main() {
     SetSpeed( 20 )
-    Move( Advance, 10. )
+    Move( Forward, 10. )
     Move( Left, 10 )
     Rotate( 10 )
     let t : boolean = foo(1) == true

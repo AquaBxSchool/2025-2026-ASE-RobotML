@@ -74,6 +74,42 @@ void backward(Omni4WD & Omni, int distance) {
 	delay(500);
 	// 50.1mm
 }
+void lowerleft(Omni4WD & Omni, int distance) {
+	float delay_time = delaying(distance);
+	Omni.setCarLowerLeft(speed);
+	Omni.setCarSpeedMMPS(speed, 500); // 7.8mm
+	delay(delay_time); // 35.1mm
+	Omni.setCarSpeedMMPS(0, 500); // 7.8mm
+	delay(500);
+	// 50.1mm
+}
+void upperleft(Omni4WD & Omni, int distance) {
+	float delay_time = delaying(distance);
+	Omni.setCarUpperLeft(speed);
+	Omni.setCarSpeedMMPS(speed, 500); // 7.8mm
+	delay(delay_time); // 35.1mm
+	Omni.setCarSpeedMMPS(0, 500); // 7.8mm
+	delay(500);
+	// 50.1mm
+}
+void upperright(Omni4WD & Omni, int distance) {
+	float delay_time = delaying(distance);
+	Omni.setCarUpperRight(speed);
+	Omni.setCarSpeedMMPS(speed, 500); // 7.8mm
+	delay(delay_time); // 35.1mm
+	Omni.setCarSpeedMMPS(0, 500); // 7.8mm
+	delay(500);
+	// 50.1mm
+}
+void lowerright(Omni4WD & Omni, int distance) {
+	float delay_time = delaying(distance);
+	Omni.setCarLowerRight(speed);
+	Omni.setCarSpeedMMPS(speed, 500); // 7.8mm
+	delay(delay_time); // 35.1mm
+	Omni.setCarSpeedMMPS(0, 500); // 7.8mm
+	delay(500);
+	// 50.1mm
+}
 void rotateLeft(Omni4WD & Omni, int angle) {
 	float delay_time = delaying(distanceRadial(angle));
 	Omni.setCarRotateLeft(speed);
@@ -279,7 +315,24 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 		return conditionText;
 	}
 	visitMovement(node: Movement): string {
-		throw new Error("Method visitMovement() not implemented.");
+		switch (node.type) {
+			case "Backward":
+				return `backward(Omni, ${this.visitExpression(node.expression)})`;
+			case "Forward":
+				return `forward(Omni, ${this.visitExpression(node.expression)})`;
+			case "Left":
+				return `left(Omni, ${this.visitExpression(node.expression)})`;
+			case "Right":
+				return `right(Omni, ${this.visitExpression(node.expression)})`;
+			case "LowerLeft":
+				return `lowerleft(Omni, ${this.visitExpression(node.expression)})`;
+			case "UpperLeft":
+				return `upperleft(Omni, ${this.visitExpression(node.expression)})`;
+			case "UpperLeft":
+				return `upperleft(Omni, ${this.visitExpression(node.expression)})`;
+			case "UpperRight":
+				return `upperright(Omni, ${this.visitExpression(node.expression)})`;
+		}
 	}
 	visitSetClock(node: SetClock): string {
 		throw new Error("Method visitSetClock() not implemented.");
