@@ -156,8 +156,7 @@ void setup()
 
     Omni.PIDEnable(0.31, 0.01, 0, 10);
 }
-void loop(){;}
-
+void loop(){main_(); return;}
 `;
 
 const typeMap: Map<Type, string> = new Map();
@@ -324,14 +323,14 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 			.map((p) => this.visitArgumentDec(p))
 			.join(", ");
 		const block = `\n${this.visitBlock(node.block)}`;
-		const type = typeMap.get(node.returnType);
+		var type = typeMap.get(node.returnType);
 		var inoName = robotMLName;
 
 		if (robotMLName == "main") {
-			return `int ${robotMLName} ( ${params} ) ${block}`;
+			type = "int";
 		}
 
-		if (!forbidenFunctionNames.find((name) => name == robotMLName)) {
+		if (forbidenFunctionNames.find((name) => name == robotMLName)) {
 			inoName = `${inoName}_`;
 		}
 
@@ -341,7 +340,7 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 
 		functionDecMap.set(robotMLName, inoName);
 
-		return `${type} ${inoName} ( ${params} ) ${block}`;
+		return `${type} ${inoName}( ${params} ) ${block}`;
 	}
 	visitRotate(node: Rotate): string {
 		return `rotate(Omni,${this.visitExpression(node.expression)})`;
