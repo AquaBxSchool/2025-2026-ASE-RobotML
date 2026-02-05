@@ -134,6 +134,15 @@ void rotate(Omni4WD & Omni, int angle) {
 		rotateRight(Omni, angle);
 	}
 }
+
+void setup()
+{
+    TCCR1B = TCCR1B & 0xf8 | 0x01; // Pin9,Pin10 PWM 31250Hz
+    TCCR2B = TCCR2B & 0xf8 | 0x01; // Pin3,Pin11 PWM 31250Hz
+
+    Omni.PIDEnable(0.31, 0.01, 0, 10);
+}
+
 `;
 
 const typeMap: Map<Type, string> = new Map();
@@ -239,7 +248,9 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 			"float speed = 0.0",
 		];
 
-		return `${includes.join("\n")}\n\n${join_comma(constants)}\n${functions}\n${node.functions.map((p) => this.visitFunctionDeclaration(p)).join("\n\n")}`;
+		const entrypoint = "void loop(){entrypoint();}";
+
+		return `${includes.join("\n")}\n\n${join_comma(constants)}\n${functions}\n${node.functions.map((p) => this.visitFunctionDeclaration(p)).join("\n\n")} ${entrypoint}`;
 	}
 	visitStatement(node: Statement): string {
 		switch (node.$type) {
@@ -285,7 +296,7 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 		return `return ${this.visitExpression(node.expression)}`;
 	}
 	visitFunctionDeclaration(node: FunctionDeclaration): string {
-		return `${typeMap.get(node.returnType)} ${node.name} ( ${node.parameters.map((p) => this.visitArgumentDec(p)).join(", ")} )\n${this.visitBlock(node.block)}`;
+		return `${typeMap.get(node.returnType)} ${node.name == "main" ? "entrypoint" : node.name} ( ${node.parameters.map((p) => this.visitArgumentDec(p)).join(", ")} )\n${this.visitBlock(node.block)}`;
 	}
 	visitRotate(node: Rotate): string {
 		return `rotate(Omni,${this.visitExpression(node.expression)})`;
