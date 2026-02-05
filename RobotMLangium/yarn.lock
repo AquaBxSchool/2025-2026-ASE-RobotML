@@ -2896,10 +2896,10 @@ langium-railroad@~4.2.0:
     langium "~4.2.0"
     railroad-diagrams "~1.0.0"
 
-langium-visitor@^1.4.5:
-  version "1.4.5"
-  resolved "https://registry.yarnpkg.com/langium-visitor/-/langium-visitor-1.4.5.tgz#72a5313638655ce57f54c5f57a6eca11ace3748f"
-  integrity sha512-z6yRPnzNFmhBvhIZ33Mftw8a989CJCrnHSGlXS/tYyhiW0GxJbgzmaa5IiE/aLS1omjoZnX4S+yuA1fpJFVmiQ==
+langium-visitor@^1.4.6:
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/langium-visitor/-/langium-visitor-1.4.6.tgz#25a00bf0cc3193d1caefe3811d2181c63c7b6209"
+  integrity sha512-FYC49cIsyxWfZjs5GQd5ebLYh6BGr7H7I/LcK2YpQHGCO6b6qabcQasN1oEJexvleSnKDQz0Iqsr1VtrjRMOTw==
   dependencies:
     chalk "^5.4.1"
     langium "^3.3.1"
