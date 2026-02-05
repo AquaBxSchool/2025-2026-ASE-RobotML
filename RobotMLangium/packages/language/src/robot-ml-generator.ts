@@ -396,6 +396,11 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 		throw new Error("Method visitGetClock() not implemented.");
 	}
 	visitGetSensor(node: GetSensor): string {
-		return "getDistance()";
+		switch (node.sensor) {
+			case "Distance":
+				return "getDistance()";
+			case "Color":
+				throw new Error("GetSensor Color not implemented.");
+		}
 	}
 }
