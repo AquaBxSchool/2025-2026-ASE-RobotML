@@ -15,3 +15,7 @@ Some file are contained in the root directory as well.
 - [tsconfig.json](./tsconfig.json) - The base TypeScript compiler configuration
 - [tsconfig.build.json](./package.json) - Configuration used to build the complete source code.
 - [.gitignore](.gitignore) - Files ignored by git
+
+
+yarn run cli generate ./test/exemple.robot out 
+yarn run cli upload /dev/cu.usbserial-A907TJI5 out

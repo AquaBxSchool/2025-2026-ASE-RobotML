@@ -33,7 +33,7 @@ export const uploadAction = async (serial: string, dir: string): Promise<void> =
 	const libPath = join(exeDir, "lib");
 	try {
 		const result =
-			await $`arduino-cli compile -b arduino:avr:diecimila --libraries ${libPath} ${dir}/${dir}.ino`.quiet();
+			await $`arduino-cli compile -b arduino:avr:diecimila --libraries ${libPath} ${dir}/${dir}.ino --output-dir ${dir}/build`.quiet();
 		console.log(result.stdout.toString());
 	} catch (err: any) {
 		// This will now show you the specific C++ compiler errors in your console

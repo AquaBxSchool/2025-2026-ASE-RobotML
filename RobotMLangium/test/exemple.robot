@@ -4,8 +4,8 @@ void main() {
 
     let i = 0
 
-    if (GetSensor(Distance) < 100) {
-        Move(Forward, 300)
+    if (GetSensor(Distance) > 100) {
+        Move(Forward, 100)
     }
     else {
         Rotate(90)

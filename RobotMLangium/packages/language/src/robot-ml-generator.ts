@@ -177,7 +177,7 @@ function join_comma(value: string[]) {
 
 export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 	visitDelay(node: Delay): string {
-	  return `delay((int)${this.visitExpression(node.expression)})`
+		return `delay((int)${this.visitExpression(node.expression)})`;
 	}
 	visitCast(node: Cast): string {
 		throw new Error("Method not implemented.");
