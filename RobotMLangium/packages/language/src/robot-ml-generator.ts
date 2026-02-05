@@ -44,6 +44,7 @@ void forward(Omni4WD & Omni, int distance) {
 	Omni.setCarSpeedMMPS(speed, 500); // 7.8mm
 	delay(delay_time); // 35.1mm
 	Omni.setCarSpeedMMPS(0, 500); // 7.8mm
+	delay(500);
 	// 50.1mm
 }
 void leftward(Omni4WD & Omni, int distance) {
@@ -52,6 +53,7 @@ void leftward(Omni4WD & Omni, int distance) {
 	Omni.setCarSpeedMMPS(speed, 500); // 7.8mm
 	delay(delay_time); // 35.1mm
 	Omni.setCarSpeedMMPS(0, 500); // 7.8mm
+	delay(500);
 	// 50.1mm
 }
 void rightward(Omni4WD & Omni, int distance) {
@@ -60,6 +62,7 @@ void rightward(Omni4WD & Omni, int distance) {
 	Omni.setCarSpeedMMPS(speed, 500); // 7.8mm
 	delay(delay_time); // 35.1mm
 	Omni.setCarSpeedMMPS(0, 500); // 7.8mm
+	delay(500);
 	// 50.1mm
 }
 void backward(Omni4WD & Omni, int distance) {
@@ -68,6 +71,7 @@ void backward(Omni4WD & Omni, int distance) {
 	Omni.setCarSpeedMMPS(speed, 500); // 7.8mm
 	delay(delay_time); // 35.1mm
 	Omni.setCarSpeedMMPS(0, 500); // 7.8mm
+	delay(500);
 	// 50.1mm
 }
 void rotateLeft(Omni4WD & Omni, int angle) {
@@ -76,6 +80,7 @@ void rotateLeft(Omni4WD & Omni, int angle) {
 	Omni.setCarSpeedMMPS(speed, 500);
 	delay(delay_time);
 	Omni.setCarSpeedMMPS(0, 500);
+	delay(500);
 }
 void rotateRight(Omni4WD & Omni, int angle) {
 	float delay_time = delaying(distanceRadial(angle));
@@ -83,6 +88,7 @@ void rotateRight(Omni4WD & Omni, int angle) {
 	Omni.setCarSpeedMMPS(speed, 500);
 	delay(delay_time);
 	Omni.setCarSpeedMMPS(0, 500);
+	delay(500);
 }
 void rotate(Omni4WD & Omni, int angle) {
 	if (angle < 0){
@@ -261,7 +267,16 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 		return `while (${this.visitExpression(node.condition)}) \n ${this.visitBlock(node.block)}`;
 	}
 	visitCondition(node: Condition): string {
-		throw new Error("Method visitCondition() not implemented.");
+		let conditionText = "";
+		for (let i = 0; i < node.conditions.length; i++) {
+			conditionText += `${i == 0 ? "if" : "else if"} (${node.conditions}) ${this.visitBlock(node.block.at(-1))}`;
+		}
+
+		if (node.conditions.length < node.block.length) {
+			conditionText += `else ${this.visitBlock(node.block.at(-1))}`;
+		}
+
+		return conditionText;
 	}
 	visitMovement(node: Movement): string {
 		throw new Error("Method visitMovement() not implemented.");
