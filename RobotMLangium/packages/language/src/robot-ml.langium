@@ -124,19 +124,13 @@ type DistanceUnit =
     "millimeter" |
   "centimeter" |
   "decimeter" |
-  "meter" |
-  "decameter" |
-  "hectometer" |
-  "kilometer";
+  "meter";
 
 DistanceUnit returns DistanceUnit:
     "millimeter" |
   "centimeter" |
   "decimeter" |
-  "meter" |
-  "decameter" |
-  "hectometer" |
-  "kilometer";
+  "meter";
 
 interface Movement extends Statement {
     expression: Expression
