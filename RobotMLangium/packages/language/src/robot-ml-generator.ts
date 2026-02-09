@@ -45,9 +45,6 @@ measureMap.set("millimeter", 10 ** 0);
 measureMap.set("centimeter", 10 ** 1);
 measureMap.set("decimeter", 10 ** 2);
 measureMap.set("meter", 10 ** 3);
-measureMap.set("decameter", 10 ** 4);
-measureMap.set("hectometer", 10 ** 5);
-measureMap.set("kilometer", 10 ** 6);
 
 const rotateMap: Map<RotateType, string> = new Map();
 rotateMap.set("degrees", "PI / 180");
@@ -212,7 +209,7 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 		return `rotate(Omni,${this.visitExpression(node.expression)} * ${rotateMap.get(node.unit)})`;
 	}
 	visitSetSpeed(node: SetSpeed): string {
-		return `speed = ${this.visitExpression(node.expression)} * ${(measureMap.get(node.unit1) / timeMap.get(node.unit2)) * timeMap.get("second")}`;
+		return `speed = ${this.visitExpression(node.expression)} / ${timeMap.get(node.unit2) / measureMap.get(node.unit1) / timeMap.get("second")}`;
 	}
 	visitGetSpeed(node: GetSpeed): string {
 		return `speed * ${timeMap.get(node.unit2) / measureMap.get(node.unit1) / timeMap.get("second")}`;
