@@ -4,9 +4,11 @@ Ce dépot à été crée par Tom Chauvel et Titouan Le Dilavrec pour le projet d
 
 # Project structure
 
-- `packages/language` : This package contains the language definition and the visitors.
-- `packages/cli` : The command-line to compile the code.
-- `packages/extension` : Contains the VSCode extension with the LSP configured.
+| Package | Description |
+| --- | --- |
+| `packages/language` | This package contains the language definition and the visitors. |
+| `packages/cli` | The command-line to compile the code. |
+| `packages/extension` | Contains the VSCode extension with the LSP configured. |
 
 ## Project Functionality
 
@@ -20,20 +22,23 @@ Ce dépot à été crée par Tom Chauvel et Titouan Le Dilavrec pour le projet d
 
 ## How to run the project
 
-- `yarn build` : build all the npm packages
-- `yarn test` : test the language definition and the visitors
-- `yarn mutation` : run the mutation testing
+| Command | Description |
+| --- | --- |
+| `yarn build` | build the entire project and also run the tests. |
+| `yarn test` | test the language definition and the visitors. |
+| `yarn mutation` | run the mutation testing. |
 
-# How to run the compiler
+# How to use the compiler
 
 <!-- - [package.json](./package.json) - The manifest file the main workspace package
 - [tsconfig.json](./tsconfig.json) - The base TypeScript compiler configuration
 - [tsconfig.build.json](./package.json) - Configuration used to build the complete source code.
 - [.gitignore](.gitignore) - Files ignored by git -->
 
-- `./packages/cli/dist/cli generate {robot_file} {project_name}`: 
-    - ./packages/cli/dist/cli generate ./test/exemple.robot out 
-- `./packages/cli/dist/cli compile {project_name}`: 
-    - ./packages/cli/dist/cli compile out 
-- `./packages/cli/dist/cli upload {serial_port} {project_name}`: 
-    - ./packages/cli/dist/cli upload /dev/cu.usbserial-A907TJI5 out
+
+
+| Command | Exemple |Description |
+| --- | --- |--- |
+| `./packages/cli/dist/cli generate {robot_file} {project_name}` | `./packages/cli/dist/cli generate ./test/exemple.robot out` | 
+| `./packages/cli/dist/cli compile {project_name}` | `./packages/cli/dist/cli compile out`  | 
+| `./packages/cli/dist/cli upload {serial_port} {project_name}` | `./packages/cli/dist/cli upload /dev/cu.usbserial-A907TJI5 out` |
