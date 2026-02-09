@@ -274,10 +274,10 @@ FunctionCall returns FunctionCall:
 
 // Builtins
 
-type Builtins = GetSpeed | GetDistance
+type Builtins = GetSpeed | GetDistance | GetTimestamp
 
 Builtins returns Builtins:
-    GetSpeed | GetDistance
+    GetSpeed | GetDistance | GetTimestamp
 ;
 
 interface GetSpeed extends Expression {
@@ -287,6 +287,14 @@ interface GetSpeed extends Expression {
 
 GetSpeed returns GetSpeed:
     {GetSpeed} 'GetSpeed(' distanceUnit=DistanceUnit '/' timeUnit=TimeUnit ')'
+;
+
+interface GetTimestamp extends Expression {
+    unit: TimeUnit
+}
+
+GetTimestamp returns GetTimestamp:
+    {GetTimestamp} 'GetTimestamp(' unit=TimeUnit ')'
 ;
 
 interface GetDistance extends Expression {

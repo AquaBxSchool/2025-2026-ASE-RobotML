@@ -13,6 +13,7 @@ import type {
 	FunctionDeclaration,
 	GetDistance,
 	GetSpeed,
+	GetTimestamp,
 	IntLiteral,
 	Loop,
 	Movement,
@@ -32,6 +33,9 @@ function print(text: string) {
 }
 
 export class RobotMLAstPrinterVisitor implements RobotMlVisitor {
+	visitGetTimestamp(node: GetTimestamp) {
+		throw new Error("Method not implemented.");
+	}
 	visitDelay(node: Delay) {
 		throw new Error("Method not implemented.");
 	}

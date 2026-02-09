@@ -30,6 +30,7 @@ import type {
 	DistanceUnit,
 	RotateType,
 	TimeUnit,
+	GetTimestamp,
 } from "./semantics.ts";
 import { RobotMlValidationVisitor } from "./semantics.ts";
 
@@ -60,6 +61,9 @@ function join_comma(value: string[]) {
 }
 
 export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
+	visitGetTimestamp(node: GetTimestamp) {
+		return `millis() / ${timeMap.get(node.unit)}`;
+	}
 	visitDelay(node: Delay): string {
 		return `delay((int)${this.visitExpression(node.expression)} * ${timeMap.get(node.unit)})`;
 	}
@@ -125,6 +129,10 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 				return this.visitUnary(node as Unary);
 			case "VariableRef":
 				return this.visitVariableRef(node as VariableRef);
+			case "GetTimestamp":
+				return this.visitGetTimestamp(node as GetTimestamp);
+			default:
+				throw `Not defined ${node}`;
 		}
 	}
 	visitFunctionCall(node: FunctionCall): string {
@@ -250,6 +258,8 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 				return `upperleft(Omni, ${this.visitExpression(node.expression)} * ${measureMap.get(node.unit)})`;
 			case "UpperRight":
 				return `upperright(Omni, ${this.visitExpression(node.expression)} * ${measureMap.get(node.unit)})`;
+			default:
+				throw `Not defined ${node}`;
 		}
 	}
 	visitGetDistance(node: GetDistance): string {

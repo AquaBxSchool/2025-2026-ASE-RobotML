@@ -28,6 +28,7 @@ import {
 	type Unary,
 	type VariableDec,
 	type VariableRef,
+	type GetTimestamp,
 } from "./semantics.ts";
 
 interface Value {
@@ -35,6 +36,15 @@ interface Value {
 }
 
 export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
+	symbolTable: SymbolTable;
+
+	constructor() {
+		super();
+		this.symbolTable = new SymbolTable();
+	}
+	visitGetTimestamp(node: GetTimestamp): Value {
+		return { type: "float" };
+	}
 	visitBoolLiteral(node: BoolLiteral): Value {
 		return { type: "boolean" };
 	}
@@ -46,12 +56,6 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 	}
 	visitStringLiteral(node: StringLiteral): Value {
 		return { type: "string" };
-	}
-	symbolTable: SymbolTable;
-
-	constructor() {
-		super();
-		this.symbolTable = new SymbolTable();
 	}
 	visitArgumentDec(node: ArgumentDec) {
 		this.symbolTable.put(node.name, node.type, { node: node });
@@ -272,6 +276,10 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 				return this.visitUnary(node as Unary);
 			case "VariableRef":
 				return this.visitVariableRef(node as VariableRef);
+			case "GetTimestamp":
+				return this.visitGetTimestamp(node as GetTimestamp);
+			default:
+				throw `Not defined ${node}`;
 		}
 	}
 	visitFunctionCall(node: FunctionCall): Value {
@@ -418,7 +426,7 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 					this.visitMovement(node as Movement);
 					break;
 				default:
-					break;
+					throw `Not defined ${node}`;
 			}
 		} catch {}
 	}

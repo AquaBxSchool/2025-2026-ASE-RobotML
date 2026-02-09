@@ -13,6 +13,7 @@ import type {
 	FunctionDeclaration,
 	GetDistance,
 	GetSpeed,
+	GetTimestamp,
 	IntLiteral,
 	Loop,
 	Movement,
@@ -28,6 +29,9 @@ import type {
 } from "./semantics.ts";
 
 export class RobotMLFunctionPass implements RobotMlVisitor {
+	visitGetTimestamp(node: GetTimestamp) {
+		throw new Error("Method not implemented.");
+	}
 	functionDecMap: Map<string, string> = new Map<string, string>([]);
 	forbidenFunctionNames = ["loop", "setup", "main"];
 

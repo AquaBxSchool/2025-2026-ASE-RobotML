@@ -247,4 +247,34 @@ float _ = getDistance() / 1000;
 
 		expect(generated).equal(expected);
 	});
+
+	it("verify get timestamp", async () => {
+		const code = `
+        void main() {
+            let _ = GetTimestamp(millisecond)
+			let _ = GetTimestamp(second)
+			let _ = GetTimestamp(minute)
+        }
+        `;
+
+		const result = await parse(code, { validation: true });
+
+		const model: RobotML = result.parseResult?.value;
+		const functionDeclaration = model.accept(
+			services.visitors.RobotMLFunctionPass,
+		);
+		const generatorVisitor = services.visitors.RobotMLGeneratorVisitor;
+		generatorVisitor.setFunctionDec(functionDeclaration);
+
+		let generated = model.accept(generatorVisitor);
+		const expected = `int main_(  ) 
+{
+float _ = millis() / 1;
+float _ = millis() / 1000;
+float _ = millis() / 60000;
+
+}`;
+
+		expect(generated).equal(expected);
+	});
 });
