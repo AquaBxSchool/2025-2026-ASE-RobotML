@@ -179,4 +179,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="distance_type" lowerBound="1"
         eType="#//DistanceUnit"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GetTimestamp" eSuperTypes="#//Expression">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="time_type" lowerBound="1"
+        eType="#//TimeType"/>
+  </eClassifiers>
 </ecore:EPackage>
