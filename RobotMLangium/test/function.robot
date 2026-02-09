@@ -11,7 +11,7 @@ integer main() {
     SetSpeed( 20 millimeter/second )
     Move( Forward 10 millimeter )
     Move( Left 10 millimeter )
-    Rotate( 10 in boolean degrees )
+    Rotate( 10 in float degrees)
     let t : boolean = foo(1) == true
     return 0
 }

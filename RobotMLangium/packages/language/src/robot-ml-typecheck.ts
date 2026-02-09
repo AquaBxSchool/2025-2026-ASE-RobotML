@@ -274,6 +274,8 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 				return this.visitBoolLiteral(node as BoolLiteral);
 			case "Unary":
 				return this.visitUnary(node as Unary);
+			case "Cast":
+				return this.visitCast(node as Cast);
 			case "VariableRef":
 				return this.visitVariableRef(node as VariableRef);
 			case "GetTimestamp":
@@ -506,6 +508,9 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 			case "string->bool":
 			case "string->integer":
 			case "string->float":
+			case "bool->string":
+			case "integer->string":
+			case "float->string":
 				this.validationAccept(
 					"error",
 					`Can't cast ${exp_type} to ${cast_type}`,

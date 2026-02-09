@@ -39,7 +39,7 @@ describe("Parsing tests", () => {
 
 		let generated = model.accept(generatorVisitor);
 
-		const expected = `int main_(  ) 
+		const expected = `int main_(  )
 {
 speed = 30 / 1;
 int i = 0;
@@ -87,7 +87,7 @@ rotate(Omni,90 * PI / 180);
 		generatorVisitor.setFunctionDec(functionDeclaration);
 
 		let generated = model.accept(generatorVisitor);
-		const expected = `int main_(  ) 
+		const expected = `int main_(  )
 {
 speed = 30 / 0.001;
 speed = 30 / 1;
@@ -138,7 +138,7 @@ speed = 30 / 0.06;
 		generatorVisitor.setFunctionDec(functionDeclaration);
 
 		let generated = model.accept(generatorVisitor);
-		const expected = `int main_(  ) 
+		const expected = `int main_(  )
 {
 float _ = speed * 0.001;
 float _ = speed * 1;
@@ -176,7 +176,7 @@ float _ = speed * 0.06;
 		generatorVisitor.setFunctionDec(functionDeclaration);
 
 		let generated = model.accept(generatorVisitor);
-		const expected = `int main_(  ) 
+		const expected = `int main_(  )
 {
 rotate(Omni,90 * PI / 180);
 rotate(Omni,- 90 * 1);
@@ -205,7 +205,7 @@ rotate(Omni,- 90 * 1);
 		generatorVisitor.setFunctionDec(functionDeclaration);
 
 		let generated = model.accept(generatorVisitor);
-		const expected = `int main_(  ) 
+		const expected = `int main_(  )
 {
 delay((int)1 * 1);
 delay((int)1 * 1000);
@@ -236,7 +236,7 @@ delay((int)1 * 60000);
 		generatorVisitor.setFunctionDec(functionDeclaration);
 
 		let generated = model.accept(generatorVisitor);
-		const expected = `int main_(  ) 
+		const expected = `int main_(  )
 {
 float _ = getDistance() / 1;
 float _ = getDistance() / 10;
@@ -267,7 +267,7 @@ float _ = getDistance() / 1000;
 		generatorVisitor.setFunctionDec(functionDeclaration);
 
 		let generated = model.accept(generatorVisitor);
-		const expected = `int main_(  ) 
+		const expected = `int main_(  )
 {
 float _ = millis() / 1;
 float _ = millis() / 1000;

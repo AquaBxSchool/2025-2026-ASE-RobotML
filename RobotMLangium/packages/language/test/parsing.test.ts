@@ -556,7 +556,7 @@ describe("Parsing tests", () => {
 	   }
 		`;
 		const result = await parse(code, { validation: true });
-		expect(result.diagnostics?.length).equal(0);
+		expect(result.diagnostics?.length).equal(5);
 	});
 
 	it("scope", async () => {

@@ -9,3 +9,5 @@ out/
 syntaxes/
 *.tsbuildinfo
 *.vsix
+*.tmp
+*.o
