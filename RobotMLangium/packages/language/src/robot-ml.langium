@@ -63,16 +63,15 @@ SetSpeed returns SetSpeed:
     'SetSpeed(' expression=BinaryExpr ',' unit1=DistanceUnit ',' unit2=TimeUnit ')'
 ;
 
-
 type TimeUnit =
     "millisecond" |
-  "second" |
-  "minute";
+    "second" |
+    "minute";
 
 TimeUnit returns TimeUnit:
     "millisecond" |
-  "second" |
-  "minute";
+    "second" |
+    "minute";
 
 interface Delay extends Statement {
     expression: Expression
@@ -102,35 +101,39 @@ Rotate returns Rotate:
 
 type MovementType =
     "LowerLeft" |
-  "UpperRight" |
-  "LowerRight" |
-  "UpperLeft" |
-  "Forward" |
-  "Backward" |
-  "Left" |
-  "Right";
+    "UpperRight" |
+    "LowerRight" |
+    "UpperLeft" |
+    "Forward" |
+    "Backward" |
+    "Left" |
+    "Right"
+;
+
 MovementType returns MovementType:
     "LowerLeft" |
-  "UpperRight" |
-  "LowerRight" |
-  "UpperLeft" |
-  "Forward" |
-  "Backward" |
-  "Left" |
-  "Right"
+    "UpperRight" |
+    "LowerRight" |
+    "UpperLeft" |
+    "Forward" |
+    "Backward" |
+    "Left" |
+    "Right"
 ;
 
 type DistanceUnit =
     "millimeter" |
-  "centimeter" |
-  "decimeter" |
-  "meter";
+    "centimeter" |
+    "decimeter" |
+    "meter"
+;
 
 DistanceUnit returns DistanceUnit:
     "millimeter" |
-  "centimeter" |
-  "decimeter" |
-  "meter";
+    "centimeter" |
+    "decimeter" |
+    "meter"
+;
 
 interface Movement extends Statement {
     expression: Expression
