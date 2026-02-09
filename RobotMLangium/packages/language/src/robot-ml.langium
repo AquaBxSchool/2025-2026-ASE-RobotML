@@ -55,30 +55,32 @@ Loop returns Loop:
 
 interface SetSpeed extends Statement {
     expression: Expression
+    unit1: DistanceUnit
+    unit2: TimeUnit
 }
 
 SetSpeed returns SetSpeed:
-    'SetSpeed(' expression=BinaryExpr ')'
+    'SetSpeed(' expression=BinaryExpr ',' unit1=DistanceUnit ',' unit2=TimeUnit ')'
 ;
 
 
-type TimeType =
+type TimeUnit =
     "millisecond" |
   "second" |
   "minute";
 
-TimeType returns TimeType:
+TimeUnit returns TimeUnit:
     "millisecond" |
   "second" |
   "minute";
 
 interface Delay extends Statement {
     expression: Expression
-    unit: TimeType
+    unit: TimeUnit
 }
 
 Delay returns Delay:
-    'Delay(' expression=BinaryExpr ',' unit=TimeType ')'
+    'Delay(' expression=BinaryExpr ',' unit=TimeUnit ')'
 ;
 
 interface Rotate extends Statement {
@@ -275,31 +277,27 @@ FunctionCall returns FunctionCall:
 
 // Builtins
 
-type Builtins = GetSpeed | GetSensor
+type Builtins = GetSpeed | GetDistance
 
 Builtins returns Builtins:
-    GetSpeed | GetSensor
+    GetSpeed | GetDistance
 ;
 
 interface GetSpeed extends Expression {
+    unit1: DistanceUnit
+    unit2: TimeUnit
 }
 
 GetSpeed returns GetSpeed:
-    {GetSpeed} 'GetSpeed()'
+    {GetSpeed} 'GetSpeed(' unit1=DistanceUnit ',' unit2=TimeUnit ')'
 ;
 
-interface GetSensor extends Expression {
-    sensor?: Sensor
+interface GetDistance extends Expression {
+    unit: DistanceUnit
 }
 
-GetSensor returns GetSensor:
-    'GetSensor' '(' sensor=Sensor ')'
-;
-
-type Sensor = 'Distance' | 'Color';
-
-Sensor returns Sensor:
-    'Distance' | 'Color'
+GetDistance returns GetDistance:
+    'GetDistance' '(' unit=DistanceUnit ')'
 ;
 
 terminal FLOAT returns number: /[0-9]+\.[0-9]*([eE][+-]?[0-9]+)?/;

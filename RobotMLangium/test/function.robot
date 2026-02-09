@@ -8,10 +8,10 @@ boolean foo(val: integer) {
 }
 
 integer main() {
-    SetSpeed( 20 )
-    Move( Forward, 10. )
-    Move( Left, 10 )
-    Rotate( 10 )
+    SetSpeed( 20, millimeter,second )
+    Move( Forward, 10., millimeter )
+    Move( Left, 10, millimeter )
+    Rotate( 10, degrees )
     let t : boolean = foo(1) == true
     return 0
 }

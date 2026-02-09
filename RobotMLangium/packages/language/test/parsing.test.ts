@@ -28,21 +28,21 @@ describe("Parsing tests", () => {
 		void main() {
 		    let d = 10
 	       let d2 = 10.1
-	       SetSpeed(d)
-	       Move(Backward,d)
-	       Move(Forward,d)
-	       Move(Right,d)
-	       Move(Left,d)
-	       Rotate(-d)
-	       SetSpeed(d2)
-	       Move(Backward,d2)
-	       Move(Forward,d2)
-	       Move(Right,d2)
-	       Move(Left,d2)
-	       Rotate(-d2)
-	       let _ = GetSensor(Distance)
-	       let s: float = GetSpeed()
-	       SetSpeed(s)
+	       SetSpeed(d,millimeter,second)
+	       Move(Backward,d,millimeter)
+	       Move(Forward,d,millimeter)
+	       Move(Right,d,millimeter)
+	       Move(Left,d,millimeter)
+	       Rotate(-d,degrees)
+	       SetSpeed(d2,millimeter,second)
+	       Move(Backward,d2,millimeter)
+	       Move(Forward,d2,millimeter)
+	       Move(Right,d2,millimeter)
+	       Move(Left,d2,millimeter)
+	       Rotate(-d2,degrees)
+	       let _ = GetDistance(millimeter)
+	       let s: float = GetSpeed(millimeter,second)
+	       SetSpeed(s,millimeter,second)
 	   }
 		`;
 		const result = await parse(code, { validation: true });
@@ -53,21 +53,19 @@ describe("Parsing tests", () => {
 		const code = `
 		void main() {
 	       let d = true
-	       SetSpeed(d)
-	       SetClock(d)
-	       Move(Backward,d)
-	       Move(Forward,d)
-	       Move(Right,d)
-	       Move(Left,d)
-	       Rotate(-d)
-	       let _ : string = GetSensor(Distance)
-	       let _ : string = GetClock()
-	       let s: string = GetSpeed()
-	       SetSpeed(s)
+	       SetSpeed(d, millimeter, second)
+	       Move(Backward,d, millimeter)
+	       Move(Forward,d, millimeter)
+	       Move(Right,d, millimeter)
+	       Move(Left,d, millimeter)
+	       Rotate(-d,degrees)
+	       let _ : string = GetDistance(millimeter)
+	       let s: string = GetSpeed(millimeter,second)
+	       SetSpeed(s,millimeter,second)
 	   }
 		`;
 		const result = await parse(code, { validation: true });
-		expect(result.diagnostics?.length).equal(12);
+		expect(result.diagnostics?.length).equal(10);
 	});
 
 	it("Authorized additions", async () => {

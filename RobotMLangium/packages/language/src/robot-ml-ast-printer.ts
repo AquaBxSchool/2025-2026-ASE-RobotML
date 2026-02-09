@@ -11,7 +11,7 @@ import type {
 	FnReturn,
 	FunctionCall,
 	FunctionDeclaration,
-	GetSensor,
+	GetDistance,
 	GetSpeed,
 	IntLiteral,
 	Loop,
@@ -56,8 +56,8 @@ export class RobotMLAstPrinterVisitor implements RobotMlVisitor {
 	visitFunctionCall(node: FunctionCall) {
 		throw new Error("Method visitFunctionCall() not implemented.");
 	}
-	visitGetSensor(node: GetSensor) {
-		throw new Error("Method visitGetSensor() not implemented.");
+	visitGetDistance(node: GetDistance) {
+		throw new Error("Method visitGetDistance() not implemented.");
 	}
 	visitGetSpeed(node: GetSpeed) {
 		throw new Error("Method visitGetSpeed() not implemented.");

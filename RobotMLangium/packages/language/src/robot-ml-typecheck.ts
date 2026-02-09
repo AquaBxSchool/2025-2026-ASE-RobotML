@@ -13,7 +13,7 @@ import {
 	type FnReturn,
 	type FunctionCall,
 	type FunctionDeclaration,
-	type GetSensor,
+	type GetDistance,
 	type GetSpeed,
 	IntLiteral,
 	type Loop,
@@ -256,8 +256,8 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 				return this.visitExpression(node as Expression);
 			case "FunctionCall":
 				return this.visitFunctionCall(node as FunctionCall);
-			case "GetSensor":
-				return this.visitGetSensor(node as GetSensor);
+			case "GetDistance":
+				return this.visitGetDistance(node as GetDistance);
 			case "GetSpeed":
 				return this.visitGetSpeed(node as GetSpeed);
 			case "StringLiteral":
@@ -305,7 +305,7 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 
 		return { type: type ?? "void" };
 	}
-	visitGetSensor(_node: GetSensor): Value {
+	visitGetDistance(_node: GetDistance): Value {
 		return { type: "float" };
 	}
 	visitGetSpeed(_node: GetSpeed): Value {

@@ -19,7 +19,7 @@ void ddd(fezfe: integer) {
 
     while (a) {
         a = a + 1
-        let b: Integer = a
+        let b: integer = a
     }
 
     // let g: float = 10.2 

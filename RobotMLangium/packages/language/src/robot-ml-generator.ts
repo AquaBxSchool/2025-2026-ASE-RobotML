@@ -13,7 +13,7 @@ import type {
 	FnReturn,
 	FunctionCall,
 	FunctionDeclaration,
-	GetSensor,
+	GetDistance,
 	GetSpeed,
 	IntLiteral,
 	Loop,
@@ -27,12 +27,15 @@ import type {
 	Unary,
 	VariableDec,
 	VariableRef,
+	DistanceUnit,
+	RotateType,
+	TimeUnit,
 } from "./semantics.ts";
 import { RobotMlValidationVisitor } from "./semantics.ts";
 
 const functions = `
 float distanceRadial(float angle) {
-	return angle * PI / 180 * 141.17;
+	return angle * 141.17;
 }
 float delaying(float distance) {
 	return (167*(distance/speed - 2.9940119760479043));
@@ -165,6 +168,24 @@ typeMap.set("integer", "int");
 typeMap.set("float", "float");
 typeMap.set("void", "void");
 
+const measureMap: Map<DistanceUnit, number> = new Map();
+measureMap.set("millimeter", 10 ** 0);
+measureMap.set("centimeter", 10 ** 1);
+measureMap.set("decimeter", 10 ** 2);
+measureMap.set("meter", 10 ** 3);
+measureMap.set("decameter", 10 ** 4);
+measureMap.set("hectometer", 10 ** 5);
+measureMap.set("kilometer", 10 ** 6);
+
+const rotateMap: Map<RotateType, number> = new Map();
+rotateMap.set("degrees", Math.PI / 180);
+rotateMap.set("radians", 1);
+
+const timeMap: Map<TimeUnit, number> = new Map();
+timeMap.set("millisecond", 1);
+timeMap.set("second", 10 ** 3);
+timeMap.set("minute", 60 * 10 ** 3);
+
 // Function name inside robotml => function name inside .ino
 const functionDecMap: Map<string, string> = new Map<string, string>([]);
 const forbidenFunctionNames = ["loop", "setup", "main"];
@@ -175,7 +196,7 @@ function join_comma(value: string[]) {
 
 export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 	visitDelay(node: Delay): string {
-		return `delay((int)${this.visitExpression(node.expression)})`;
+		return `delay((int)${this.visitExpression(node.expression)}  * ${timeMap.get(node.unit)})`;
 	}
 	visitCast(node: Cast): string {
 		const type = typeMap.get(node.type);
@@ -216,8 +237,8 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 				return this.visitExpression(node as Expression);
 			case "FunctionCall":
 				return this.visitFunctionCall(node as FunctionCall);
-			case "GetSensor":
-				return this.visitGetSensor(node as GetSensor);
+			case "GetDistance":
+				return this.visitGetDistance(node as GetDistance);
 			case "GetSpeed":
 				return this.visitGetSpeed(node as GetSpeed);
 			case "StringLiteral":
@@ -345,13 +366,13 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 		return `${type} ${inoName}( ${params} ) ${block}`;
 	}
 	visitRotate(node: Rotate): string {
-		return `rotate(Omni,${this.visitExpression(node.expression)})`;
+		return `rotate(Omni,${this.visitExpression(node.expression)} * ${rotateMap.get(node.unit)})`;
 	}
 	visitSetSpeed(node: SetSpeed): string {
-		return `speed = ${this.visitExpression(node.expression)}`;
+		return `speed = ${this.visitExpression(node.expression)} * ${measureMap.get(node.unit1)} / ${timeMap.get(node.unit2)} `;
 	}
 	visitGetSpeed(node: GetSpeed): string {
-		return "speed";
+		return `speed / ${measureMap.get(node.unit1)} * ${timeMap.get(node.unit2)}`;
 	}
 	visitVariableDec(node: VariableDec): string {
 		return `${typeMap.get(node.type)} ${node.name} = ${this.visitExpression(node.expression)}`;
@@ -374,29 +395,24 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 	visitMovement(node: Movement): string {
 		switch (node.type) {
 			case "Backward":
-				return `backward(Omni, ${this.visitExpression(node.expression)})`;
+				return `backward(Omni, ${this.visitExpression(node.expression)} * ${measureMap.get(node.unit)})`;
 			case "Forward":
-				return `forward(Omni, ${this.visitExpression(node.expression)})`;
+				return `forward(Omni, ${this.visitExpression(node.expression)} * ${measureMap.get(node.unit)})`;
 			case "Left":
-				return `left(Omni, ${this.visitExpression(node.expression)})`;
+				return `left(Omni, ${this.visitExpression(node.expression)} * ${measureMap.get(node.unit)})`;
 			case "Right":
-				return `right(Omni, ${this.visitExpression(node.expression)})`;
+				return `right(Omni, ${this.visitExpression(node.expression)} * ${measureMap.get(node.unit)})`;
 			case "LowerLeft":
-				return `lowerleft(Omni, ${this.visitExpression(node.expression)})`;
+				return `lowerleft(Omni, ${this.visitExpression(node.expression)} * ${measureMap.get(node.unit)})`;
 			case "UpperLeft":
-				return `upperleft(Omni, ${this.visitExpression(node.expression)})`;
+				return `upperleft(Omni, ${this.visitExpression(node.expression)} * ${measureMap.get(node.unit)})`;
 			case "UpperLeft":
-				return `upperleft(Omni, ${this.visitExpression(node.expression)})`;
+				return `upperleft(Omni, ${this.visitExpression(node.expression)} * ${measureMap.get(node.unit)})`;
 			case "UpperRight":
-				return `upperright(Omni, ${this.visitExpression(node.expression)})`;
+				return `upperright(Omni, ${this.visitExpression(node.expression)} * ${measureMap.get(node.unit)})`;
 		}
 	}
-	visitGetSensor(node: GetSensor): string {
-		switch (node.sensor) {
-			case "Distance":
-				return "getDistance()";
-			case "Color":
-				throw new Error("GetSensor Color not implemented.");
-		}
+	visitGetDistance(node: GetDistance): string {
+		return `getDistance() / ${measureMap.get(node.unit)}`;
 	}
 }
