@@ -43,8 +43,8 @@ Condition returns Condition:
 ;
 
 interface Loop extends Statement {
-	condition: Expression
-	block: Block
+    condition: Expression
+    block: Block
 }
 
 Loop returns Loop:
@@ -61,36 +61,54 @@ SetSpeed returns SetSpeed:
     'SetSpeed(' expression=BinaryExpr ')'
 ;
 
+
+type TimeType =
+    "millisecond" |
+  "second" |
+  "minute";
+
+TimeType returns TimeType:
+    "millisecond" |
+  "second" |
+  "minute";
+
 interface Delay extends Statement {
     expression: Expression
+    unit: TimeType
 }
 
 Delay returns Delay:
-    'Delay(' expression=BinaryExpr ')'
+    'Delay(' expression=BinaryExpr ',' unit=TimeType ')'
 ;
 
 interface Rotate extends Statement {
     expression: Expression
+    unit: RotateType
 }
 
+type RotateType =
+    "degrees"|"radians";
+RotateType returns RotateType:
+    "degrees"|"radians"
+;
+
 Rotate returns Rotate:
-    'Rotate(' expression=BinaryExpr  ')'
+    'Rotate(' expression=BinaryExpr ',' unit=RotateType  ')'
 ;
 
 // Movement Statement
 
 type MovementType =
-  "LowerLeft" |
+    "LowerLeft" |
   "UpperRight" |
   "LowerRight" |
   "UpperLeft" |
   "Forward" |
   "Backward" |
   "Left" |
-  "Right"
-;
+  "Right";
 MovementType returns MovementType:
-  "LowerLeft" |
+    "LowerLeft" |
   "UpperRight" |
   "LowerRight" |
   "UpperLeft" |
@@ -99,14 +117,33 @@ MovementType returns MovementType:
   "Left" |
   "Right"
 ;
+
+type DistanceUnit =
+    "millimeter" |
+  "centimeter" |
+  "decimeter" |
+  "meter" |
+  "decameter" |
+  "hectometer" |
+  "kilometer";
+
+DistanceUnit returns DistanceUnit:
+    "millimeter" |
+  "centimeter" |
+  "decimeter" |
+  "meter" |
+  "decameter" |
+  "hectometer" |
+  "kilometer";
 
 interface Movement extends Statement {
     expression: Expression
     type: MovementType
+    unit: DistanceUnit
 }
 
 Movement returns Movement:
-  'Move(' type=MovementType ',' expression=Expr ')';
+    'Move(' type=MovementType ',' expression=Expr ',' unit=DistanceUnit ')';
 
 // Declaration Statemens
 
