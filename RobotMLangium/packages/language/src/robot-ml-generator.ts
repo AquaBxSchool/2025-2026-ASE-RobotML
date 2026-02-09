@@ -117,6 +117,8 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 				return this.visitGetDistance(node as GetDistance);
 			case "GetSpeed":
 				return this.visitGetSpeed(node as GetSpeed);
+			case "Cast":
+				return this.visitCast(node as Cast);
 			case "StringLiteral":
 				return this.visitStringLiteral(node as StringLiteral);
 			case "FloatLiteral":
@@ -132,7 +134,7 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 			case "GetTimestamp":
 				return this.visitGetTimestamp(node as GetTimestamp);
 			default:
-				throw `Not defined ${node}`;
+				throw new Error(`Undefined Expression: ${node.$type}`);
 		}
 	}
 	visitFunctionCall(node: FunctionCall): string {
@@ -247,9 +249,9 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 			case "Forward":
 				return `forward(Omni, ${this.visitExpression(node.expression)} * ${measureMap.get(node.unit)})`;
 			case "Left":
-				return `left(Omni, ${this.visitExpression(node.expression)} * ${measureMap.get(node.unit)})`;
+				return `leftward(Omni, ${this.visitExpression(node.expression)} * ${measureMap.get(node.unit)})`;
 			case "Right":
-				return `right(Omni, ${this.visitExpression(node.expression)} * ${measureMap.get(node.unit)})`;
+				return `rightward(Omni, ${this.visitExpression(node.expression)} * ${measureMap.get(node.unit)})`;
 			case "LowerLeft":
 				return `lowerleft(Omni, ${this.visitExpression(node.expression)} * ${measureMap.get(node.unit)})`;
 			case "UpperLeft":
