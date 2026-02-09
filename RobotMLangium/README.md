@@ -26,10 +26,14 @@ Ce dépot à été crée par Tom Chauvel et Titouan Le Dilavrec pour le projet d
 
 # How to run the compiler
 
-- [package.json](./package.json) - The manifest file the main workspace package
+<!-- - [package.json](./package.json) - The manifest file the main workspace package
 - [tsconfig.json](./tsconfig.json) - The base TypeScript compiler configuration
 - [tsconfig.build.json](./package.json) - Configuration used to build the complete source code.
-- [.gitignore](.gitignore) - Files ignored by git
+- [.gitignore](.gitignore) - Files ignored by git -->
 
-yarn run cli generate ./test/exemple.robot out 
-yarn run cli upload /dev/cu.usbserial-A907TJI5 out
+- `./packages/cli/dist/cli generate {robot_file} {project_name}`: 
+    - ./packages/cli/dist/cli generate ./test/exemple.robot out 
+- `./packages/cli/dist/cli compile {project_name}`: 
+    - ./packages/cli/dist/cli compile out 
+- `./packages/cli/dist/cli upload {serial_port} {project_name}`: 
+    - ./packages/cli/dist/cli upload /dev/cu.usbserial-A907TJI5 out
