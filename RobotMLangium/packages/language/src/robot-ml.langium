@@ -55,12 +55,12 @@ Loop returns Loop:
 
 interface SetSpeed extends Statement {
     expression: Expression
-    unit1: DistanceUnit
-    unit2: TimeUnit
+    distanceUnit: DistanceUnit
+    timeUnit: TimeUnit
 }
 
 SetSpeed returns SetSpeed:
-    'SetSpeed(' expression=BinaryExpr ',' unit1=DistanceUnit ',' unit2=TimeUnit ')'
+    'SetSpeed(' expression=BinaryExpr ',' distanceUnit=DistanceUnit '/' timeUnit=TimeUnit ')'
 ;
 
 type TimeUnit =
@@ -281,12 +281,12 @@ Builtins returns Builtins:
 ;
 
 interface GetSpeed extends Expression {
-    unit1: DistanceUnit
-    unit2: TimeUnit
+    distanceUnit: DistanceUnit
+    timeUnit: TimeUnit
 }
 
 GetSpeed returns GetSpeed:
-    {GetSpeed} 'GetSpeed(' unit1=DistanceUnit ',' unit2=TimeUnit ')'
+    {GetSpeed} 'GetSpeed(' distanceUnit=DistanceUnit '/' timeUnit=TimeUnit ')'
 ;
 
 interface GetDistance extends Expression {

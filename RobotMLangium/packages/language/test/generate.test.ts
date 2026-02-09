@@ -17,7 +17,7 @@ describe("Parsing tests", () => {
 	it("general test", async () => {
 		const code = `
         void main() {
-            SetSpeed(30, millimeter, second)
+            SetSpeed(30, millimeter/ second)
             let i = 0
             if (GetDistance(centimeter) > 10) {
                 Move(Forward, 10, centimeter)
@@ -59,21 +59,21 @@ rotate(Omni,90 * PI / 180);
 	it("verify set speed", async () => {
 		const code = `
         void main() {
-            SetSpeed(30, millimeter, millisecond)
-            SetSpeed(30, millimeter, second)
-            SetSpeed(30, millimeter, minute)
+            SetSpeed(30, millimeter / millisecond)
+            SetSpeed(30, millimeter / second)
+            SetSpeed(30, millimeter / minute)
 
-			SetSpeed(30, centimeter, millisecond)
-            SetSpeed(30, centimeter, second)
-            SetSpeed(30, centimeter, minute)
+			SetSpeed(30, centimeter / millisecond)
+            SetSpeed(30, centimeter / second)
+            SetSpeed(30, centimeter / minute)
 
-			SetSpeed(30, decimeter, millisecond)
-            SetSpeed(30, decimeter, second)
-            SetSpeed(30, decimeter, minute)
+			SetSpeed(30, decimeter / millisecond)
+            SetSpeed(30, decimeter / second)
+            SetSpeed(30, decimeter / minute)
 
-			SetSpeed(30, meter, millisecond)
-            SetSpeed(30, meter, second)
-            SetSpeed(30, meter, minute)
+			SetSpeed(30, meter / millisecond)
+            SetSpeed(30, meter / second)
+            SetSpeed(30, meter / minute)
         }
         `;
 
@@ -110,21 +110,21 @@ speed = 30 / 0.06;
 	it("verify get speed", async () => {
 		const code = `
         void main() {
-            let _ = GetSpeed(millimeter, millisecond)
-            let _ = GetSpeed(millimeter, second)
-            let _ = GetSpeed(millimeter, minute)
+            let _ = GetSpeed(millimeter / millisecond)
+            let _ = GetSpeed(millimeter / second)
+            let _ = GetSpeed(millimeter / minute)
 
-			let _ = GetSpeed(centimeter, millisecond)
-            let _ = GetSpeed(centimeter, second)
-            let _ = GetSpeed(centimeter, minute)
+			let _ = GetSpeed(centimeter / millisecond)
+            let _ = GetSpeed(centimeter / second)
+            let _ = GetSpeed(centimeter / minute)
 
-			let _ = GetSpeed(decimeter, millisecond)
-            let _ = GetSpeed(decimeter, second)
-            let _ = GetSpeed(decimeter, minute)
+			let _ = GetSpeed(decimeter / millisecond)
+            let _ = GetSpeed(decimeter / second)
+            let _ = GetSpeed(decimeter / minute)
 
-			let _ = GetSpeed(meter, millisecond)
-            let _ = GetSpeed(meter, second)
-            let _ = GetSpeed(meter, minute)
+			let _ = GetSpeed(meter / millisecond)
+            let _ = GetSpeed(meter / second)
+            let _ = GetSpeed(meter / minute)
         }
         `;
 

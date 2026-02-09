@@ -1,15 +1,16 @@
 # Workspace overview
 
-Depending on the selection during the project generation you will have one or more packages contained in the packages directory.
-Please check the specific projects here:
+- `packages/language` : This package contains the language definition and the visitors.
+- `packages/cli` : The command-line to compile the code.
+- `packages/extension` : Contains the VSCode extension with the LSP configured.
 
-- [packages/language](./packages/language/README.md) This package is always available and contains the language definition.
-- [packages/cli](./packages/cli/README.md) *Optional* Is only available if you chose to use the command-line interface.
-- [packages/extension](./packages/extension/langium-quickstart.md) *Optional* Contains the VSCode extension if you chose to create it.
+## How to run the project
 
-## What's in the folder?
+- `yarn build` : build all the npm packages
+- `yarn test` : test the language definition and the visitors
+- `yarn mutation` : run the mutation testing
 
-Some file are contained in the root directory as well.
+# How to run the compiler
 
 - [package.json](./package.json) - The manifest file the main workspace package
 - [tsconfig.json](./tsconfig.json) - The base TypeScript compiler configuration
@@ -40,3 +41,5 @@ Ce dépot à été crée par Tom Chauvel et Titouan Le Dilavrec pour le projet d
 - Coverage
 - Multiple Visitor Pass
 - Function renaming
+./packages/cli/dist/cli generate ./test/exemple.robot out 
+./packages/cli/dist/cli yarn run cli upload /dev/cu.usbserial-A907TJI5 out

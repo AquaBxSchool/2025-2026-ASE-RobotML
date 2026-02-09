@@ -209,10 +209,10 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 		return `rotate(Omni,${this.visitExpression(node.expression)} * ${rotateMap.get(node.unit)})`;
 	}
 	visitSetSpeed(node: SetSpeed): string {
-		return `speed = ${this.visitExpression(node.expression)} / ${timeMap.get(node.unit2) / measureMap.get(node.unit1) / timeMap.get("second")}`;
+		return `speed = ${this.visitExpression(node.expression)} / ${timeMap.get(node.timeUnit) / measureMap.get(node.distanceUnit) / timeMap.get("second")}`;
 	}
 	visitGetSpeed(node: GetSpeed): string {
-		return `speed * ${timeMap.get(node.unit2) / measureMap.get(node.unit1) / timeMap.get("second")}`;
+		return `speed * ${timeMap.get(node.timeUnit) / measureMap.get(node.distanceUnit) / timeMap.get("second")}`;
 	}
 	visitVariableDec(node: VariableDec): string {
 		return `${typeMap.get(node.type)} ${node.name} = ${this.visitExpression(node.expression)}`;

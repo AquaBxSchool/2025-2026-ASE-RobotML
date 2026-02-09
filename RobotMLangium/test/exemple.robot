@@ -1,6 +1,6 @@
 void main() {
 
-    SetSpeed(30, millimeter, second)
+    SetSpeed(30, millimeter / second)
 
     let i = 0
 
