@@ -9,6 +9,9 @@ Ce dépot à été crée par Tom Chauvel et Titouan Le Dilavrec pour le projet d
 | `RobotMLangium/packages/language`  | This package contains the language definition and the visitors. |
 | `RobotMLangium/packages/cli`       | The command-line to compile the code.                           |
 | `RobotMLangium/packages/extension` | Contains the VSCode extension with the LSP configured.          |
+| `EMF/RobotML/`                     | EMF main project with .ecore & .aird                            |
+| `EMF/Xtext/`                       | Xtext projects, not used :(                                     |
+| `archived/`                        | Other irrelevant files                                          |
 
 ## Project Functionality
 
@@ -19,6 +22,10 @@ Ce dépot à été crée par Tom Chauvel et Titouan Le Dilavrec pour le projet d
 - Coverage
 - Multiple Visitor Pass
 - Function renaming
+
+## Language Model with EMF
+
+![RobotML EMF Diagrame](./robotML.png)
 
 ## How to run the langium project
 
