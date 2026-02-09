@@ -15,13 +15,24 @@ Ce dépot à été crée par Tom Chauvel et Titouan Le Dilavrec pour le projet d
 
 ## Project Functionality
 
-- Ast Printer
-- Compiler
-- Typechecker
-- Mutation Testing
-- Coverage
-- Multiple Visitor Pass
-- Function renaming
+### Compiler 
+
+We choosed to make the compiler version, so we can compile our .robot to .ino (Arduino). 
+
+### Typechecker
+
+We implemented a typecheker integrated with the vscode extension and the compiler to give early error/warning/hint. 
+
+### Coverage & Testing
+
+We did a coverage test using mutation testing on:
+- [robot-ml-typecheck.ts](./RobotMLangium/packages/language/src/robot-ml-typecheck.ts)
+- [robot-ml-generator.ts](./RobotMLangium/packages/language/src/robot-ml-generator.ts)
+- [SymbolTable.ts](./RobotMLangium/packages/language/src/SymbolTable.ts)
+
+### Function Renaming & Multi Pass Visitor
+
+We implemented a multi pass visitor to compute a function declaration table to rename functions before the compilation to avoid comflict with reserved function name in arduino (`main`, `setup`, `loop`). 
 
 ## Language Model with EMF
 
