@@ -56,6 +56,22 @@ And we can also interact with the robot :
 Movement(Forward 3 centimenter)
 Rotate(3 degrees)
 ```
+## Mathematics
+
+We have binary and unary expression with priority:
+
+Expression follow the following priority:
+UnaryExpr | CastExpr | ParentesisExpr  | VariableRefExpr | FunctionCallExpr | BuiltinsExpr | LiterralExpr > BinaryExpr
+
+Binary expression operator folow this priority: 
+'^' 
+> '*' | '/' 
+> '+' | '-' 
+> "!=" | "==" | ">=" | "<=" | ">" | "<"
+> "&&"
+> "||"
+
+> We used the new syntaxe of langium for this. 
 
 ### Units
 
