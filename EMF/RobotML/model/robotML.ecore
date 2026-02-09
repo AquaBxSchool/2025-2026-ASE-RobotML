@@ -41,7 +41,6 @@
   <eClassifiers xsi:type="ecore:EEnum" name="BinaryOp">
     <eLiterals name="AND" literal="&amp;&amp;"/>
     <eLiterals name="OR" value="1" literal="||"/>
-    <eLiterals name="NOT" value="2" literal="!"/>
     <eLiterals name="EQUAL" value="4" literal="=="/>
     <eLiterals name="LESSOREQUAL" value="5" literal="&lt;="/>
     <eLiterals name="GREATEROREQUAL" value="6" literal=">="/>
@@ -83,7 +82,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="VariableRef" eSuperTypes="#//Expression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ref" lowerBound="1" eType="#//ValueDec"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="FnReturn" eSuperTypes="#//Statement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="FnReturn" eSuperTypes="#//Statement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" lowerBound="1" eType="#//Expression"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="TimeType">
     <eLiterals name="millisecond" literal="millisecond"/>
     <eLiterals name="second" value="1"/>
@@ -159,6 +161,7 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="right" lowerBound="1" eType="#//Expression"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="op" lowerBound="1" eType="#//BinaryOp"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IntLiteral" eSuperTypes="#//Expression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
