@@ -61,7 +61,7 @@ function join_comma(value: string[]) {
 
 export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 	visitDelay(node: Delay): string {
-		return `delay((int)${this.visitExpression(node.expression)}  * ${timeMap.get(node.unit)})`;
+		return `delay((int)${this.visitExpression(node.expression)} * ${timeMap.get(node.unit)})`;
 	}
 	visitCast(node: Cast): string {
 		const type = typeMap.get(node.type);

@@ -14,7 +14,7 @@ beforeEach(async () => {
 });
 
 describe("Parsing tests", () => {
-	it("should fail on empty input", async () => {
+	it("general test", async () => {
 		const code = `
         void main() {
             SetSpeed(30, millimeter, second)
@@ -56,7 +56,7 @@ rotate(Omni,90 * PI / 180);
 		expect(generated).equal(expected);
 	});
 
-	it("should fail on empty input", async () => {
+	it("verify set speed", async () => {
 		const code = `
         void main() {
             SetSpeed(30, millimeter, millisecond)
@@ -103,7 +103,147 @@ speed = 30 / 0.001;
 speed = 30 / 0.06;
 
 }`;
-		console.log(generated);
+
+		expect(generated).equal(expected);
+	});
+
+	it("verify get speed", async () => {
+		const code = `
+        void main() {
+            let _ = GetSpeed(millimeter, millisecond)
+            let _ = GetSpeed(millimeter, second)
+            let _ = GetSpeed(millimeter, minute)
+
+			let _ = GetSpeed(centimeter, millisecond)
+            let _ = GetSpeed(centimeter, second)
+            let _ = GetSpeed(centimeter, minute)
+
+			let _ = GetSpeed(decimeter, millisecond)
+            let _ = GetSpeed(decimeter, second)
+            let _ = GetSpeed(decimeter, minute)
+
+			let _ = GetSpeed(meter, millisecond)
+            let _ = GetSpeed(meter, second)
+            let _ = GetSpeed(meter, minute)
+        }
+        `;
+
+		const result = await parse(code, { validation: true });
+
+		const model: RobotML = result.parseResult?.value;
+		const functionDeclaration = model.accept(
+			services.visitors.RobotMLFunctionPass,
+		);
+		const generatorVisitor = services.visitors.RobotMLGeneratorVisitor;
+		generatorVisitor.setFunctionDec(functionDeclaration);
+
+		let generated = model.accept(generatorVisitor);
+		const expected = `int main_(  ) 
+{
+float _ = speed * 0.001;
+float _ = speed * 1;
+float _ = speed * 60;
+float _ = speed * 0.0001;
+float _ = speed * 0.1;
+float _ = speed * 6;
+float _ = speed * 0.00001;
+float _ = speed * 0.01;
+float _ = speed * 0.6;
+float _ = speed * 0.000001;
+float _ = speed * 0.001;
+float _ = speed * 0.06;
+
+}`;
+
+		expect(generated).equal(expected);
+	});
+
+	it("verify get speed", async () => {
+		const code = `
+        void main() {
+            Rotate(90, degrees)
+            Rotate(-90, radians)
+        }
+        `;
+
+		const result = await parse(code, { validation: true });
+
+		const model: RobotML = result.parseResult?.value;
+		const functionDeclaration = model.accept(
+			services.visitors.RobotMLFunctionPass,
+		);
+		const generatorVisitor = services.visitors.RobotMLGeneratorVisitor;
+		generatorVisitor.setFunctionDec(functionDeclaration);
+
+		let generated = model.accept(generatorVisitor);
+		const expected = `int main_(  ) 
+{
+rotate(Omni,90 * PI / 180);
+rotate(Omni,- 90 * 1);
+
+}`;
+
+		expect(generated).equal(expected);
+	});
+
+	it("verify delay", async () => {
+		const code = `
+        void main() {
+            Delay(1, millisecond)
+            Delay(1, second)
+            Delay(1, minute)
+        }
+        `;
+
+		const result = await parse(code, { validation: true });
+
+		const model: RobotML = result.parseResult?.value;
+		const functionDeclaration = model.accept(
+			services.visitors.RobotMLFunctionPass,
+		);
+		const generatorVisitor = services.visitors.RobotMLGeneratorVisitor;
+		generatorVisitor.setFunctionDec(functionDeclaration);
+
+		let generated = model.accept(generatorVisitor);
+		const expected = `int main_(  ) 
+{
+delay((int)1 * 1);
+delay((int)1 * 1000);
+delay((int)1 * 60000);
+
+}`;
+
+		expect(generated).equal(expected);
+	});
+
+	it("verify distance", async () => {
+		const code = `
+        void main() {
+            let _ = GetDistance(millimeter)
+			let _ = GetDistance(centimeter)
+			let _ = GetDistance(decimeter)
+            let _ = GetDistance(meter)
+        }
+        `;
+
+		const result = await parse(code, { validation: true });
+
+		const model: RobotML = result.parseResult?.value;
+		const functionDeclaration = model.accept(
+			services.visitors.RobotMLFunctionPass,
+		);
+		const generatorVisitor = services.visitors.RobotMLGeneratorVisitor;
+		generatorVisitor.setFunctionDec(functionDeclaration);
+
+		let generated = model.accept(generatorVisitor);
+		const expected = `int main_(  ) 
+{
+float _ = getDistance() / 1;
+float _ = getDistance() / 10;
+float _ = getDistance() / 100;
+float _ = getDistance() / 1000;
+
+}`;
 
 		expect(generated).equal(expected);
 	});
