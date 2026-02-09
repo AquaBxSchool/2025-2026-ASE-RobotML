@@ -29,10 +29,16 @@ Ce dépot à été crée par Tom Chauvel et Titouan Le Dilavrec pour le projet d
 
 ## How to run the langium project
 
+You will need [bun](https://bun.com/) and [yarn](https://yarnpkg.com/) to be able to build to project.
+
+Yarn is used to managed the multi-packages architecture.
+Bun for the file system communication and the CLI compilation.
+
 From `./RobotMLangium` run the following commands
 
 | Command         | Description                                      |
 | --------------- | ------------------------------------------------ |
+| `yarn install`  | install the dependencies                         |
 | `yarn build`    | build the entire project and also run the tests. |
 | `yarn test`     | test the language definition and the visitors.   |
 | `yarn mutation` | run the mutation testing.                        |
