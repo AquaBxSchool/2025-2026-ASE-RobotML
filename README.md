@@ -40,6 +40,23 @@ We implemented a multi pass visitor to compute a function declaration table to r
 
 ## Language Functionality
 
+### Arduino Interaction
+
+We can get the state of the robot :
+
+```
+GetSpeed(millimeter/second)
+GetTimeStamp(second)
+GetDistance(millimeter)
+```
+
+And we can also interact with the robot :
+
+```
+Movement(Forward 3 centimenter)
+Rotate(3 degrees)
+```
+
 ### Units
 
 Reserved functions can take multiple units. This is conveniant as the library is using several units, so here they are converted automagically.
@@ -56,6 +73,38 @@ else {
     Rotate(90 degrees)
 }
 ```
+
+### Control Flow
+
+We provide if/else statement as well as while loop:
+
+```
+let i : integer = 2
+if ( i < 3 ) {
+    //
+}
+else {
+    //
+}
+
+while (i < 3){
+    i = i + 1
+}
+```
+
+### Function definition 
+
+A function is defined as : `type` `name` (`name` : `type`,`...`) { `...` }
+
+Exemple : 
+
+```
+integer double(val: integer) {
+    return val * 2
+}
+```
+
+
 # How to run the langium project
 
 You will need [bun](https://bun.com/) and [yarn](https://yarnpkg.com/) to be able to build to project.
