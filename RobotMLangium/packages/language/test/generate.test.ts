@@ -17,13 +17,13 @@ describe("Parsing tests", () => {
 	it("general test", async () => {
 		const code = `
         void main() {
-            SetSpeed(30, millimeter/ second)
+            SetSpeed(30 millimeter/ second)
             let i = 0
             if (GetDistance(centimeter) > 10) {
-                Move(Forward, 10, centimeter)
+                Move(Forward 10 centimeter)
             }
             else {
-                Rotate(90, degrees)
+                Rotate(90 degrees)
             }
         }
         `;
@@ -59,21 +59,21 @@ rotate(Omni,90 * PI / 180);
 	it("verify set speed", async () => {
 		const code = `
         void main() {
-            SetSpeed(30, millimeter / millisecond)
-            SetSpeed(30, millimeter / second)
-            SetSpeed(30, millimeter / minute)
+            SetSpeed(30 millimeter / millisecond)
+            SetSpeed(30 millimeter / second)
+            SetSpeed(30 millimeter / minute)
 
-			SetSpeed(30, centimeter / millisecond)
-            SetSpeed(30, centimeter / second)
-            SetSpeed(30, centimeter / minute)
+			SetSpeed(30 centimeter / millisecond)
+            SetSpeed(30 centimeter / second)
+            SetSpeed(30 centimeter / minute)
 
-			SetSpeed(30, decimeter / millisecond)
-            SetSpeed(30, decimeter / second)
-            SetSpeed(30, decimeter / minute)
+			SetSpeed(30 decimeter / millisecond)
+            SetSpeed(30 decimeter / second)
+            SetSpeed(30 decimeter / minute)
 
-			SetSpeed(30, meter / millisecond)
-            SetSpeed(30, meter / second)
-            SetSpeed(30, meter / minute)
+			SetSpeed(30 meter / millisecond)
+            SetSpeed(30 meter / second)
+            SetSpeed(30 meter / minute)
         }
         `;
 
@@ -161,8 +161,8 @@ float _ = speed * 0.06;
 	it("verify get speed", async () => {
 		const code = `
         void main() {
-            Rotate(90, degrees)
-            Rotate(-90, radians)
+            Rotate(90 degrees)
+            Rotate(-90 radians)
         }
         `;
 
@@ -189,9 +189,9 @@ rotate(Omni,- 90 * 1);
 	it("verify delay", async () => {
 		const code = `
         void main() {
-            Delay(1, millisecond)
-            Delay(1, second)
-            Delay(1, minute)
+            Delay(1 millisecond)
+            Delay(1 second)
+            Delay(1 minute)
         }
         `;
 

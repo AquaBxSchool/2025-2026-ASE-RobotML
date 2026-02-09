@@ -60,7 +60,7 @@ interface SetSpeed extends Statement {
 }
 
 SetSpeed returns SetSpeed:
-    'SetSpeed(' expression=BinaryExpr ',' distanceUnit=DistanceUnit '/' timeUnit=TimeUnit ')'
+    'SetSpeed(' expression=BinaryExpr distanceUnit=DistanceUnit '/' timeUnit=TimeUnit ')'
 ;
 
 type TimeUnit =
@@ -79,7 +79,7 @@ interface Delay extends Statement {
 }
 
 Delay returns Delay:
-    'Delay(' expression=BinaryExpr ',' unit=TimeUnit ')'
+    'Delay(' expression=BinaryExpr unit=TimeUnit ')'
 ;
 
 interface Rotate extends Statement {
@@ -94,7 +94,7 @@ RotateType returns RotateType:
 ;
 
 Rotate returns Rotate:
-    'Rotate(' expression=BinaryExpr ',' unit=RotateType  ')'
+    'Rotate(' expression=BinaryExpr  unit=RotateType  ')'
 ;
 
 // Movement Statement
@@ -142,7 +142,7 @@ interface Movement extends Statement {
 }
 
 Movement returns Movement:
-    'Move(' type=MovementType ',' expression=Expr ',' unit=DistanceUnit ')';
+    'Move(' type=MovementType expression=Expr unit=DistanceUnit ')';
 
 // Declaration Statemens
 

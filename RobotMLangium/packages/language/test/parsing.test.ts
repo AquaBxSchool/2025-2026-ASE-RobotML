@@ -28,21 +28,21 @@ describe("Parsing tests", () => {
 		void main() {
 		    let d = 10
 	       let d2 = 10.1
-	       SetSpeed(d,millimeter / second)
-	       Move(Backward,d,millimeter)
-	       Move(Forward,d,millimeter)
-	       Move(Right,d,millimeter)
-	       Move(Left,d,millimeter)
-	       Rotate(-d,degrees)
-	       SetSpeed(d2,millimeter / second)
-	       Move(Backward,d2,millimeter)
-	       Move(Forward,d2,millimeter)
-	       Move(Right,d2,millimeter)
-	       Move(Left,d2,millimeter)
-	       Rotate(-d2,degrees)
+	       SetSpeed(d millimeter / second)
+	       Move(Backward d millimeter)
+	       Move(Forward d millimeter)
+	       Move(Right d millimeter)
+	       Move(Left d millimeter)
+	       Rotate(-d degrees)
+	       SetSpeed(d2 millimeter / second)
+	       Move(Backward d2 millimeter)
+	       Move(Forward d2 millimeter)
+	       Move(Right d2 millimeter)
+	       Move(Left d2 millimeter)
+	       Rotate(-d2 degrees)
 	       let _ = GetDistance(millimeter)
 	       let s: float = GetSpeed(millimeter / second)
-	       SetSpeed(s,millimeter / second)
+	       SetSpeed(s millimeter / second)
 	   }
 		`;
 		const result = await parse(code, { validation: true });
@@ -53,15 +53,15 @@ describe("Parsing tests", () => {
 		const code = `
 		void main() {
 	       let d = true
-	       SetSpeed(d, millimeter / second)
-	       Move(Backward,d, millimeter)
-	       Move(Forward,d, millimeter)
-	       Move(Right,d, millimeter)
-	       Move(Left,d, millimeter)
-	       Rotate(-d,degrees)
+	       SetSpeed(d  millimeter / second)
+	       Move(Backward d  millimeter)
+	       Move(Forward d  millimeter)
+	       Move(Right d  millimeter)
+	       Move(Left d  millimeter)
+	       Rotate(-d degrees)
 	       let _ : string = GetDistance(millimeter)
 	       let s: string = GetSpeed(millimeter / second)
-	       SetSpeed(s,millimeter / second)
+	       SetSpeed(s millimeter / second)
 	   }
 		`;
 		const result = await parse(code, { validation: true });

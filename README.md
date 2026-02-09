@@ -32,13 +32,31 @@ We did a coverage test using mutation testing on:
 
 ### Function Renaming & Multi Pass Visitor
 
-We implemented a multi pass visitor to compute a function declaration table to rename functions before the compilation to avoid comflict with reserved function name in arduino (`main`, `setup`, `loop`). 
+We implemented a multi pass visitor to compute a function declaration table to rename functions before the compilation to avoid conflict with reserved function name in arduino (`main`, `setup`, `loop`). 
 
 ## Language Model with EMF
 
 ![RobotML EMF Diagrame](./robotML.png)
 
-## How to run the langium project
+## Language Functionality
+
+### Units
+
+Reserved functions can take multiple units. This is conveniant as the library is using several units, so here they are converted automagically.
+
+```
+SetSpeed(30 millimeter/second)
+
+let i = 0
+
+if (GetDistance(centimeter) > 10) {
+    Move(Forward 10 centimeter)
+}
+else {
+    Rotate(90 degrees)
+}
+```
+# How to run the langium project
 
 You will need [bun](https://bun.com/) and [yarn](https://yarnpkg.com/) to be able to build to project.
 
