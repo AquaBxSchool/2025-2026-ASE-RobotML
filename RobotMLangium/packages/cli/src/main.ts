@@ -14,9 +14,12 @@ export const generateAction = async (
 ): Promise<void> => {
 	const services = createRobotMlServices(NodeFileSystem).RobotMl;
 	const model = await extractAstNode<RobotML>(source, services);
-	model.accept(services.visitors.RobotMLAstPrinterVisitor);
 
-	let code = model.accept(services.visitors.RobotMLGeneratorVisitor);
+	const functionDeclaration = model.accept(services.visitors.RobotMLFunctionPass);
+	const generatorVisitor = services.visitors.RobotMLGeneratorVisitor;
+	generatorVisitor.setFunctionDec(functionDeclaration);
+
+	let code = model.accept(generatorVisitor);
 
 	const generatedFilePath = generateOutput(destination, code);
 	console.log(chalk.green(`Code generated succesfully: ${generatedFilePath}`));
@@ -28,7 +31,7 @@ export const astAction = async (source: string, _destination: string): Promise<v
 	model.accept(services.visitors.RobotMLAstPrinterVisitor);
 };
 
-export const uploadAction = async (serial: string, dir: string): Promise<void> => {
+const compileAction = async (dir: string): Promise<void> => {
 	const exeDir = dirname(process.execPath);
 	const libPath = join(exeDir, "lib");
 	try {
@@ -41,6 +44,10 @@ export const uploadAction = async (serial: string, dir: string): Promise<void> =
 		console.error(err.stderr?.toString() || err.message);
 		process.exit(1);
 	}
+};
+
+export const uploadAction = async (serial: string, dir: string): Promise<void> => {
+	await compileAction(dir);
 
 	try {
 		const result =
@@ -79,6 +86,10 @@ export default function main(): void {
 		.argument("<dir>", `arduino project folder previously generated`)
 		.description("Upload to the arduino")
 		.action(uploadAction);
+	program.command("compile")
+		.argument("<dir>", `arduino project folder previously generated`)
+		.description("Compile arduino file")
+		.action(compileAction);
 
 	program.parse(process.argv);
 }

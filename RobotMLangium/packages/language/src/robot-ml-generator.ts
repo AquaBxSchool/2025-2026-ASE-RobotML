@@ -186,10 +186,6 @@ timeMap.set("millisecond", 1);
 timeMap.set("second", 10 ** 3);
 timeMap.set("minute", 60 * 10 ** 3);
 
-// Function name inside robotml => function name inside .ino
-const functionDecMap: Map<string, string> = new Map<string, string>([]);
-const forbidenFunctionNames = ["loop", "setup", "main"];
-
 function join_comma(value: string[]) {
 	return value.map((el) => (el += ";\n")).join("");
 }
@@ -204,11 +200,18 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 		return `(${type})(${expr})`;
 	}
 	symbolTable: SymbolTable;
+	// Function name inside robotml => function name inside .ino
+	functionDecMap: Map<string, string>;
 
 	constructor() {
 		super();
 		this.symbolTable = new SymbolTable();
 	}
+
+	public setFunctionDec(functionDecMap: Map<string, string>) {
+		this.functionDecMap = functionDecMap;
+	}
+
 	visitBoolLiteral(node: BoolLiteral) {
 		return `${node.value}`;
 	}
@@ -258,7 +261,7 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 	visitFunctionCall(node: FunctionCall): string {
 		const robotMLName = node.functiondeclaration.ref.name;
 
-		const inoName = functionDecMap.get(robotMLName);
+		const inoName = this.functionDecMap.get(robotMLName);
 
 		return `${inoName}(${node.parameters.map((p) => this.visitExpression(p)).join(", ")})`;
 	}
@@ -269,33 +272,35 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 		return `${node.ref.ref.name}`;
 	}
 	visitRobotML(node: RobotML): string {
-		const includes = [
-			"#include <PinChangeInt.h>",
-			"#include <PinChangeIntConfig.h>",
-			"#include <EEPROM.h>",
-			"#define _NAMIKI_MOTOR // for Namiki 22CL-103501PG80:1",
-			"#include <fuzzy_table.h>",
-			"#include <PID_Beta6.h>",
-			"#include <MotorWheel.h>",
-			"#include <Omni4WD.h>",
-		];
+		const includes = `
+			#include <PinChangeInt.h>
+			#include <PinChangeIntConfig.h>
+			#include <EEPROM.h>
+			#define _NAMIKI_MOTOR // for Namiki 22CL-103501PG80:1
+			#include <fuzzy_table.h>
+			#include <PID_Beta6.h>
+			#include <MotorWheel.h>
+			#include <Omni4WD.h>
+		`;
 
-		const constants = [
-			"irqISR(irq1, isr1)",
-			"MotorWheel wheel1(3, 2, 4, 5, &irq1)",
-			"irqISR(irq2, isr2)",
-			"MotorWheel wheel2(11, 12, 14, 15, &irq2)",
-			"irqISR(irq3, isr3)",
-			"MotorWheel wheel3(9, 8, 16, 17, &irq3)",
-			"irqISR(irq4, isr4)",
-			"MotorWheel wheel4(10, 7, 18, 19, &irq4)",
-			"Omni4WD Omni(&wheel1, &wheel2, &wheel3, &wheel4)",
-			"float speed = 0.0",
-		];
+		const globals = `
+			irqISR(irq1, isr1);
+			MotorWheel wheel1(3, 2, 4, 5, &irq1);
+			irqISR(irq2, isr2);
+			MotorWheel wheel2(11, 12, 14, 15, &irq2);
+			irqISR(irq3, isr3);
+			MotorWheel wheel3(9, 8, 16, 17, &irq3);
+			irqISR(irq4, isr4);
+			MotorWheel wheel4(10, 7, 18, 19, &irq4);
+			Omni4WD Omni(&wheel1, &wheel2, &wheel3, &wheel4);
+			float speed = 0.0;
+		`;
 
-		const entrypoint = "";
+		const robotmlFunctions = node.functions.map((p) =>
+			this.visitFunctionDeclaration(p),
+		);
 
-		return `${includes.join("\n")}\n\n${join_comma(constants)}\n${functions}\n${node.functions.map((p) => this.visitFunctionDeclaration(p)).join("\n\n")} ${entrypoint}`;
+		return `${includes}\n${globals}\n${functions}\n${robotmlFunctions.join("\n\n")}`;
 	}
 	visitStatement(node: Statement): string {
 		switch (node.$type) {
@@ -347,21 +352,11 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 			.join(", ");
 		const block = `\n${this.visitBlock(node.block)}`;
 		var type = typeMap.get(node.returnType);
-		var inoName = robotMLName;
+		const inoName = this.functionDecMap.get(robotMLName);
 
 		if (robotMLName == "main") {
 			type = "int";
 		}
-
-		if (forbidenFunctionNames.find((name) => name == robotMLName)) {
-			inoName = `${inoName}_`;
-		}
-
-		if (functionDecMap.has(robotMLName)) {
-			inoName = `${inoName}_`;
-		}
-
-		functionDecMap.set(robotMLName, inoName);
 
 		return `${type} ${inoName}( ${params} ) ${block}`;
 	}

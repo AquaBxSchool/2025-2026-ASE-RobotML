@@ -17,6 +17,7 @@ import { registerVisitorAsValidator } from "./semantics/robot-ml-visitor.js";
 import { RobotMLTypeCheckVisitor } from "./robot-ml-typecheck.js";
 import { RobotMLAstPrinterVisitor } from "./robot-ml-ast-printer.js";
 import { RobotMLGeneratorVisitor } from "./robot-ml-generator.ts";
+import { RobotMLFunctionPass } from "./robot-ml-function-pass.ts";
 // import { MyLanguageScopeProvider } from './robot-ml-scope.js';
 
 /**
@@ -31,6 +32,7 @@ export type RobotMlAddedServices = {
 		RobotMLTypeCheckVisitor: RobotMLTypeCheckVisitor;
 		RobotMLAstPrinterVisitor: RobotMLAstPrinterVisitor;
 		RobotMLGeneratorVisitor: RobotMLGeneratorVisitor;
+		RobotMLFunctionPass: RobotMLFunctionPass;
 	};
 };
 
@@ -60,6 +62,7 @@ export const RobotMlModule: Module<
 		RobotMLTypeCheckVisitor: () => new RobotMLTypeCheckVisitor(),
 		RobotMLAstPrinterVisitor: () => new RobotMLAstPrinterVisitor(),
 		RobotMLGeneratorVisitor: () => new RobotMLGeneratorVisitor(),
+		RobotMLFunctionPass: () => new RobotMLFunctionPass(),
 	},
 };
 
