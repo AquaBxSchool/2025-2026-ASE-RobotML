@@ -11,7 +11,6 @@ import type {
 	FnReturn,
 	FunctionCall,
 	FunctionDeclaration,
-	GetClock,
 	GetSensor,
 	GetSpeed,
 	IntLiteral,
@@ -20,7 +19,6 @@ import type {
 	RobotML,
 	RobotMlVisitor,
 	Rotate,
-	SetClock,
 	SetSpeed,
 	Statement,
 	StringLiteral,
@@ -57,9 +55,6 @@ export class RobotMLAstPrinterVisitor implements RobotMlVisitor {
 	}
 	visitFunctionCall(node: FunctionCall) {
 		throw new Error("Method visitFunctionCall() not implemented.");
-	}
-	visitGetClock(node: GetClock) {
-		throw new Error("Method visitGetClock() not implemented.");
 	}
 	visitGetSensor(node: GetSensor) {
 		throw new Error("Method visitGetSensor() not implemented.");
@@ -143,9 +138,6 @@ export class RobotMLAstPrinterVisitor implements RobotMlVisitor {
 	}
 	visitRotate(node: Rotate) {
 		throw new Error("Method visitRotate() not implemented.");
-	}
-	visitSetClock(node: SetClock) {
-		throw new Error("Method visitSetClock() not implemented.");
 	}
 	visitSetSpeed(node: SetSpeed) {
 		print("visitSetSpeed\n");

@@ -29,21 +29,18 @@ describe("Parsing tests", () => {
 		    let d = 10
 	       let d2 = 10.1
 	       SetSpeed(d)
-	       SetClock(d)
 	       Move(Backward,d)
 	       Move(Forward,d)
 	       Move(Right,d)
 	       Move(Left,d)
 	       Rotate(-d)
 	       SetSpeed(d2)
-	       SetClock(d2)
 	       Move(Backward,d2)
 	       Move(Forward,d2)
 	       Move(Right,d2)
 	       Move(Left,d2)
 	       Rotate(-d2)
 	       let _ = GetSensor(Distance)
-	       let _ = GetClock()
 	       let s: float = GetSpeed()
 	       SetSpeed(s)
 	   }

@@ -13,7 +13,6 @@ import type {
 	FnReturn,
 	FunctionCall,
 	FunctionDeclaration,
-	GetClock,
 	GetSensor,
 	GetSpeed,
 	IntLiteral,
@@ -21,7 +20,6 @@ import type {
 	Movement,
 	RobotML,
 	Rotate,
-	SetClock,
 	SetSpeed,
 	Statement,
 	StringLiteral,
@@ -180,9 +178,9 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 		return `delay((int)${this.visitExpression(node.expression)})`;
 	}
 	visitCast(node: Cast): string {
-	  const type = typeMap.get(node.type);
-    const expr = this.visitExpression(node.expression);
-    return `(${type})(${expr})`;
+		const type = typeMap.get(node.type);
+		const expr = this.visitExpression(node.expression);
+		return `(${type})(${expr})`;
 	}
 	symbolTable: SymbolTable;
 
@@ -218,8 +216,6 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 				return this.visitExpression(node as Expression);
 			case "FunctionCall":
 				return this.visitFunctionCall(node as FunctionCall);
-			case "GetClock":
-				return this.visitGetClock(node as GetClock);
 			case "GetSensor":
 				return this.visitGetSensor(node as GetSensor);
 			case "GetSpeed":
@@ -306,8 +302,6 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 				return this.visitMovement(node as Movement);
 			case "Rotate":
 				return this.visitRotate(node as Rotate);
-			case "SetClock":
-				return this.visitSetClock(node as SetClock);
 			case "SetSpeed":
 				return this.visitSetSpeed(node as SetSpeed);
 			case "Statement":
@@ -396,12 +390,6 @@ export class RobotMLGeneratorVisitor extends RobotMlValidationVisitor {
 			case "UpperRight":
 				return `upperright(Omni, ${this.visitExpression(node.expression)})`;
 		}
-	}
-	visitSetClock(node: SetClock): string {
-		throw new Error("Method visitSetClock() not implemented.");
-	}
-	visitGetClock(node: GetClock): string {
-		throw new Error("Method visitGetClock() not implemented.");
 	}
 	visitGetSensor(node: GetSensor): string {
 		switch (node.sensor) {

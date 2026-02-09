@@ -13,7 +13,6 @@ import {
 	type FnReturn,
 	type FunctionCall,
 	type FunctionDeclaration,
-	type GetClock,
 	type GetSensor,
 	type GetSpeed,
 	IntLiteral,
@@ -22,7 +21,6 @@ import {
 	type RobotML,
 	RobotMlValidationVisitor,
 	type Rotate,
-	type SetClock,
 	type SetSpeed,
 	type Statement,
 	StringLiteral,
@@ -258,8 +256,6 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 				return this.visitExpression(node as Expression);
 			case "FunctionCall":
 				return this.visitFunctionCall(node as FunctionCall);
-			case "GetClock":
-				return this.visitGetClock(node as GetClock);
 			case "GetSensor":
 				return this.visitGetSensor(node as GetSensor);
 			case "GetSpeed":
@@ -308,9 +304,6 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 		}
 
 		return { type: type ?? "void" };
-	}
-	visitGetClock(_node: GetClock): Value {
-		return { type: "integer" };
 	}
 	visitGetSensor(_node: GetSensor): Value {
 		return { type: "float" };
@@ -414,9 +407,6 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 					break;
 				case "SetSpeed":
 					this.visitSetSpeed(node as SetSpeed);
-					break;
-				case "SetClock":
-					this.visitSetClock(node as SetClock);
 					break;
 				case "Rotate":
 					this.visitRotate(node as Rotate);
@@ -526,18 +516,6 @@ export class RobotMLTypeCheckVisitor extends RobotMlValidationVisitor {
 			this.validationAccept(
 				"error",
 				`Rotate does not support type ${type}`,
-				{
-					node: node,
-				},
-			);
-		}
-	}
-	visitSetClock(node: SetClock) {
-		const { type } = this.visitExpression(node.expression);
-		if (type !== "float" && type !== "integer") {
-			this.validationAccept(
-				"error",
-				`SetClock does not support type ${type}`,
 				{
 					node: node,
 				},

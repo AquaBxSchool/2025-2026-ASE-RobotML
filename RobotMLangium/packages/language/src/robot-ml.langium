@@ -12,7 +12,7 @@ interface Statement {
 }
 
 Statement returns Statement:
-    FunctionDeclaration | Block | Delay | VariableDec | Loop | Assignation | FunctionCall | Condition | SetSpeed | SetClock | Rotate | Movement | FnReturn
+    FunctionDeclaration | Block | Delay | VariableDec | Loop | Assignation | FunctionCall | Condition | SetSpeed | Rotate | Movement | FnReturn
 ;
 
 interface FnReturn extends Statement {
@@ -59,14 +59,6 @@ interface SetSpeed extends Statement {
 
 SetSpeed returns SetSpeed:
     'SetSpeed(' expression=BinaryExpr ')'
-;
-
-interface SetClock extends Statement {
-    expression: Expression
-}
-
-SetClock returns SetClock:
-    'SetClock(' expression=BinaryExpr ')'
 ;
 
 interface Delay extends Statement {
@@ -246,10 +238,10 @@ FunctionCall returns FunctionCall:
 
 // Builtins
 
-type Builtins = GetSpeed | GetClock | GetSensor
+type Builtins = GetSpeed | GetSensor
 
 Builtins returns Builtins:
-    GetClock | GetSpeed | GetSensor
+    GetSpeed | GetSensor
 ;
 
 interface GetSpeed extends Expression {
@@ -257,13 +249,6 @@ interface GetSpeed extends Expression {
 
 GetSpeed returns GetSpeed:
     {GetSpeed} 'GetSpeed()'
-;
-
-interface GetClock extends Expression {
-}
-
-GetClock returns GetClock:
-    {GetClock} 'GetClock()'
 ;
 
 interface GetSensor extends Expression {
