@@ -31,8 +31,9 @@ Ce dépot à été crée par Tom Chauvel et Titouan Le Dilavrec pour le projet d
 
 You will need [bun](https://bun.com/) and [yarn](https://yarnpkg.com/) to be able to build to project.
 
-Yarn is used to managed the multi-packages architecture.
-Bun for the file system communication and the CLI compilation.
+Yarn is used to manage the multi-package architecture. It is way easier to interact between packages with it. The dependency version management is easier too.
+
+Bun is used for file system communication and CLI compilation. It is way faster, offers a binary executable for the CLI, and the API is easier.
 
 From `./RobotMLangium` run the following commands
 
