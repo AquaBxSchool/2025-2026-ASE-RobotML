@@ -1,7 +1,8 @@
 import * as path from "node:path";
 import chalk from "chalk";
-import type { AstNode, LangiumCoreServices, LangiumDocument } from "langium";
+import type { AstNode, LangiumCoreServices } from "langium";
 import { parseHelper } from "langium/test";
+import libc from "./lib.c" with { type: "text" };
 
 export function generateOutput(destination: string, content: string): string {
 	const file = Bun.file(`${destination}/${destination}.ino`);
@@ -11,15 +12,15 @@ export function generateOutput(destination: string, content: string): string {
 		process.exit(1);
 	}
 
-	file.write(content);
+	file.write(libc + content);
 
 	return destination;
 }
 
-export async function extractDocument(
+export async function extractAstNode<T extends AstNode>(
 	fileName: string,
 	services: LangiumCoreServices,
-): Promise<LangiumDocument> {
+): Promise<T> {
 	const extensions = services.LanguageMetaData.fileExtensions;
 	if (!extensions.includes(path.extname(fileName))) {
 		console.error(
@@ -29,14 +30,6 @@ export async function extractDocument(
 		);
 		process.exit(1);
 	}
-
-	// const document =
-	// 	await services.shared.workspace.LangiumDocuments.getOrCreateDocument(
-	// 		URI.file(path.resolve(fileName)),
-	// 	);
-	// await services.shared.workspace.DocumentBuilder.build([document], {
-	// 	validation: true,
-	//  });
 
 	const parse = parseHelper(services);
 
@@ -66,14 +59,7 @@ export async function extractDocument(
 		process.exit(1);
 	}
 
-	return document;
-}
-
-export async function extractAstNode<T extends AstNode>(
-	fileName: string,
-	services: LangiumCoreServices,
-): Promise<T> {
-	return (await extractDocument(fileName, services)).parseResult?.value as T;
+	return document.parseResult?.value as T;
 }
 
 interface FilePathData {
