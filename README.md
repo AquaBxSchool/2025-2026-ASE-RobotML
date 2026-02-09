@@ -18,7 +18,7 @@ Ce dépot à été crée par Tom Chauvel et Titouan Le Dilavrec pour le projet d
 - Ast Printer
 - Compiler
 - Typechecker
-- Mutability Test
+- Mutation Testing
 - Coverage
 - Multiple Visitor Pass
 - Function renaming
