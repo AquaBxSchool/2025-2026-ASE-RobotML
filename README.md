@@ -56,6 +56,7 @@ And we can also interact with the robot :
 Movement(Forward 3 centimenter)
 Rotate(3 degrees)
 ```
+
 ## Mathematics
 
 We have binary and unary expression with priority:
@@ -120,6 +121,30 @@ integer double(val: integer) {
 }
 ```
 
+### Variable definition 
+
+A variable is defined as : `let <name> [: <type>] [= <expr] `
+Variable are shadowed if already defined.
+
+Exemple : 
+```
+let a 
+let x = 10;
+let x: string = 10 // Typecheck error 
+let x: string = double() // Typecheck error 
+```
+
+Function parameters are also handled as variable but changing their value will not reflect their value outside the function call. They would be variable with a value assigned at the start of the function. 
+
+### Cast
+
+We chose to do standard cast using the `<expr> in <type>` syntax. This is only to cast to primitive type and does not handle unit cast. Like mention before units is handle at the builtins function call. We didn't wanted to polute our types with each kind of units. And for us a number does not have a unit.   
+
+### Main/Entry
+
+Our entry functions is `void main() {}`. This is the minimal compilable program. An empty file will throw an error at the type check stage, saying that a `main` function must be defined.
+
+Function can be any valid identifier. We didn't restrain function name based on the arduino specs. So function like `main`, `loop` & `setup` are valid functions thanks to our function renaming feature. 
 
 # How to run the langium project
 
